@@ -13,12 +13,12 @@ str.substring(1,4)//nde
 // 字符串分割成数组
 str.split('')//['u','n','d'...]
 str.split('d')//['un','efine','']
-// 大小写 全小写 全大写 首字母小写 首字母大写
+// 大小写操作 全小写 全大写 首字母小写 首字母大写
 str.toLowerCase()//undefined
 str.toUpperCase()//UNDEFINED
 'HelloWorld'.replace('HelloWorld'[0],'HelloWorld'[0].toLowerCase())//helloWorld
 'helloWorld'.replace('helloWorld'[0],'helloWorld'[0].toUpperCase())//HelloWorld
-// 空格 左右空格 左右空格 全部空格 左空格 右空格
+// 空格操作 左右空格 左右空格 全部空格 左空格 右空格
 ' s t r '.trim()//s_t_r
 ' s t r '.replace(/^\s+|\s+$/g, '')//s_t_r
 ' s t r '.replace(/\s+/g, '')//str
