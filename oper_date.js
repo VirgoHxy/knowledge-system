@@ -12,8 +12,8 @@ let arr = [{
   }
 ]
 arr.sort((a, b) => {
-  return new Date(Date.parse(String(b.time))) > new Date(Date.parse(String(a.time))) //大的在前
-  // return new Date(Date.parse(String(a.time)))>new Date(Date.parse(String(b.time)))//小的在前
+  return new Date(Date.parse(String(b.time))) > new Date(Date.parse(String(a.time))) ? 1 : -1; //大的在前
+  // return new Date(Date.parse(String(a.time)))>new Date(Date.parse(String(b.time))) ? 1 : -1; //小的在前
 });
 
 /**
