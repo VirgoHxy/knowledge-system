@@ -12,6 +12,9 @@ str.charAt(2)//d
 // ltr第一个字符所在位 没有为-1
 str.indexOf('d')//2
 
+// 判断是否存在某字符 没有为-1
+str.search("unde"); 0
+
 // rtl第一个字符所在位 没有为-1
 str.lastIndexOf('d')//8
 
