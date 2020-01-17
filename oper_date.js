@@ -1,32 +1,13 @@
-const utils = require('./utils') 
-
-// 数组按时间字符串大小排序
-let arr = [{
-    time: '2019-10-21T12:00:00.000Z'
-  },
-  {
-    time: '2019-10-02T12:00:00.000Z'
-  },
-  {
-    time: '2019-10-31T12:00:00.000Z'
-  }
-]
-arr.sort((a, b) => {
-  return new Date(Date.parse(String(b.time))) > new Date(Date.parse(String(a.time))) ? 1 : -1; //大的在前
-  // return new Date(Date.parse(String(a.time)))>new Date(Date.parse(String(b.time))) ? 1 : -1; //小的在前
-});
+const utils = require('./utils')
 
 /**
- * date转换字符串时间
- * @param {String|Date} date date对象或者字符串时间
- * @param {String} formatStr 正则字符串 YYYY-DD-MM hh:mm:ss 默认为YYYY-MM-DD hh:mm
- * @return {String} 返回string类型时间
+ * 格式化时间
+ * @param {Date} date 时间对象
+ * @param {String} formatStr 格式化字符串 YYYY-MM-DD hh:mm:ss
+ * @returns {String} 返回字符串时间
  */
-function format(date, formatStr) { //格式化时间
-  if (typeof date=='string') {
-    date = new Date(Date.parse(date));
-  }
-  var str = !!formatStr ? formatStr : 'YYYY-MM-DD hh:mm';
+function format(date, formatStr) {
+  var str = formatStr;
   var Week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
   //获取当前毫秒，小于9或99补零
   str = str.replace(/MS/, date.getMilliseconds() > 9 ? date.getMilliseconds() > 99 ? date.getMilliseconds().toString() : '0' + date.getMilliseconds() : '00' + date.getMilliseconds());
@@ -59,22 +40,105 @@ function format(date, formatStr) { //格式化时间
   //获取秒钟，小于10不补零
   str = str.replace(/s|S/, date.getSeconds());
   return str;
-};
-
+}
 /**
- * 将jsondate转换为字符串date或者date
- * @param {String} value jsondate
- * @param {String} formatStr 正则字符串(依赖format方法) YYYY-DD-MM hh:mm:scopedSlots
- * @return {null|String|Date} 当value为空返回null,当formatStr为空返回date,不为空返回string 
+ * json时间转换成时间 格式化时间调用format方法
+ * @param {String} value json时间值
+ * @param {String} formatStr 格式化字符串 YYYY-MM-DD hh:mm:ss
+ * @returns 当value为空返回null,当formatStr为空返回date,不为空返回字符串时间
  */
-function JsonToDate(value, formatStr) { //转换json时间
-  let date =  new Date();
+function convertJson(value, formatStr) {
+  let date;
   if (value == null || value == "") {
     return null;
   }
-  date.setTime(value.replace(/\/Date\((\d+)\)\//gi, '$1')); //value通过截取字符串只取数字。
+  if (typeof value == 'object') {
+    date = value;
+  } else {
+    date = new Date();
+    date.setTime(value.replace(/\/Date\((\d+)\)\//gi, '$1')); //value通过截取字符串只取数字。
+  }
   if (!!formatStr) {
     return format(date, formatStr);
   }
   return date
 };
+/**
+ * 时间转换成时间戳 
+ * @param {string|date} value 时间值
+ * @param {string} type 类型 毫秒ms | 秒s
+ * @returns {Number} 返回毫秒/秒类型时间戳
+ */
+function convertToStamp(value, type) {
+  let date;
+  if (value == null || value == "") {
+    return 0;
+  }
+  if (typeof value == 'date') {
+    date = value;
+  } else {
+    date = new Date(value);
+  }
+  if (type == 's') {
+    return Math.round(date / 1000);
+  }
+  return Math.round(date);
+};
+/**
+ * 时间戳转换成时间
+ * @param {Number} value 时间戳
+ * @param {string} type 类型 毫秒ms | 秒s
+ * @param {String} formatStr 格式化字符串 YYYY-MM-DD hh:mm:ss
+ * @returns {String} 当value为空返回'1970-01-01 00:00',当formatStr为空返回date,不为空返回字符串时间 
+ */
+function convertStamp(value, type, formatStr) {
+  let date;
+  if (value == null || value == "") {
+    return '1970-01-01 00:00';
+  }
+  if (type == 'ms') {
+    date = new Date(value / 1000);
+  } else {
+    date = new Date(value);
+  }
+  if (!!formatStr) {
+    return format(date, formatStr);
+  }
+  return date;
+};
+
+/**
+ * 按时间顺序排序数组
+ * @param {Object} param 参数对象
+ * 
+ * arr 包含时间字段数组
+ * 
+ * key 排序的对象key值
+ * 
+ * IsAsc 是否升序 true升序 false降序 默认false
+ * @param {Array} param.arr 包含时间字段数组
+ * @param {String} param.key 排序的对象key值
+ * @param {Boolean} param.IsAsc 是否升序 true升序 false降序 默认false
+ * @returns {Array} 排序后的数组
+ */
+function sortForDate({arr = [], key = 'time', IsAsc = false} = {}) {
+  if (arr.length==0) {
+    return arr
+  }
+  arr.sort((a, b) => {
+    if (typeof a == 'object') {      
+      if (!IsAsc) {
+        return new Date(Date.parse(String(b[key]))) > new Date(Date.parse(String(a[key]))) ? 1 : -1; //大的在前
+      }
+      return new Date(Date.parse(String(a[key]))) > new Date(Date.parse(String(b[key]))) ? 1 : -1; //小的在前
+    }
+    if (!IsAsc) {
+      return new Date(Date.parse(String(b))) > new Date(Date.parse(String(a))) ? 1 : -1; //大的在前
+    }
+    return new Date(Date.parse(String(a))) > new Date(Date.parse(String(b))) ? 1 : -1; //小的在前
+  });
+  return arr
+}
+// utils.log(sortForDate({arr: ['2019-10-02T12:00:00.000Z','2019-10-03T12:00:00.000Z','2019-10-21T12:00:00.000Z']}))
+
+module.exports = { format, convertJson, convertToStamp, convertStamp, sortForDate };
