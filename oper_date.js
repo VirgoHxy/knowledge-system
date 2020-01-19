@@ -139,6 +139,6 @@ function sortForDate({arr = [], key = 'time', IsAsc = false} = {}) {
   });
   return arr
 }
-// utils.log(sortForDate({arr: ['2019-10-02T12:00:00.000Z','2019-10-03T12:00:00.000Z','2019-10-21T12:00:00.000Z']}))
+// console.log(sortForDate({arr: ['2019-10-02T12:00:00.000Z','2019-10-03T12:00:00.000Z','2019-10-21T12:00:00.000Z']}))
 
 module.exports = { format, convertJson, convertToStamp, convertStamp, sortForDate };
