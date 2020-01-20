@@ -121,12 +121,12 @@ function convertStamp(value, type, formatStr) {
  * @param {Boolean} param.IsAsc 是否升序 true升序 false降序 默认false
  * @returns {Array} 排序后的数组
  */
-function sortForDate({arr = [], key = 'time', IsAsc = false} = {}) {
-  if (arr.length==0) {
+function sortForDate({ arr = [], key = 'time', IsAsc = false } = {}) {
+  if (arr.length == 0) {
     return arr
   }
   arr.sort((a, b) => {
-    if (typeof a == 'object') {      
+    if (typeof a == 'object') {
       if (!IsAsc) {
         return new Date(Date.parse(String(b[key]))) > new Date(Date.parse(String(a[key]))) ? 1 : -1; //大的在前
       }
@@ -141,4 +141,100 @@ function sortForDate({arr = [], key = 'time', IsAsc = false} = {}) {
 }
 // console.log(sortForDate({arr: ['2019-10-02T12:00:00.000Z','2019-10-03T12:00:00.000Z','2019-10-21T12:00:00.000Z']}))
 
-module.exports = { format, convertJson, convertToStamp, convertStamp, sortForDate };
+/**
+ * 当前时间/给定时间加上多长时间
+ * @param {String|Date} date 时间
+ * @param {Array|Number} value 增加的数值或者是对象数组
+ * @param {String} type 类型 毫秒ms | 秒s | 分m | 时h | 天d | 月mm | 年y
+ * @param {String} formatStr 格式化字符串 YYYY-MM-DD hh:mm:ss
+ * @returns {Date|String} 当date为空返回当前时间,当formatStr为空返回date,不为空返回字符串时间 
+ */
+function getAddDate({ date, value, type = 'ms', formatStr } = {}) {
+  let length = 1;
+  if (date == null || date == '') {
+    date = new Date();
+  } else if (typeof date == 'string') {
+    date = new Date(Date.parse(date));
+  }
+  if (value == null || value == "") {
+    date = new Date();
+    if (!!formatStr) {
+      return format(date, formatStr);
+    }
+    return date;
+  }
+  if (value instanceof Array) {
+    length = value.length;
+  }
+  for (let index = 0; index < length; index++) {
+    let element;
+    let dateType;
+    let ms = date.getTime();
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    if (length == 1) {
+      element = value;
+      dateType = type;
+    } else {
+      element = value[index].value;
+      dateType = value[index].type;
+    }
+    switch (dateType) {
+      case "ms":
+        date.setTime(ms + element);
+        break;
+      case "s":
+        date.setTime(ms + element * 1000);
+        break;
+      case "m":
+        date.setTime(ms + element * 1000 * 60);
+        break;
+      case "h":
+        date.setTime(ms + element * 1000 * 60 * 60);
+        break;
+      case "d":
+        date.setTime(ms + element * 1000 * 60 * 60 * 24);
+        break;
+      case "mm":
+        date.setMonth(month + element);
+        break;
+      case "y":
+        date.setFullYear(year + element);
+        break;
+      default:
+        console.log('时间类型错误')
+        break;
+    }
+  }
+  if (!!formatStr) {
+    return format(date, formatStr);
+  }
+  return date;
+};
+/*
+console.log(getAddDate({
+  date: "2019-04-23 12:23",
+  value: [
+    {
+      value: 20,
+      type: 'h'
+    },
+    {
+      value: 12,
+      type: 'm'
+    },
+    {
+      value: 80,
+      type: 's'
+    },
+  ],
+  formatStr: 'YYYY-MM-DD hh:mm'
+}))
+console.log(getAddDate({
+  value: 8,
+  type: 'mm',
+  formatStr: 'YYYY-MM-DD hh:mm'
+}))
+*/
+
+module.exports = { format, convertJson, convertToStamp, convertStamp, sortForDate, getAddDate };
