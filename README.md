@@ -1,7 +1,9 @@
 # js容易忘记的操作
 
-oper_date.js 操作时间
+date.js 操作时间
 
-oper_str.js  操作字符串
+str.js  操作字符串
 
-oper_regex.js  操作正则
+regex.js  操作正则
+
+fs.js  操作node的fs
