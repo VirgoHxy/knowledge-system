@@ -1,8 +1,6 @@
 # js容易忘记的操作
 
-```bash
-date.js 操作时间
-```
+## date.js 操作时间
 * format 格式化时间
 * convertJson json时间转换成时间(格式化依赖format)
 * convertToStamp 时间转换成时间戳
@@ -10,19 +8,13 @@ date.js 操作时间
 * sortForDate 按时间顺序排序数组
 * getAddDate 当前时间/给定时间加上多长时间(格式化依赖format)
 
-```bash
-fs.js 操作node的fs
-```
+## fs.js 操作node的fs
 * delPath 同步删除文件夹或文件
 * readDir 同步读取文件夹
 
-```bash
-str.js 操作字符串，不抛出方法
-```
+## str.js 操作字符串，不抛出方法
 
-```bash
-regex.js 操作正则
-```
+## regex.js 操作正则
 * phone 电话
 * identityCard 身份证
 * plate 车牌
