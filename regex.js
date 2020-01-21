@@ -1,20 +1,20 @@
 const utils = require("./utils")
 
-// 电话
+//电话
 function phone(val) {
   if (val == null || val === "") {
     return false;
   }
   return (/^1[3456789]\d{9}$/.test(val));
 }
-// 身份证
+//身份证
 function identityCard(val) {
   if (val == null || val === "") {
     return false;
   }
   return (/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{4}$/.test(val));
 }
-// 车牌
+//车牌
 function plate(val) {
   if (val == null || val === "") {
     return false;
@@ -66,9 +66,9 @@ function checkIP(val) {
 /**
  * 检测日期时间
  * @param {*} val 检测值
- * @param {Boolean} secondFlag 要不要检测秒 
+ * @param {Boolean} secondFlag 要不要检测秒 默认不检测秒
  */
-function dateTime(val,secondFlag) {
+function dateTime(val, secondFlag) {
   // 2019-11-13 12:37
   if (val == null || val === "") {
     return false;
@@ -119,7 +119,7 @@ function image(val) {
   return (/(gif|jpg|jpeg|png|gif|jpg|png)$/.test(val));
 }
 
-// 取出一个路径的文件名
+//取出一个路径的文件名
 function getFileName(val) {
   // "E:/github/demo/oper_regex.js"
   if (val == null || val === "") {
