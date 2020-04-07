@@ -1,5 +1,7 @@
 # js容易忘记的操作
 
+## arr.js 操作数组
+
 ## date.js 操作时间
 * format 格式化时间
 * convertJson json时间转换成时间(格式化依赖format)
@@ -16,6 +18,9 @@
 * readDir 同步读取文件夹
 
 ## str.js 操作字符串，不抛出方法
+* removeRepeat 字符串去重
+* getRepeatNum 字符串中的子字符串重复次数
+* getMmRepeatNum 字符串中的子字符重复最多/少次数
 
 ## number.js 操作数字，不抛出方法
 
