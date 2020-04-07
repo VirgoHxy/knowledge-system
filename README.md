@@ -6,13 +6,18 @@
 * convertToStamp 时间转换成时间戳
 * convertStamp 时间戳转换成时间(格式化依赖format)
 * sortForDate 按时间顺序排序数组
-* getAddDate 当前时间/给定时间加上多长时间(格式化依赖format)
+* getCalcDate 当前时间/给定时间增加/减去多长时间(格式化依赖format)
+* getTimeBetween 求两个时间的差(日、时、分、秒)或者(年、月)
+* isLeapYear 判断是否为闰年
+* getDays 当前月份天数(依赖isLeapYear)
 
 ## fs.js 操作node的fs
 * delPath 同步删除文件夹或文件
 * readDir 同步读取文件夹
 
 ## str.js 操作字符串，不抛出方法
+
+## number.js 操作数字，不抛出方法
 
 ## regex.js 操作正则
 * phone 电话
