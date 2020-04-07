@@ -69,7 +69,7 @@ function removeRepeat(val) {
 removeRepeat("askdhg1231asdkjh123") //askdhg123j
 
 /**
- * 字符串中的重复次数
+ * 字符串中子字符串的重复次数
  * @param {String} str 字符串
  * @param {String} val 某个字符或字符串
  * @returns {Number} 字符串次数
@@ -80,7 +80,7 @@ function getRepeatNum(str, val) {
 getRepeatNum("askdhg1231asdkjh123", "as") //2
 
 /**
- * 字符串中的字符重复最多/少次数
+ * 字符串中的子字符重复最多/少次数
  * @param {String} str 字符串
  * @param {Boolean} minFlag 默认为false true查找最少的 false查找最多的
  * @returns {Object} 字符串次数和字符串,如果有同样多的,字符串则是个数组
