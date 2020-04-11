@@ -105,7 +105,7 @@ function random(n, m) {
 // console.log(random(1,100));
 
 // 解决精度问题
-var floatObj = {
+var accuracyObj = {
   /**
    * 判断是否为一个整数
    * @param {Number} val 
@@ -196,7 +196,7 @@ var floatObj = {
     return this.operation(a, b, digits, 'divide')
   }
 }
-// console.log(floatObj.add(0.1,0.2))
+// console.log(accuracyObj.add(0.1,0.2))
 // console.log(0.1+0.2)
-// console.log(floatObj.multiply(35.41,100))
+// console.log(accuracyObj.multiply(35.41,100))
 // console.log(35.41*100)
