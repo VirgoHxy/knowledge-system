@@ -1,6 +1,8 @@
 # js容易忘记的操作
 
 ## arr.js 操作数组
+* #### refrain 获取数组重复/未重复/去重复的元素
+* #### removeItem 去除数组指定元素
 
 ## date.js 操作时间
 * #### format 格式化时间
