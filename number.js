@@ -200,3 +200,22 @@ var accuracyObj = {
 // console.log(0.1+0.2)
 // console.log(accuracyObj.multiply(35.41,100))
 // console.log(35.41*100)
+
+/**
+ * 生成16进制数字
+ */
+function S4() {
+  return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+}
+/**
+ * 生成唯一guid
+ */
+function guid() {
+  return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+}
+/**
+ * 生成唯一16长度id
+ */
+function id16() {
+  return (S4()+S4()+S4()+S4());
+}
