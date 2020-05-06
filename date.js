@@ -1,5 +1,30 @@
 const utils = require('./utils')
 
+let myDate = new Date();
+let arr = [
+  myDate.getFullYear(),         // 获取完整的年份(4位,1970-????)
+  myDate.getMonth(),            // 获取当前月份(0-11,0代表1月)
+  myDate.getDate(),             // 获取当前日(1-31)
+  myDate.getDay(),              // 获取当前星期X(0-6,0代表星期天)
+  myDate.getHours(),            // 获取当前小时数(0-23)
+  myDate.getMinutes(),          // 获取当前分钟数(0-59)
+  myDate.getSeconds(),          // 获取当前秒数(0-59)
+  myDate.getMilliseconds(),     // 获取当前毫秒数(0-999)
+  myDate.getTime(),             // 获取当前时间(从1970.1.1开始的毫秒数)
+  myDate.toLocaleDateString(),  // 获取当前日期
+  myDate.toLocaleTimeString(),  // 获取当前时间(am/pm)
+  myDate.toLocaleString()       // 获取日期与时间(am/pm)
+]
+// utils.log(arr)
+
+// 对象方法
+Date.parse() // 解析一个日期时间字符串,返回UTC(协调世界时)到该时间毫秒数
+Date.now()   // 返回UTC(协调世界时)至今的毫秒数
+
+// 实例方法
+myDate.toJSON()   // 将Date对象转化字符串,并格式化为JSON数据
+myDate.valueOf()  // 返回UTC(协调世界时)到该时间毫秒数
+
 /**
  * 格式化时间
  * @param {Date} date 时间对象
@@ -44,7 +69,7 @@ function format(date, formatStr) {
 /**
  * json时间转换成时间 格式化时间调用format方法
  * @param {String} value json时间值
- * @param {String} formatStr 格式化字符串 YYYY-MM-DD hh:mm:ss
+ * @param {String} formatStr 格式化字符串 例如:YYYY-MM-DD hh:mm:ss(依赖format方法)
  * @returns 当value为空返回null,当formatStr为空返回date,不为空返回字符串时间
  */
 function convertJson(value, formatStr) {
@@ -88,7 +113,7 @@ function convertToStamp(value, type) {
  * 时间戳转换成时间
  * @param {Number} value 时间戳
  * @param {string} type 类型 毫秒ms | 秒s
- * @param {String} formatStr 格式化字符串 YYYY-MM-DD hh:mm:ss
+ * @param {String} formatStr 格式化字符串 例如:YYYY-MM-DD hh:mm:ss(依赖format方法)
  * @returns {String} 当value为空返回'1970-01-01 00:00',当formatStr为空返回date,不为空返回字符串时间 
  */
 function convertStamp(value, type, formatStr) {
@@ -121,7 +146,11 @@ function convertStamp(value, type, formatStr) {
  * @param {Boolean} param.IsAsc 是否升序 true升序 false降序 默认false
  * @returns {Array} 排序后的数组
  */
-function sortForDate({ arr = [], key = 'time', IsAsc = false } = {}) {
+function sortForDate({
+  arr = [],
+  key = 'time',
+  IsAsc = false
+} = {}) {
   if (arr.length == 0) {
     return arr
   }
@@ -142,14 +171,21 @@ function sortForDate({ arr = [], key = 'time', IsAsc = false } = {}) {
 // console.log(sortForDate({arr: ['2019-10-02T12:00:00.000Z','2019-10-03T12:00:00.000Z','2019-10-21T12:00:00.000Z']}))
 
 /**
- * 当前时间/给定时间加上多长时间
+ * 当前时间/给定时间增加/减去多长时间
  * @param {String|Date} date 时间
  * @param {Array|Number} value 增加的数值或者是对象数组
- * @param {String} type 类型 毫秒ms | 秒s | 分m | 时h | 天d | 月mm | 年y
- * @param {String} formatStr 格式化字符串 YYYY-MM-DD hh:mm:ss
+ * @param {String} type 时间类型 毫秒ms | 秒s | 分m | 时h | 天d | 月mm | 年y
+ * @param {Boolean} calcType 计算类型 true 增加 false 减去 默认为增加
+ * @param {String} formatStr 格式化字符串 例如:YYYY-MM-DD hh:mm:ss(依赖format方法)
  * @returns {Date|String} 当date为空返回当前时间,当formatStr为空返回date,不为空返回字符串时间 
  */
-function getAddDate({ date, value, type = 'ms', formatStr } = {}) {
+function getCalcDate({
+  date,
+  value,
+  type = 'ms',
+  calcType = true,
+  formatStr
+} = {}) {
   let length = 1;
   if (date == null || date == '') {
     date = new Date();
@@ -166,12 +202,16 @@ function getAddDate({ date, value, type = 'ms', formatStr } = {}) {
   if (value instanceof Array) {
     length = value.length;
   }
+  let year = date.getFullYear(),
+    month = date.getMonth(),
+    day = date.getDate(),
+    hour = date.getHours(),
+    minute = date.getMinutes(),
+    second = date.getSeconds(),
+    ms = date.getTime();
   for (let index = 0; index < length; index++) {
     let element;
     let dateType;
-    let ms = date.getTime();
-    let year = date.getFullYear();
-    let month = date.getMonth();
     if (length == 1) {
       element = value;
       dateType = type;
@@ -181,25 +221,25 @@ function getAddDate({ date, value, type = 'ms', formatStr } = {}) {
     }
     switch (dateType) {
       case "ms":
-        date.setTime(ms + element);
+        date.setTime(calcType ? ms + element : ms - element);
         break;
       case "s":
-        date.setTime(ms + element * 1000);
+        date.setSeconds(calcType ? second + element : second - element);
         break;
       case "m":
-        date.setTime(ms + element * 1000 * 60);
+        date.setMinutes(calcType ? minute + element : minute - element);
         break;
       case "h":
-        date.setTime(ms + element * 1000 * 60 * 60);
+        date.setHours(calcType ? hour + element : hour - element);
         break;
       case "d":
-        date.setTime(ms + element * 1000 * 60 * 60 * 24);
+        date.setDate(calcType ? day + element : day - element);
         break;
       case "mm":
-        date.setMonth(month + element);
+        date.setMonth(calcType ? month + element : month - element);
         break;
       case "y":
-        date.setFullYear(year + element);
+        date.setFullYear(calcType ? year + element : year - element);
         break;
       default:
         console.log('时间类型错误')
@@ -211,12 +251,12 @@ function getAddDate({ date, value, type = 'ms', formatStr } = {}) {
   }
   return date;
 };
-/*
-console.log(getAddDate({
-  date: "2019-04-23 12:23",
+
+/* console.log(getCalcDate({
+  date: "2019-04-23 12:23:20",
   value: [
     {
-      value: 20,
+      value: 24,
       type: 'h'
     },
     {
@@ -228,13 +268,102 @@ console.log(getAddDate({
       type: 's'
     },
   ],
-  formatStr: 'YYYY-MM-DD hh:mm'
+  calcType: false,
+  formatStr: 'YYYY-MM-DD hh:mm:ss'
 }))
-console.log(getAddDate({
+console.log(getCalcDate({
   value: 8,
   type: 'mm',
   formatStr: 'YYYY-MM-DD hh:mm'
-}))
-*/
+})) */
 
-module.exports = { format, convertJson, convertToStamp, convertStamp, sortForDate, getAddDate };
+
+/**
+ * 求两个时间的差(日、时、分、秒)或者(年、月)
+ * @param {Array} arr 时间数组
+ * @returns {Array} 返回时间差数组 返回(日、时、分、秒)或者(年、月)
+ */
+function getTimeBetween(arr) {
+  let sortArr = sortForDate({
+    arr
+  });
+  let ms = Date.parse(sortArr[0]) - Date.parse(sortArr[sortArr.length - 1]),
+    year = Math.floor(ms / (1000 * 60 * 60 * 24 * 365)), //一年按365
+    difference = [0, 0, 0, 0],
+    remainder = [
+      1000 * 60 * 60 * 24,
+      1000 * 60 * 60,
+      1000 * 60,
+      1000
+    ];
+  if (year >= 1) {
+    let date1 = new Date(sortArr[0]),
+      date2 = new Date(sortArr[sortArr.length - 1]),
+      month1 = date1.getMonth(),
+      month2 = date2.getMonth();
+    if (month1 >= month2) {
+      return [year, month1 - month2]
+    }
+    return [year - 1, 12 + month1 - month2]
+  }
+  for (let index = 0; index < remainder.length; index++) {
+    const n = remainder[index],
+      r = ms % n;
+    if (!r) {
+      difference[index] = ms / n;
+      break;
+    }
+    difference[index] = Math.floor(ms / n);
+    ms = r;
+  }
+  return difference;
+}
+
+// console.log(getTimeBetween(['2004-04-02 14:24:23.000Z','2020-10-08 15:23:24.000Z']))
+
+/**
+ * 判断是否为闰年
+ * @param {Number} val 年份
+ * @returns {Boolean} 返回今年或者指定年份是否为闰年 
+ */
+function isLeapYear(val) {
+  let year = !!val ? val : new Date().getYear();
+  // 普通闰年 4的倍数不是100的倍数 世纪闰年 400的倍数
+  return (0 == year % 4 && year % 100 != 0) || year % 400 == 0;
+}
+// console.log(isLeapYear(2000));
+
+/**
+ * 获取当前月份天数(依赖isLeapYear方法)
+ * @param {String} date 指定日期
+ * @returns {Number} 返回当月天数
+ */
+function getDays(date) {
+  let myDate = !!date ? new Date(date) : new Date(),
+    year = myDate.getFullYear(),
+    mouth = myDate.getMonth() + 1,
+    days;
+  if (mouth == 2) { //当月份为二月时，根据闰年还是非闰年判断天数
+    days = isLeapYear(year) ? 29 : 28;
+  } else if (mouth == 1 || mouth == 3 || mouth == 5 || mouth == 7 || mouth == 8 || mouth == 10 || mouth == 12) {
+    //一三五七八十腊,三十一天永不差
+    days = 31;
+  } else {
+    //其他月份三十天
+    days = 30;
+  }
+  return days;
+}
+// console.log(getDays("2020-4"))
+
+module.exports = {
+  format,
+  convertJson,
+  convertToStamp,
+  convertStamp,
+  sortForDate,
+  getCalcDate,
+  getTimeBetween,
+  isLeapYear,
+  getDays
+};
