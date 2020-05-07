@@ -127,19 +127,36 @@ function refrain(array, type, object) {
  * 去除数组指定元素
  * @param {Array} arr 源数组
  * @param {Array} removeArr 删除数组
+ * @param {String} key 针对对象字段去除数组
  * 
  * @returns {Array} 返回数组
  */
-function removeItem(arr,removeArr) {
-  for (var i = 0; i < arr.length; i++) {
-    if (removeArr.indexOf(arr[i]) != -1) {
-      arr.splice(i, 1);
-      i--;
+function removeItem(arr,removeArr,key) {
+  if (!!key) {
+    for (var i = 0; i < arr.length; i++) {
+      if (removeArr.indexOf(arr[i][key]) != -1) {
+        arr.splice(i, 1);
+        i--;
+      }
+    }
+  } else {    
+    for (var i = 0; i < arr.length; i++) {
+      if (removeArr.indexOf(arr[i]) != -1) {
+        arr.splice(i, 1);
+        i--;
+      }
     }
   }
   return arr
 }
 console.log(removeItem([3, 7, 11, 0, 0, 0, 3, 0, 55],[11,55]))
+console.log(removeItem([{
+  id: "1"
+},{
+  id: "2"
+},{
+  id: "3"
+}],["1","3"],"id"))
 module.exports =  {
   refrain,
   removeItem
