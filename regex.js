@@ -3,7 +3,7 @@ function phone(val) {
   if (val == null || val === "") {
     return false;
   }
-  return (/^1[3456789]\d{9}$/.test(val));
+  return (/^1[3|4|5|6|7|8|9][0-9]{9}$/.test(val));
 }
 //身份证
 function identityCard(val) {
