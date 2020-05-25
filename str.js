@@ -1,5 +1,3 @@
-const utils = require('./utils')
-
 // xx表示any str表示字符串
 var xx, str;
 

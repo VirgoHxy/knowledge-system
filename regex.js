@@ -1,5 +1,3 @@
-const utils = require("./utils")
-
 //电话
 function phone(val) {
   if (val == null || val === "") {

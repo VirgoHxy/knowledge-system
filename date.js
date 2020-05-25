@@ -1,5 +1,3 @@
-const utils = require('./utils')
-
 let myDate = new Date();
 let arr = [
   myDate.getFullYear(),         // 获取完整的年份(4位,1970-????)
@@ -15,7 +13,6 @@ let arr = [
   myDate.toLocaleTimeString(),  // 获取当前时间(am/pm)
   myDate.toLocaleString()       // 获取日期与时间(am/pm)
 ]
-// utils.log(arr)
 
 // 对象方法
 Date.parse() // 解析一个日期时间字符串,返回UTC(协调世界时)到该时间毫秒数
