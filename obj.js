@@ -1,4 +1,21 @@
+const target = {
+  field1: 1,
+  field2: undefined,
+  field3: {
+      child: 'child'
+  },
+  field4: [2, 4, 8],
+};
+const target1 = {
+  field1: 1,
+  field2: undefined,
+  field3: {
+      child: 'child'
+  },
+  field4: [2, 4, 8],
+};
 /**
+ * 判断对象是否相等
  * @param {Object} x 对象1
  * @param {Object} y 对象2
  * @return {Boolean} true 为相等，false 为不等
@@ -26,15 +43,33 @@ function compareObject(x, y) {
   }
 }
 // console.log(
-//   compareObject({
-//     a: {
-//       a: "1"
-//     },
-//     b: "2"
-//   }, {
-//     a: {
-//       a: "1"
-//     },
-//     b: "2"
-//   })
+//   compareObject(target,target1)
+// )
+
+/**
+ * 深拷贝对象
+ * @param {*} target 克隆对象
+ * @param {WeakMap} map map对象 防止循环引用
+ * 
+ * JSON.parse(JSON.stringify(target)) 可深拷贝一个对象.但有一定局限
+ */
+function clone(target, map = new WeakMap()) {
+  if (typeof target === 'object') {
+      let cloneTarget = Array.isArray(target) ? [] : {};
+      if (map.get(target)) {
+          return map.get(target);
+      }
+      map.set(target, cloneTarget);
+      for (const key in target) {
+          cloneTarget[key] = clone(target[key], map);
+      }
+      return cloneTarget;
+  } else {
+      return target;
+  }
+};
+
+// target.target = target;
+// console.log(
+//   clone(target)
 // )
