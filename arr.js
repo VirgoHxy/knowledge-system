@@ -10,31 +10,31 @@
  * @returns {Array} 返回数组
  */
 function operRepeatArray(array, type, object) {
-  let repeat = [],//重复
-    noRepeat = [],//未重复
+  let repeat = [], //重复
+    noRepeat = [], //未重复
     len = array.length,
     key = !!object ? object.key : null,
     flag = !!object ? object.flag : null;
-  type = type!=null ? type : 0;
+  type = type != null ? type : 0;
   if (!Array.isArray(array)) {
     return [];
   }
-  if (array.length<=1) {
+  if (array.length <= 1) {
     return array;
   }
   if (key == null) {
     // 排序后数组才能左右做比较
     let tempArr = array.concat().sort();
-    tempArr.forEach(function(ele,index,arr){
+    tempArr.forEach(function (ele, index, arr) {
       let a = arr[index],
-        b = arr[index>=len-1 ? index : index+1];
+        b = arr[index >= len - 1 ? index : index + 1];
       if (a == b && repeat.indexOf(a) === -1) {
         repeat.push(a);
       }
       if (repeat.indexOf(a) === -1) {
         noRepeat.push(a);
       }
-      if (index == len-1) {
+      if (index == len - 1) {
         if (repeat.indexOf(b) === -1) {
           noRepeat.push(b);
         }
@@ -50,32 +50,32 @@ function operRepeatArray(array, type, object) {
     });
     tempArr.forEach(function (ele, index, arr) {
       let a = arr[index],
-        b = arr[index>=len-1 ? index : index+1];
-      if(!flag){
+        b = arr[index >= len - 1 ? index : index + 1];
+      if (!flag) {
         if (a[key] == b[key] && repeat.indexOf(a[key]) === -1) {
           repeat.push(a[key]);
         }
         if (repeat.indexOf(a[key]) === -1) {
           noRepeat.push(a[key]);
         }
-        if (index==len-1) {
+        if (index == len - 1) {
           if (repeat.indexOf(b[key]) === -1) {
             noRepeat.push(b[key]);
           }
         }
       } else {
-        let keyArr = [];//key值数组
+        let keyArr = []; //key值数组
         if (a[key] == b[key] && repeat.indexOf(a[key]) === -1) {
           repeat.push(a);
           repeat.push(b);
-          keyArr = repeat.map(function (ele){
+          keyArr = repeat.map(function (ele) {
             return ele[key]
           })
         }
         if (keyArr.indexOf(a[key]) === -1) {
           noRepeat.push(a);
         }
-        if (index==len-1) {
+        if (index == len - 1) {
           if (keyArr.indexOf(b[key]) === -1) {
             noRepeat.push(b);
           }
@@ -135,14 +135,24 @@ function operRepeatArray(array, type, object) {
  */
 function distinct(array) {
   let result = [],
-      obj = {};//利用对象属性不重复
+    obj = {}; //利用对象属性不重复
   for (let i of array) {
-      if (!obj[i]) {
-          result.push(i);
-          obj[i] = 1;
-      }
+    if (!obj[i]) {
+      result.push(i);
+      obj[i] = 1;
+    }
   }
   return result
+}
+
+/**
+ * 数组去重(set数据结构 类似于数组，但是成员的值都是唯一的)
+ * @param {Array} array 源数组 
+ * 
+ * @returns {Array} 返回数组
+ */
+function distinct1(array) {
+  return Array.from(new Set([...array]))
 }
 
 /**
@@ -153,25 +163,23 @@ function distinct(array) {
  * 
  * @returns {Array} 返回数组
  */
-function removeItem(arr,removeArr,key) {
-  for (var i = 0; i < arr.length; i++) {
-    if (key==null ? removeArr.indexOf(arr[i]) != -1 : removeArr.indexOf(arr[i][key]) != -1) {
-      arr.splice(i, 1);
-      i--;
-    }
+function removeItem(arr, removeArr, key) {
+  if (!key) {
+    return arr.filter(item=>removeArr.indexOf(item)==-1)
   }
-  return arr
+  return arr.filter(item=>removeArr.indexOf(item[key])==-1)
 }
 // console.log(removeItem([3, 7, 11, 0, 0, 0, 3, 0, 55],[0,55]))
-// console.log(removeItem([{
+// console.log(JSON.stringify(removeItem([{
 //   id: "1"
 // },{
 //   id: "2"
 // },{
 //   id: "3"
-// }],["1","3"],"id"))
-module.exports =  {
+// }],["1","3"],"id")))
+module.exports = {
   operRepeatArray,
   distinct,
+  distinct1,
   removeItem
 }
