@@ -129,12 +129,12 @@ function operRepeatArray(array, type, object) {
 
 /**
  * 高性能数组去重(不会破坏已有排序,未重复取第一个位置)
- * @param {Array} array 源数组 
  * 
  * @returns {Array} 返回数组
  */
-function distinct(array) {
-  let result = [],
+function distinct() {
+  let array = [].concat.apply([], arguments),
+    result = [],
     obj = {}; //利用对象属性不重复
   for (let i of array) {
     if (!obj[i]) {
@@ -147,11 +147,11 @@ function distinct(array) {
 
 /**
  * 数组去重(set数据结构 类似于数组，但是成员的值都是唯一的)
- * @param {Array} array 源数组 
  * 
  * @returns {Array} 返回数组
  */
-function distinct1(array) {
+function distinct1() {
+  let array = [].concat.apply([], arguments);
   return Array.from(new Set([...array]))
 }
 
