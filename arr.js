@@ -152,7 +152,7 @@ function distinct() {
  */
 function distinct1() {
   let array = [].concat.apply([], arguments);
-  return Array.from(new Set([...array]))
+  return Array.from(new Set(array))
 }
 
 /**
