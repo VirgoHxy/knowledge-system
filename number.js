@@ -94,6 +94,14 @@ Math.sign('aaa') //NaN
 其他值，返回NaN。 
 */
 
+// 最快交换数值
+a = 10
+b = 20
+a ^= b, b ^= a, a ^= b;
+console.log("a: "+a)
+console.log("b: "+b)
+
+
 /**
  * 返回n到m的随机数 [n,m)
  * @param {Number} n 
@@ -218,4 +226,12 @@ function guid() {
  */
 function id16() {
   return (S4()+S4()+S4()+S4());
+}
+
+/**
+ * 是否为奇数
+ * @param {Number} num 数字
+ */
+function isOdd(num) {
+  return Math.abs(num % 2) === 1;
 }
