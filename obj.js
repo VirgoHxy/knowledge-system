@@ -73,3 +73,13 @@ function clone(target, map = new WeakMap()) {
 // console.log(
 //   clone(target)
 // )
+
+/**
+ * 判断数据类型
+ * @param {*} o 各种类型值
+ * 
+ */
+function getType(o){
+  var s = Object.prototype.toString.call(o);
+  return s.match(/\[object (.*?)\]/)[1].toLowerCase();
+};
