@@ -366,6 +366,28 @@ function getDate(index){
   return time;
 }
 
+/**
+ * 分钟转换字符串时间长度
+ * @param {Number} val 分钟
+ */
+function getTimeStr(val){
+  //分钟转换
+  var day = parseInt(val / 60 / 24);
+  var hour = parseInt((val / 60) % 24);
+  var min = parseInt(val % 60);
+  val = "";
+  if (day > 0) {
+    val = day + "天";
+  }
+  if (hour > 0) {
+    val += hour + "小时";
+  }
+  if (min > 0) {
+    val += parseFloat(min) + "分钟";
+  }
+  return val;
+}
+
 module.exports = {
   format,
   convertJson,
@@ -376,5 +398,6 @@ module.exports = {
   getTimeBetween,
   isLeapYear,
   getDays,
-  getDate
+  getDate,
+  getTimeStr,
 };
