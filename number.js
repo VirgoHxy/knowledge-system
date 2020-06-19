@@ -101,6 +101,17 @@ a ^= b, b ^= a, a ^= b;
 console.log("a: "+a)
 console.log("b: "+b)
 
+// 位运算
+
+console.log(parseInt(11).toString(2))// 十进制转二进制 1011
+console.log(parseInt(1011,2))// 二进制转十进制 11
+// 从左到右 从低到高 从0开始 获取二进制某位的值0,1
+console.log((11 >> 0) & 1)// 1
+console.log((11 >> 1) & 1)// 1
+console.log((11 >> 2) & 1)// 0
+console.log((11 >> 3) & 1)// 1
+// 设置二进制某位的值0,1 设置第三位(2)为1
+console.log(11 ^ (11&(1<<2)) ^ (1<<2))// 15
 
 /**
  * 返回n到m的随机数 [n,m)
