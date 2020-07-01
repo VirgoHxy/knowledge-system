@@ -354,16 +354,16 @@ function getDays(date) {
 // console.log(getDays("2020-4"))
 
 /**
- * 获取指定日期
+ * 获取指定日期 格式化依赖format方法
  * @param {Number} index 天数
+ * @param {Number} formatStr 格式化字符串 依赖format方法
  * @returns {String} 指定日期
  */
-function getDate(index){
+function getDate(index,formatStr){
   var date = new Date(); //当前日期
   var newDate = new Date();
   newDate.setDate(date.getDate() + index);//官方文档上虽然说setDate参数是1-31,其实是可以设置负数的
-  var time = newDate.getFullYear()+"-"+(newDate.getMonth()+1)+"-"+newDate.getDate();
-  return time;
+  return format(newDate,"YYYY-MM-DD hh:mm:ss")
 }
 
 /**
