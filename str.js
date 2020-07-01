@@ -11,17 +11,19 @@ str.charAt(2) //d
 str.indexOf('d') //2
 
 // 判断是否存在某字符 没有为-1
-str.search("unde");
-0
+str.search("unde"); //0
 
 // rtl第一个字符所在位 没有为-1
 str.lastIndexOf('d') //8
+
+// 考虑底层自然语言的排序情况 0 两者相等 1 第一个大于第二个 -1 第一个小于第二个
+"undefined".localeCompare('undefined') //0
 
 // 是否包含子字符串 返回boolean
 str.includes('un') //true
 
 // 截取字符串[1,4) 左闭右开
-str.substring(1, 4) //nde
+str.slice(1, 4) //nde
 
 // 字符串检索指定的值,返回数组
 str.match(/d/g); //['d','d']
@@ -32,18 +34,19 @@ str.repeat(2); //undefinedundefined
 // 字符串分割成数组
 str.split('') //['u','n','d'...]
 str.split('d') //['un','efine','']
+str.split('d',1) //['un']
 
 // 字符串拼接
-str.concat("123" + "456" + "789"); //undefined123456789
+str.concat("123", "456", "789"); //undefined123456789
 
 // 大小写操作 全小写 全大写 首字母小写 首字母大写
 str.toLowerCase() //undefined
 str.toUpperCase() //UNDEFINED
-'HelloWorld'.replace('HelloWorld' [0], 'HelloWorld' [0].toLowerCase()) //helloWorld
-'helloWorld'.replace('helloWorld' [0], 'helloWorld' [0].toUpperCase()) //HelloWorld
+'HelloWorld'.replace('HelloWorld'[0], 'HelloWorld'[0].toLowerCase()) //helloWorld
+'helloWorld'.replace('helloWorld'[0], 'helloWorld'[0].toUpperCase()) //HelloWorld
 
 // 空格去除操作 左右空格 左右空格 全部空格 左空格 右空格
-' s t r '.trim() //s_t_r
+' s t r '.trim() //s_t_r trim方法去除空格 制表符 换行符 回车符
 ' s t r '.replace(/^\s+|\s+$/g, '') //s_t_r
 ' s t r '.replace(/\s+/g, '') //str
 ' s t r '.replace(/^\s/, '') //s_t_r_
@@ -132,3 +135,20 @@ getMmRepeatNum("aaabbbccdd")  //{str:["c","d"],num:2}
 getMmRepeatNum("aaabbbccdd",true)  //{str:["aaa","bbb"],num:3}
 getMmRepeatNum("aaaabbbccd")  //{str:d,num:1}
 getMmRepeatNum("aaaabbbccd",true)  //{str:a,num:4}
+
+/**
+ * 返回随机字符串
+ * @param {Number} length 字符串长度
+ * 
+ */
+function random_str(length) {
+  var ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  ALPHABET += 'abcdefghijklmnopqrstuvwxyz';
+  ALPHABET += '0123456789-_';
+  var str = '';
+  for (var i = 0; i < length; ++i) {
+    var rand = Math.floor(Math.random() * ALPHABET.length);
+    str += ALPHABET.substring(rand, rand + 1);
+  }
+  return str;
+}
