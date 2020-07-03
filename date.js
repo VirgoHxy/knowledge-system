@@ -29,7 +29,7 @@ myDate.valueOf()  // 返回UTC(协调世界时)到该时间毫秒数
  * @returns {String} 返回字符串时间
  */
 function format(date, formatStr) {
-  var str = formatStr;
+  var str = formatStr || "YYYY-MM-DD hh:mm:ss";
   var Week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
   //获取当前毫秒，小于9或99补零
   str = str.replace(/MS/, date.getMilliseconds() > 9 ? date.getMilliseconds() > 99 ? date.getMilliseconds().toString() : '0' + date.getMilliseconds() : '00' + date.getMilliseconds());
@@ -363,7 +363,7 @@ function getDate(index,formatStr){
   var date = new Date(); //当前日期
   var newDate = new Date();
   newDate.setDate(date.getDate() + index);//官方文档上虽然说setDate参数是1-31,其实是可以设置负数的
-  return format(newDate,"YYYY-MM-DD hh:mm:ss")
+  return format(newDate,formatStr || "YYYY-MM-DD hh:mm:ss")
 }
 
 /**
