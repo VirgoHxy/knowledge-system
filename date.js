@@ -369,24 +369,62 @@ function getDate(index,formatStr){
 /**
  * 分钟转换字符串时间长度
  * @param {Number} val 分钟
+ * @param {String} type 类型
  */
-function getTimeStr(val){
-  //分钟转换
-  var day = parseInt(val / 60 / 24);
-  var hour = parseInt((val / 60) % 24);
-  var min = parseInt(val % 60);
-  val = "";
-  if (day > 0) {
-    val = day + "天";
+function getTimeStr(val,type) {
+  if(!val){
+    return "";
   }
-  if (hour > 0) {
-    val += hour + "小时";
+  let str = "",
+    hourNumber = 60 * 60,
+    dayNumber = hourNumber * 24,
+    monthNumber = dayNumber * 30,
+    time = 0;
+  switch (type) {
+    case "ms":
+      time = val / 1000;
+      break;
+    case "s":
+      time = val;
+      break;
+    case "m":
+      time = val * 60;
+      break;
+    default:
+      console.log('时间类型错误');
+      return "";
   }
-  if (min > 0) {
-    val += parseFloat(min) + "分钟";
+  let month = time / monthNumber,
+    day = time / dayNumber,
+    hour = time / hourNumber,
+    minute = time / 60,
+    second = time;
+  if (time > 0) {
+    if (month >= 1) {
+      month = Math.floor(month);
+      day = Math.floor((time - month * monthNumber) / dayNumber);
+      str = !!day ? `${month}个月${day}天` : `${month}个月` ;
+    } else if (day >= 1) {
+      day = Math.floor(day);
+      hour = Math.floor((time - day * dayNumber) / hourNumber);
+      str = !!hour ? `${day}天${hour}小时` : `${day}天` ;
+    } else if (hour >= 1) {
+      hour = Math.floor(hour);
+      minute = Math.floor((time - hour * hourNumber) / 60);
+      str = !!minute ? `${hour}小时${minute}分钟` : `${hour}小时` ;
+    } else if (minute >= 1) {
+      minute = Math.floor(minute);
+      second = Math.floor(time - minute * 60);
+      str = !!second ? `${minute}分钟${second}秒` : `${minute}分钟` ;
+    } else {
+      str = `${Math.floor(second)}秒`;
+    }
+    return str;
   }
-  return val;
+  return "";
 }
+
+console.log(getTimeStr(12,"m"))
 
 module.exports = {
   format,
