@@ -75,6 +75,7 @@ function format(value, formatStr) {
   str = str.replace(/ms/, mSecond);
   return str;
 }
+// console.log(format(new Date(), "YYYY-MM-DD hh:mm:ss:MS W"))
 
 /**
  * json时间转换成时间 格式化时间调用format方法
@@ -84,11 +85,12 @@ function format(value, formatStr) {
  */
 function convertJson(value, formatStr) {
   let myDate = new Date();
-  myDate.setTime(value.replace(/\/Date\((\d+)\)\//gi, "$1")); //value通过截取字符串只取数字。
+  myDate.setTime(String(value).replace(/\/Date\((\d+)\)\//gi, "$1")); //value通过截取字符串只取数字。
   if (isNaN(myDate.getTime())) { return "请输入正确的json日期"; }
   if (formatStr) { return format(myDate, formatStr); }
   return myDate
 };
+// console.log(convertJson(/Date(1278930470649)/))
 
 /**
  * 时间转换成时间戳 
@@ -100,9 +102,10 @@ function convertToStamp(value, type) {
   let myDate = typeof value === "object" ? value : new Date(value),
     time = myDate.getTime();
   if (isNaN(time)) { return "请输入正确的日期"; }
-  if (type==="s") { return Math.round(time / 1000); }
+  if (type === "s") { return Math.round(time / 1000); }
   return time;
 };
+// console.log(convertToStamp(new Date()))
 
 /**
  * 时间戳转换成时间
@@ -112,12 +115,13 @@ function convertToStamp(value, type) {
  * @returns {String} 当value为空返回字符串提示,当formatStr为空返回date,不为空返回字符串时间 
  */
 function convertStamp(value, type, formatStr) {
-  let myDate = new Date(type === "ms" ? value : value*1000),
+  let myDate = new Date(type == null || type === "ms" ? value : value * 1000),
     time = myDate.getTime();
   if (isNaN(time)) { return "请输入正确的时间戳"; }
   if (formatStr) { return format(myDate, formatStr); }
   return myDate;
 };
+// console.log(convertStamp(Date.now()))
 
 /**
  * 按时间顺序排序数组
@@ -126,16 +130,16 @@ function convertStamp(value, type, formatStr) {
  * @param {String} key 排序数组元素为对象时的key值
  * @returns {Array} 排序后的数组
  */
-function sortForDate(array, isAsc, key) {
+function sortDate(array, isAsc, key) {
   if (!(array instanceof Array) || array.length === 0) {
     return [];
   }
-  let ele = key==null ? array[0] : array[0][key];
+  let ele = key == null ? array[0] : array[0][key];
   let flag = 1;// flag为二进制数据 第一位表示是否为普通 第二位表示是否有key 第三位表示是否为json格式
   flag = parseInt((
     Number(String(ele).indexOf("Date") !== -1).toString() +
     Number(key != null).toString() +
-    Number(String(ele).indexOf("Date") === -1).toString()),2);
+    Number(String(ele).indexOf("Date") === -1).toString()), 2);
   array.sort((a, b) => {
     let left = a,
       right = b;
@@ -167,12 +171,12 @@ function sortForDate(array, isAsc, key) {
   });
   return array
 }
-// console.log(sortForDate([
+// console.log(sortDate([
 //   /Date(1594361486000)/,
-//   /Date(1594362486000)/,
-//   /Date(1594363486000)/
+//   /Date(1594363486000)/,
+//   /Date(1594362486000)/
 // ]))
-// console.log(sortForDate([
+// console.log(sortDate([
 //   "3999-01-01 00:00:00",
 //   "3020-08-04 14:56:46",
 //   "3970-01-19 19:28:43"
@@ -191,8 +195,8 @@ function getCalcDate(value, opt, formatStr) {
   let myDate = typeof value === "object" ? value : new Date(value),
     time = myDate.getTime();
   if (isNaN(time)) { return "请输入正确的日期"; }
-  if(opt==null || typeof opt !== "object") { return "参数错误"; }
-  let set = function(data){
+  if (opt == null || typeof opt !== "object") { return "参数错误"; }
+  let set = function (data) {
     let { value, type } = data;
     switch (type) {
       case "ms":
@@ -221,7 +225,7 @@ function getCalcDate(value, opt, formatStr) {
         break;
     }
   }
-  if(!(opt instanceof Array)){
+  if (!(opt instanceof Array)) {
     set(opt);
   } else {
     opt.forEach(element => {
@@ -231,59 +235,52 @@ function getCalcDate(value, opt, formatStr) {
   if (!!formatStr) { return format(myDate, formatStr); }
   return myDate;
 };
-// console.log(getCalcDate(new Date(),{
+// console.log(getCalcDate(new Date(), {
 //   type: "ms",
 //   value: 10000
 // }))
-// console.log(getCalcDate(new Date(),[{
+// console.log(getCalcDate(new Date(), [{
 //   type: "ms",
 //   value: 10000
-// },{
+// }, {
 //   type: "h",
 //   value: 24
 // }]))
 
 
 /**
- * 求两个时间的差(日、时、分、秒)或者(年、月) 待优化
+ * 求两个时间的差
  * @param {Array} arr 时间数组
- * @returns {Array} 返回时间差数组 返回(日、时、分、秒)或者(年、月)
+ * @returns {Array} 返回时间差数组 返回[日,时,分,秒] 年月误差较严重无返回
  */
-function getTimeDiff(arr) {
-  let sortArr = sortForDate(arr);
-  let ms = Date.parse(sortArr[0]) - Date.parse(sortArr[sortArr.length - 1]),
-    year = Math.floor(ms / (1000 * 60 * 60 * 24 * 365)), //一年按365
-    difference = [0, 0, 0, 0],
-    remainder = [
-      1000 * 60 * 60 * 24,
-      1000 * 60 * 60,
-      1000 * 60,
-      1000
-    ];
-  if (year >= 1) {
-    let date1 = new Date(sortArr[0]),
-      date2 = new Date(sortArr[sortArr.length - 1]),
-      month1 = date1.getMonth(),
-      month2 = date2.getMonth();
-    if (month1 >= month2) {
-      return [year, month1 - month2]
+function getDateDiff(arr) {
+  let sortArr = sortDate(arr),
+    minuteNumber = 60,
+    hourNumber = 60 * 60,
+    dayNumber = hourNumber * 24,
+    time = Math.abs(Date.parse(sortArr[0]) - Date.parse(sortArr[sortArr.length - 1])) / 1000,
+    difference = new Array(4).fill(0);
+  let array = [
+    dayNumber,
+    hourNumber,
+    minuteNumber,
+    1
+  ];
+  for (let index = 0; index < array.length; index++) {
+    if (index === array.length - 1) {
+      difference[index] = Math.floor(time / array[index]);
+      break
     }
-    return [year - 1, 12 + month1 - month2]
-  }
-  for (let index = 0; index < remainder.length; index++) {
-    const n = remainder[index],
-      r = ms % n;
-    if (!r) {
-      difference[index] = ms / n;
-      break;
+    const element = array[index],
+      value = Math.floor(time / element);
+    if (value >= 1) {
+      difference[index] = value;
+      time = (time - value * element);
     }
-    difference[index] = Math.floor(ms / n);
-    ms = r;
   }
   return difference;
 }
-
-// console.log(getTimeBetween(["2004-04-02 14:24:23.000Z","2020-10-08 15:23:24.000Z"]))
+// console.log(getDateDiff(["2020-06-02 14:24:23.000Z", "2020-08-08 15:23:24.000Z"]))
 
 /**
  * 判断是否为闰年
@@ -307,9 +304,10 @@ function getDays(value) {
     year = myDate.getFullYear(),
     mouth = myDate.getMonth() + 1,
     days;
-  if (mouth == 2) { //当月份为二月时，根据闰年还是非闰年判断天数
+  if (mouth == 2) {
+    //当月份为二月时，根据闰年还是非闰年判断天数
     days = isLeapYear(year) ? 29 : 28;
-  } else if ([1,3,5,7,8,10,12].indexOf(mouth) !== -1) {
+  } else if ([1, 3, 5, 7, 8, 10, 12].indexOf(mouth) !== -1) {
     //一三五七八十腊,三十一天永不差
     days = 31;
   } else {
@@ -321,28 +319,28 @@ function getDays(value) {
 // console.log(getDays("2020-4"))
 
 /**
- * 获取指定天数日期 格式化依赖format方法
+ * 获取从当前日期指定天数的日期 也可以使用getCalcDate方法 格式化依赖format方法
  * @param {Number} index 天数
  * @param {String} formatStr 格式化字符串 依赖format方法
  * @returns {String} 指定日期
  */
-function getDate(index, formatStr) {
+function getMyDate(index, formatStr) {
   let date = new Date(); //当前日期
   let newDate = new Date();
   newDate.setDate(date.getDate() + index);//官方文档上虽然说setDate参数是1-31,其实是可以设置负数的
   return format(newDate, formatStr || "YYYY-MM-DD hh:mm:ss")
 }
+// console.log(getMyDate(1))
 
 /**
  * 数值转换字符串时间长度 待优化
  * @param {Number} val 数值
  * @param {String} type 类型 ms毫秒 s秒 m分 h时
  */
-function getTimeStr(val, type) {
-  if (!val) {
-    return "";
-  }
+function getDateStr(val, type) {
+  if (!val) { return ""; }
   let str = "",
+    minuteNumber = 60,
     hourNumber = 60 * 60,
     dayNumber = hourNumber * 24,
     monthNumber = dayNumber * 30,
@@ -355,57 +353,71 @@ function getTimeStr(val, type) {
       time = val;
       break;
     case "m":
-      time = val * 60;
+      time = val * minuteNumber;
       break;
     case "h":
-      time = val * 60 * 60;
+      time = val * hourNumber;
       break;
     default:
       console.log("时间类型错误");
       return "";
   }
-  let month = time / monthNumber,
-    day = time / dayNumber,
-    hour = time / hourNumber,
-    minute = time / 60,
-    second = time;
-  if (time > 0) {
-    if (month >= 1) {
-      month = Math.floor(month);
-      day = Math.floor((time - month * monthNumber) / dayNumber);
-      str = !!day ? `${month}个月${day}天` : `${month}个月`;
-    } else if (day >= 1) {
-      day = Math.floor(day);
-      hour = Math.floor((time - day * dayNumber) / hourNumber);
-      str = !!hour ? `${day}天${hour}小时` : `${day}天`;
-    } else if (hour >= 1) {
-      hour = Math.floor(hour);
-      minute = Math.floor((time - hour * hourNumber) / 60);
-      str = !!minute ? `${hour}小时${minute}分钟` : `${hour}小时`;
-    } else if (minute >= 1) {
-      minute = Math.floor(minute);
-      second = Math.floor(time - minute * 60);
-      str = !!second ? `${minute}分钟${second}秒` : `${minute}分钟`;
-    } else {
-      str = `${Math.floor(second)}秒`;
+  if (time <= 0) { return ""; }
+  let array = [
+    {
+      text: "个月",
+      value: time / monthNumber,
+      number: monthNumber
+    },
+    {
+      text: "天",
+      value: time / dayNumber,
+      number: dayNumber
+    },
+    {
+      text: "小时",
+      value: time / hourNumber,
+      number: hourNumber
+    },
+    {
+      text: "分钟",
+      value: time / minuteNumber,
+      number: minuteNumber
+    },
+    {
+      text: "秒",
+      value: time,
+      number: 1
     }
-    return str;
+  ];
+  for (let index = 0; index < array.length; index++) {
+    if (index === array.length - 1) {
+      str = `${Math.floor(time)}${array[index].text}`;
+      break;
+    }
+    const element = array[index],
+      nextElement = array[index + 1]
+    if (element.value >= 1) {
+      let value1 = Math.floor(element.value),
+        value2 = Math.floor((time - value1 * element.number) / nextElement.number);
+      str = `${value1}${element.text}${!!value2 ? value2 + nextElement.text : ""}`;
+      break;
+    }
   }
-  return "";
+  return str;
 }
-
-// console.log(getTimeStr(124, "m"))
+// console.log(getDateStr(124, "m"))
 
 module.exports = {
   format,
   convertJson,
   convertToStamp,
   convertStamp,
-  sortForDate,
+  sortDate,
   getCalcDate,
-  getTimeDiff,
+  getDateDiff,
   isLeapYear,
   getDays,
-  getDate,
-  getTimeStr,
+  getMyDate,
+  getDateStr,
 };
