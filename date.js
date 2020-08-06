@@ -17,11 +17,11 @@ let arr = [
 
 // 对象方法
 Date.parse() // 解析一个日期时间字符串,返回UTC(协调世界时)到该时间毫秒数
-Date.now()   // 返回UTC(协调世界时)至今的毫秒数
+Date.now()   // 1596619591585 返回UTC(协调世界时)至今的毫秒数
 
 // 实例方法
-myDate.toJSON()   // 将Date对象转化字符串,并格式化为JSON数据
-myDate.valueOf()  // 返回UTC(协调世界时)到该时间毫秒数
+myDate.toJSON()   // 2020-08-05T09:25:38.559Z 将Date对象转化字符串,并格式化为JSON数据 
+myDate.valueOf()  // 1596619591585 返回UTC(协调世界时)到该时间毫秒数
 
 /**
  * 格式化时间
@@ -333,8 +333,8 @@ function getMyDate(index, formatStr) {
 // console.log(getMyDate(1))
 
 /**
- * 数值转换字符串时间长度 待优化
- * @param {Number} val 数值
+ * 时间数值转换字符串时间长度
+ * @param {Number} val 时间数值
  * @param {String} type 类型 ms毫秒 s秒 m分 h时
  */
 function getDateStr(val, type) {
