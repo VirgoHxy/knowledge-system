@@ -56,6 +56,12 @@ console.log(0.2 + 0.7); //0.8999999999999999
 console.log((0.2 + 0.7).toFixed(2)); //0.90
 
 /**
+ * 数字转换为指定位数
+ * @returns {String}
+ */
+(13.23).toPrecision(2); //13
+
+/**
  * 使用指定的进制，将一个数字转换为字符串,默认十进制
  * @returns {String}
  */
