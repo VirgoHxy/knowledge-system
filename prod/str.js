@@ -1,57 +1,3 @@
-// xx表示any str表示字符串
-var xx, str;
-
-// xx转换字符串
-str = String(xx) //undefined
-
-// 所在位字符
-str.charAt(2) //d
-
-// ltr第一个字符所在位 没有为-1
-str.indexOf('d') //2
-
-// 判断是否存在某字符 没有为-1
-str.search("unde"); //0
-
-// rtl第一个字符所在位 没有为-1
-str.lastIndexOf('d') //8
-
-// 考虑底层自然语言的排序情况 0 两者相等 1 第一个大于第二个 -1 第一个小于第二个
-"undefined".localeCompare('undefined') //0
-
-// 是否包含子字符串 返回boolean
-str.includes('un') //true
-
-// 截取字符串[1,4) 左闭右开
-str.slice(1, 4) //nde
-
-// 字符串检索指定的值,返回数组
-str.match(/d/g); //['d','d']
-
-// 重复字符串多少次
-str.repeat(2); //undefinedundefined
-
-// 字符串分割成数组
-str.split('') //['u','n','d'...]
-str.split('d') //['un','efine','']
-str.split('d',1) //['un']
-
-// 字符串拼接
-str.concat("123", "456", "789"); //undefined123456789
-
-// 大小写操作 全小写 全大写 首字母小写 首字母大写
-str.toLowerCase() //undefined
-str.toUpperCase() //UNDEFINED
-'HelloWorld'.replace('HelloWorld'[0], 'HelloWorld'[0].toLowerCase()) //helloWorld
-'helloWorld'.replace('helloWorld'[0], 'helloWorld'[0].toUpperCase()) //HelloWorld
-
-// 空格去除操作 左右空格 左右空格 全部空格 左空格 右空格
-' s t r '.trim() //s_t_r trim方法去除空格 制表符 换行符 回车符
-' s t r '.replace(/^\s+|\s+$/g, '') //s_t_r
-' s t r '.replace(/\s+/g, '') //str
-' s t r '.replace(/^\s/, '') //s_t_r_
-' s t r '.replace(/(\s$)/g, '') //_s_t_r
-
 /**
  * 字符串去重
  * @param {String} val 字符串
@@ -67,7 +13,6 @@ function removeRepeat(val) {
   }
   return res.join("");
 }
-console.log(removeRepeat("askdhg1231asdkjh123")) //askdhg123j
 
 /**
  * 字符串中子字符串的重复次数
@@ -78,8 +23,6 @@ console.log(removeRepeat("askdhg1231asdkjh123")) //askdhg123j
 function getRepeatNum(str, val) {
   return str.match(new RegExp(val, 'g')).length;
 }
-console.log(getRepeatNum("askdhg1231asdkjh123", "as")) //2
-
 
 /**
  * 字符串中的子字符重复最多/少次数
@@ -132,10 +75,6 @@ function getMmRepeatNum(str, minFlag) {
     num: firstLen
   }
 }
-console.log(getMmRepeatNum("aaabbbccdd")) //{str:["c","d"],num:2}
-console.log(getMmRepeatNum("aaabbbccdd",true)) //{str:["aaa","bbb"],num:3}
-console.log(getMmRepeatNum("aaaabbbccd")) //{str:d,num:1}
-console.log(getMmRepeatNum("aaaabbbccd",true)) //{str:a,num:4}
 
 /**
  * 返回随机字符串
@@ -152,4 +91,11 @@ function randomStr(length) {
     str += ALPHABET.substring(rand, rand + 1);
   }
   return str;
+}
+
+module.exports = {
+  removeRepeat,
+  getRepeatNum,
+  getMmRepeatNum,
+  randomStr
 }

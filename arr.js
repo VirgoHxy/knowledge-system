@@ -76,7 +76,7 @@ function operRepeatArray(arr,type){
       return result;
   }
 }
-// console.log(operRepeatArray([1,2,3,1,2,4],2))
+console.log(operRepeatArray([1,2,3,1,2,4],2))
 
 /**
  * 高性能数组去重(不会破坏已有排序,未重复取第一个位置)
@@ -95,7 +95,7 @@ function distinctOfObj(arr) {
   }
   return result
 }
-// console.log(distinctOfObj([1,2,3,1,2]))
+console.log(distinctOfObj([1,2,3,1,2]))
 
 /**
  * 数组去重(set数据结构 类似于数组，但是成员的值都是唯一的)
@@ -106,7 +106,7 @@ function distinctOfSet(arr) {
   let array = [].concat.apply([], arr);
   return Array.from(new Set(array))
 }
-// console.log(distinctOfSet([1,2,3,1,2]))
+console.log(distinctOfSet([1,2,3,1,2]))
 
 /**
  * 去除数组指定元素
@@ -122,17 +122,11 @@ function removeItem(arr, removeArr, key) {
   }
   return arr.filter(item => removeArr.indexOf(item[key]) == -1)
 }
-// console.log(removeItem([3, 7, 11, 0, 0, 0, 3, 0, 55],[0,55]))
-// console.log(JSON.stringify(removeItem([{
-//   id: "1"
-// },{
-//   id: "2"
-// },{
-//   id: "3"
-// }],["1","3"],"id")))
-module.exports = {
-  operRepeatArray,
-  distinctOfObj,
-  distinctOfSet,
-  removeItem
-}
+console.log(removeItem([3, 7, 11, 0, 0, 0, 3, 0, 55],[0,55]))
+console.log(JSON.stringify(removeItem([{
+  id: "1"
+},{
+  id: "2"
+},{
+  id: "3"
+}],["1","3"],"id")))

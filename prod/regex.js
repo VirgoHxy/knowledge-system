@@ -67,7 +67,6 @@ function checkIP(val) {
  * @param {Boolean} secondFlag 要不要检测秒 默认不检测秒
  */
 function dateTime(val, secondFlag) {
-  // 2019-11-13 12:37
   if (val == null || val === "") {
     return false;
   }
@@ -78,7 +77,6 @@ function dateTime(val, secondFlag) {
 }
 //日期
 function date(val) {
-  //2014-01-01
   if (val == null || val === "") {
     return false;
   }
@@ -86,7 +84,6 @@ function date(val) {
 }
 //时间
 function time(val) {
-  //12:37
   if (val == null || val === "") {
     return false;
   }
@@ -94,7 +91,6 @@ function time(val) {
 }
 //非法字符替换
 function illegalReplace(val) {
-  // )(*&*(^(()())))
   if (val == null || val === "") {
     return false;
   }
@@ -102,7 +98,6 @@ function illegalReplace(val) {
 }
 //非法字符
 function illegalStr(val) {
-  // )(*&*(^(()())))
   if (val == null || val === "") {
     return false;
   }
@@ -110,7 +105,6 @@ function illegalStr(val) {
 }
 //图片
 function image(val) {
-  // 1.jpg
   if (val == null || val === "") {
     return false;
   }
@@ -119,9 +113,27 @@ function image(val) {
 
 //取出一个路径的文件名
 function getFileName(val) {
-  // "E:/github/demo/oper_regex.js"
   if (val == null || val === "") {
     return null
   }
-  return val.match(/[^\\/]*$/)[0]//oper_regex.js
+  return val.match(/[^\\/]*$/)[0]
+}
+
+module.exports = {
+  phone,
+  identityCard,
+  plate,
+  chWord,
+  positiveNum,
+  positiveInteger,
+  isNumber,
+  integer,
+  checkIP,
+  dateTime,
+  date,
+  time,
+  illegalStr,
+  illegalReplace,
+  image,
+  getFileName
 }

@@ -38,3 +38,5 @@ function readDir(path,callback) {
     });
   }
 }
+
+module.exports = { delPath, readDir };

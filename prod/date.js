@@ -1,28 +1,3 @@
-let myDate = new Date();
-// date日期方法 设置方法将get改为set
-let arr = [
-  myDate.getFullYear(),         // 获取完整的年份(4位,1970-????)
-  myDate.getMonth(),            // 获取当前月份(0-11,0代表1月)
-  myDate.getDate(),             // 获取当前日(1-31)
-  myDate.getDay(),              // 获取当前星期X(0-6,0代表星期天)
-  myDate.getHours(),            // 获取当前小时数(0-23)
-  myDate.getMinutes(),          // 获取当前分钟数(0-59)
-  myDate.getSeconds(),          // 获取当前秒数(0-59)
-  myDate.getMilliseconds(),     // 获取当前毫秒数(0-999)
-  myDate.getTime(),             // 获取当前时间(从1970.1.1开始的毫秒数)
-  myDate.toLocaleDateString(),  // 获取当前日期
-  myDate.toLocaleTimeString(),  // 获取当前时间(am/pm)
-  myDate.toLocaleString()       // 获取日期与时间(am/pm)
-]
-
-// 对象方法
-Date.parse() // 解析一个日期时间字符串,返回UTC(协调世界时)到该时间毫秒数
-Date.now()   // 1596619591585 返回UTC(协调世界时)至今的毫秒数
-
-// 实例方法
-myDate.toJSON()   // 2020-08-05T09:25:38.559Z 将Date对象转化字符串,并格式化为JSON数据 
-myDate.valueOf()  // 1596619591585 返回UTC(协调世界时)到该时间毫秒数
-
 /**
  * 格式化时间
  * @param {Date | String | Number} value 时间值
@@ -75,7 +50,6 @@ function format(value, formatStr) {
   str = str.replace(/ms/, mSecond);
   return str;
 }
-console.log(format(new Date(), "YYYY-MM-DD hh:mm:ss:MS W"))
 
 /**
  * json时间转换成时间 格式化时间调用format方法
@@ -90,7 +64,6 @@ function convertJson(value, formatStr) {
   if (formatStr) { return format(myDate, formatStr); }
   return myDate
 };
-console.log(convertJson(/Date(1278930470649)/))
 
 /**
  * 时间转换成时间戳 
@@ -105,7 +78,6 @@ function convertToStamp(value, type) {
   if (type === "s") { return Math.round(time / 1000); }
   return time;
 };
-console.log(convertToStamp(new Date()))
 
 /**
  * 时间戳转换成时间
@@ -121,7 +93,6 @@ function convertStamp(value, type, formatStr) {
   if (formatStr) { return format(myDate, formatStr); }
   return myDate;
 };
-console.log(convertStamp(Date.now()))
 
 /**
  * 按时间顺序排序数组
@@ -171,16 +142,6 @@ function sortDate(array, isAsc, key) {
   });
   return array
 }
-console.log(sortDate([
-  /Date(1594361486000)/,
-  /Date(1594363486000)/,
-  /Date(1594362486000)/
-]))
-console.log(sortDate([
-  "3999-01-01 00:00:00",
-  "3020-08-04 14:56:46",
-  "3970-01-19 19:28:43"
-]))
 
 /**
  * 当前时间/给定时间增加/减去多长时间
@@ -235,18 +196,6 @@ function getCalcDate(value, opt, formatStr) {
   if (!!formatStr) { return format(myDate, formatStr); }
   return myDate;
 };
-console.log(getCalcDate(new Date(), {
-  type: "ms",
-  value: 10000
-}))
-console.log(getCalcDate(new Date(), [{
-  type: "ms",
-  value: 10000
-}, {
-  type: "h",
-  value: 24
-}]))
-
 
 /**
  * 求两个时间的差
@@ -280,7 +229,6 @@ function getDateDiff(arr) {
   }
   return difference;
 }
-console.log(getDateDiff(["2020-06-02 14:24:23.000Z", "2020-08-08 15:23:24.000Z"]))
 
 /**
  * 判断是否为闰年
@@ -292,7 +240,6 @@ function isLeapYear(val) {
   // 普通闰年 4的倍数不是100的倍数 世纪闰年 400的倍数
   return (0 == year % 4 && year % 100 != 0) || year % 400 == 0;
 }
-console.log(isLeapYear(2000));
 
 /**
  * 获取当前月份天数(依赖isLeapYear方法)
@@ -316,7 +263,6 @@ function getDays(value) {
   }
   return days;
 }
-console.log(getDays("2020-4"))
 
 /**
  * 获取从当前日期指定天数的日期 也可以使用getCalcDate方法 格式化依赖format方法
@@ -330,7 +276,6 @@ function getMyDate(index, formatStr) {
   newDate.setDate(date.getDate() + index);//官方文档上虽然说setDate参数是1-31,其实是可以设置负数的
   return format(newDate, formatStr || "YYYY-MM-DD hh:mm:ss")
 }
-console.log(getMyDate(1))
 
 /**
  * 时间数值转换字符串时间长度
@@ -406,4 +351,17 @@ function getDateStr(val, type) {
   }
   return str;
 }
-console.log(getDateStr(124, "m"))
+
+module.exports = {
+  format,
+  convertJson,
+  convertToStamp,
+  convertStamp,
+  sortDate,
+  getCalcDate,
+  getDateDiff,
+  isLeapYear,
+  getDays,
+  getMyDate,
+  getDateStr,
+};

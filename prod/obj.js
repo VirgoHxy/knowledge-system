@@ -1,19 +1,3 @@
-const target = {
-  field1: 1,
-  field2: undefined,
-  field3: {
-      child: 'child'
-  },
-  field4: [2, 4, 8],
-};
-const target1 = {
-  field1: 1,
-  field2: undefined,
-  field3: {
-      child: 'child'
-  },
-  field4: [2, 4, 8],
-};
 /**
  * 判断对象是否相等
  * @param {Object} x 对象1
@@ -42,9 +26,6 @@ function compareObject(x, y) {
     return false;
   }
 }
-console.log(
-  compareObject(target,target1)
-)
 
 /**
  * 深拷贝对象
@@ -69,11 +50,6 @@ function clone(target, map = new WeakMap()) {
   }
 };
 
-target.target = target;
-console.log(
-  clone(target)
-)
-
 /**
  * 判断数据类型
  * @param {*} o 各种类型值
@@ -83,4 +59,9 @@ function getType(o){
   var s = Object.prototype.toString.call(o);
   return s.match(/\[object (.*?)\]/)[1].toLowerCase();
 };
-console.log(getType(1)) //number
+
+module.exports = {
+  compareObject,
+  clone,
+  getType
+}

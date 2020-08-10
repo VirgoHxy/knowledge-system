@@ -1,36 +1,50 @@
-# js容易忘记的操作
+# js容易忘记的操作 prod文件夹为生产使用(CommonJS 未压缩)
 
 ## arr.js 操作数组
-* #### refrain 获取数组重复/未重复/去重复的元素
+* #### operRepeatArray 获取数组重复/未重复/去重复的元素
+* #### distinctOfObj 数组去重
+* #### distinctOfSet 数组去重
 * #### removeItem 去除数组指定元素
+
+## arr.js 操作对象
+* #### compareObject 判断对象是否相等
+* #### clone 深拷贝对象
+* #### getType 判断数据类型
 
 ## date.js 操作时间
 * #### format 格式化时间
 * #### convertJson json时间转换成时间(格式化依赖format)
 * #### convertToStamp 时间转换成时间戳
 * #### convertStamp 时间戳转换成时间(格式化依赖format)
-* #### sortForDate 按时间顺序排序数组
+* #### sortDate 按时间顺序排序数组
 * #### getCalcDate 当前时间/给定时间增加/减去多长时间(格式化依赖format)
-* #### getTimeBetween 求两个时间的差(日、时、分、秒)或者(年、月)
+* #### getDateDiff 求两个时间的差[日,时,分,秒]
 * #### isLeapYear 判断是否为闰年
 * #### getDays 当前月份天数(依赖isLeapYear)
+* #### getMyDate 获取从当前日期指定天数的日期(格式化依赖format)
+* #### getDateStr 时间数值转换字符串时间长度
 
 ## fs.js 操作node的fs
 * #### delPath 同步删除文件夹或文件
 * #### readDir 同步读取文件夹
 
-## str.js 操作字符串，不抛出方法
+## str.js 操作字符串
 * #### removeRepeat 字符串去重
-* #### getRepeatNum 字符串中的子字符串重复次数
+* #### getRepeatNum 字符串中子字符串的重复次数
 * #### getMmRepeatNum 字符串中的子字符重复最多/少次数
+* #### randomStr 返回随机字符串
 
-## number.js 操作数字，不抛出方法
-* #### random 随机数方法
+## number.js 操作数字
 * #### accuracyObj 解决运算精度对象
   * ##### add 加
   * ##### subtract 减
   * ##### multiply 乘
   * ##### divide 除
+* #### random 随机数方法
+* #### S4 生成4位16进制数字
+* #### guid 生成唯一guid
+* #### id16 生成唯一16长度id
+* #### isOdd 是否为奇数
 
 ## regex.js 操作正则
 * #### phone 电话

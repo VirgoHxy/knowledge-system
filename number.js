@@ -119,16 +119,6 @@ console.log((11 >> 3) & 1)// 1
 // 设置二进制某位的值0,1 设置第三位(2)为1
 console.log(11 ^ (11&(1<<2)) ^ (1<<2))// 15
 
-/**
- * 返回n到m的随机数 [n,m)
- * @param {Number} n 
- * @param {Number} m 
- */
-function random(n, m) {
-  return parseInt(Math.random() * (m - n) + n)
-}
-// console.log(random(1,100));
-
 // 解决精度问题
 var accuracyObj = {
   /**
@@ -221,13 +211,23 @@ var accuracyObj = {
     return this.operation(a, b, digits, 'divide')
   }
 }
-// console.log(accuracyObj.add(0.1,0.2))
-// console.log(0.1+0.2)
-// console.log(accuracyObj.multiply(35.41,100))
-// console.log(35.41*100)
+console.log(accuracyObj.add(0.1,0.2))
+console.log(0.1+0.2)
+console.log(accuracyObj.multiply(35.41,100))
+console.log(35.41*100)
 
 /**
- * 生成16进制数字
+ * 返回n到m的随机数 [n,m)
+ * @param {Number} n 
+ * @param {Number} m 
+ */
+function random(n, m) {
+  return parseInt(Math.random() * (m - n) + n)
+}
+console.log(random(1,100));
+
+/**
+ * 生成4位16进制数字
  */
 function S4() {
   return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
@@ -252,3 +252,4 @@ function id16() {
 function isOdd(num) {
   return Math.abs(num % 2) === 1;
 }
+console.log(isOdd(1)); // true
