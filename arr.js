@@ -126,10 +126,11 @@ console.log(distinctOfSet([1, 2, 3, 1, 2]))
  * @returns {Array} 返回数组
  */
 function removeItem(arr, removeArr, key) {
+  let array = [].concat.apply([], arr);
   if (!key) {
-    return arr.filter(item => removeArr.indexOf(item) == -1)
+    return array.filter(item => removeArr.indexOf(item) == -1)
   }
-  return arr.filter(item => removeArr.indexOf(item[key]) == -1)
+  return array.filter(item => removeArr.indexOf(item[key]) == -1)
 }
 console.log(removeItem([3, 7, 11, 0, 0, 0, 3, 0, 55], [0, 55]))
 console.log(JSON.stringify(removeItem([{
