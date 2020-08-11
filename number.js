@@ -104,20 +104,20 @@ Math.sign('aaa') //NaN
 a = 10
 b = 20
 a ^= b, b ^= a, a ^= b;
-console.log("a: "+a)
-console.log("b: "+b)
+console.log("a: " + a)
+console.log("b: " + b)
 
 // 位运算
 
 console.log(parseInt(11).toString(2))// 十进制转二进制 1011
-console.log(parseInt(1011,2))// 二进制转十进制 11
+console.log(parseInt(1011, 2))// 二进制转十进制 11
 // 从左到右 从低到高 从0开始 获取二进制某位的值0,1
 console.log((11 >> 0) & 1)// 1
 console.log((11 >> 1) & 1)// 1
 console.log((11 >> 2) & 1)// 0
 console.log((11 >> 3) & 1)// 1
 // 设置二进制某位的值0,1 设置第三位(2)为1
-console.log(11 ^ (11&(1<<2)) ^ (1<<2))// 15
+console.log(11 ^ (11 & (1 << 2)) ^ (1 << 2))// 15
 
 // 解决精度问题
 var accuracyObj = {
@@ -211,10 +211,10 @@ var accuracyObj = {
     return this.operation(a, b, digits, 'divide')
   }
 }
-console.log(accuracyObj.add(0.1,0.2))
-console.log(0.1+0.2)
-console.log(accuracyObj.multiply(35.41,100))
-console.log(35.41*100)
+console.log(accuracyObj.add(0.1, 0.2))
+console.log(0.1 + 0.2)
+console.log(accuracyObj.multiply(35.41, 100))
+console.log(35.41 * 100)
 
 /**
  * 返回n到m的随机数 [n,m)
@@ -224,25 +224,25 @@ console.log(35.41*100)
 function random(n, m) {
   return parseInt(Math.random() * (m - n) + n)
 }
-console.log(random(1,100));
+console.log(random(1, 100));
 
 /**
  * 生成4位16进制数字
  */
 function S4() {
-  return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
 /**
  * 生成唯一guid
  */
 function guid() {
-  return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
 /**
  * 生成唯一16长度id
  */
 function id16() {
-  return (S4()+S4()+S4()+S4());
+  return (S4() + S4() + S4() + S4());
 }
 
 /**

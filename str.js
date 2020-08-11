@@ -34,7 +34,7 @@ str.repeat(2); //undefinedundefined
 // 字符串分割成数组
 str.split('') //['u','n','d'...]
 str.split('d') //['un','efine','']
-str.split('d',1) //['un']
+str.split('d', 1) //['un']
 
 // 字符串拼接
 str.concat("123", "456", "789"); //undefined123456789
@@ -85,7 +85,7 @@ console.log(getRepeatNum("askdhg1231asdkjh123", "as")) //2
  * 字符串中的子字符重复最多/少次数
  * @param {String} str 字符串
  * @param {Boolean} minFlag 默认为false true查找最少的 false查找最多的
- * @returns {Object} 字符串次数和字符串,如果有同样多的,字符串则是个数组
+ * @returns {Object | Array} 字符串次数和字符串,如果有同样多的,字符串则是个数组
  * {
  *    str,
  *    num
@@ -111,7 +111,7 @@ function getMmRepeatNum(str, minFlag) {
       }
     }
     return {
-      str: arr.slice(firstIndex, arrLen).map((val)=>{
+      str: arr.slice(firstIndex, arrLen).map((val) => {
         return val[0]
       }),
       num: lastLen
@@ -126,16 +126,16 @@ function getMmRepeatNum(str, minFlag) {
     }
   }
   return {
-    str: arr.slice(0, lastIndex+1).map((val)=>{
+    str: arr.slice(0, lastIndex + 1).map((val) => {
       return val[0]
     }),
     num: firstLen
   }
 }
 console.log(getMmRepeatNum("aaabbbccdd")) //{str:["c","d"],num:2}
-console.log(getMmRepeatNum("aaabbbccdd",true)) //{str:["aaa","bbb"],num:3}
+console.log(getMmRepeatNum("aaabbbccdd", true)) //{str:["aaa","bbb"],num:3}
 console.log(getMmRepeatNum("aaaabbbccd")) //{str:d,num:1}
-console.log(getMmRepeatNum("aaaabbbccd",true)) //{str:a,num:4}
+console.log(getMmRepeatNum("aaaabbbccd", true)) //{str:a,num:4}
 
 /**
  * 返回随机字符串

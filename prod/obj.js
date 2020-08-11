@@ -36,17 +36,17 @@ function compareObject(x, y) {
  */
 function clone(target, map = new WeakMap()) {
   if (typeof target === 'object') {
-      let cloneTarget = Array.isArray(target) ? [] : {};
-      if (map.get(target)) {
-          return map.get(target);
-      }
-      map.set(target, cloneTarget);
-      for (const key in target) {
-          cloneTarget[key] = clone(target[key], map);
-      }
-      return cloneTarget;
+    let cloneTarget = Array.isArray(target) ? [] : {};
+    if (map.get(target)) {
+      return map.get(target);
+    }
+    map.set(target, cloneTarget);
+    for (const key in target) {
+      cloneTarget[key] = clone(target[key], map);
+    }
+    return cloneTarget;
   } else {
-      return target;
+    return target;
   }
 };
 
@@ -55,7 +55,7 @@ function clone(target, map = new WeakMap()) {
  * @param {*} o 各种类型值
  * 
  */
-function getType(o){
+function getType(o) {
   var s = Object.prototype.toString.call(o);
   return s.match(/\[object (.*?)\]/)[1].toLowerCase();
 };

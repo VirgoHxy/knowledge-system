@@ -1,7 +1,9 @@
 /**
  * 格式化时间
+ * 
  * @param {Date | String | Number} value 时间值
- * @param {String} formatStr 格式化字符串 YYYY-MM-DD hh:mm:ss
+ * @param {String} [formatStr = "YYYY-MM-DD hh:mm:ss"] 格式化规则
+ * 
  * @returns {String} 返回字符串时间
  */
 function format(value, formatStr) {
@@ -18,48 +20,37 @@ function format(value, formatStr) {
     minute = myDate.getMinutes(),
     second = myDate.getSeconds(),
     mSecond = myDate.getMilliseconds();
-  //四位年份
   str = str.replace(/yyyy|YYYY/, fullYear);
-  //两位年份，小于10补零
   str = str.replace(/yy|YY/, year > 9 ? year : "0" + year);
-  //月份，小于10补零
   str = str.replace(/MM/, (month + 1) > 9 ? month + 1 : "0" + (month + 1));
-  //月份，不补零
   str = str.replace(/M/, month + 1);
-  //日期，小于10补零
   str = str.replace(/dd|DD/, date > 9 ? date : "0" + date);
-  //日期，不补零
   str = str.replace(/d|D/, date);
-  //小时，小于10补零
   str = str.replace(/hh|HH/, hour > 9 ? hour : "0" + hour);
-  //小时，不补零
   str = str.replace(/h|H/, hour);
-  //分钟，小于10补零
   str = str.replace(/mm/, minute > 9 ? minute : "0" + minute);
-  //分钟，不补零
   str = str.replace(/m/, minute);
-  //秒钟，小于10补零
   str = str.replace(/ss|SS/, second > 9 ? second : "0" + second);
-  //秒钟，不补零
   str = str.replace(/s|S/, second);
-  //星期几
   str = str.replace(/w|W/g, week[day]);
-  //毫秒，小于9或99补零
   str = str.replace(/MS/, mSecond > 9 ? mSecond > 99 ? mSecond : "0" + mSecond : "00" + mSecond);
-  //毫秒，不补零
   str = str.replace(/ms/, mSecond);
   return str;
 }
 
 /**
  * json时间转换成时间 格式化时间调用format方法
- * @param {String} value json时间值 /Date(1335205592410-0500)/
- * @param {String} formatStr 格式化字符串 例如:YYYY-MM-DD hh:mm:ss(依赖format方法)
- * @returns 当value为空返回字符串提醒,当formatStr为空返回date,不为空返回字符串时间
+ * 
+ * @param {String} value json时间值
+ * @param {String} [formatStr] 格式化规则 依赖format方法
+ * 
+ * @returns {Date | String} 当value为空返回字符串提示 当formatStr为空返回date 不为空返回字符串时间
  */
 function convertJson(value, formatStr) {
+  if (!value) { return "请输入json日期"; }
   let myDate = new Date();
-  myDate.setTime(String(value).replace(/\/Date\((\d+)\)\//gi, "$1")); //value通过截取字符串只取数字。
+  // value通过截取字符串只取数字
+  myDate.setTime(String(value).replace(/\/Date\((\d+)\)\//gi, "$1"));
   if (isNaN(myDate.getTime())) { return "请输入正确的json日期"; }
   if (formatStr) { return format(myDate, formatStr); }
   return myDate
@@ -67,51 +58,58 @@ function convertJson(value, formatStr) {
 
 /**
  * 时间转换成时间戳 
- * @param {Date | String | Number} value 时间值
- * @param {string} type 类型 默认ms 毫秒ms | 秒s
+ * 
+ * @param {Date | String} value 时间值
+ * @param {Boolean} [sFlag = false] 类型 默认毫秒 false毫秒  true秒
+ * 
  * @returns {Number} 返回毫秒/秒类型时间戳
  */
-function convertToStamp(value, type) {
+function convertToStamp(value, sFlag = false) {
   let myDate = typeof value === "object" ? value : new Date(value),
     time = myDate.getTime();
   if (isNaN(time)) { return "请输入正确的日期"; }
-  if (type === "s") { return Math.round(time / 1000); }
+  if (sFlag) { return Math.round(time / 1000); }
   return time;
 };
 
 /**
  * 时间戳转换成时间
+ * 
  * @param {Number} value 时间戳
- * @param {String} type 类型 默认ms 毫秒ms | 秒s
- * @param {String} formatStr 格式化字符串 例如:YYYY-MM-DD hh:mm:ss(依赖format方法)
- * @returns {String} 当value为空返回字符串提示,当formatStr为空返回date,不为空返回字符串时间 
+ * @param {Boolean} [sFlag = false] 类型 默认毫秒 false毫秒  true秒
+ * @param {String} [formatStr] 格式化规则 依赖format方法
+ * 
+ * @returns {Date | String} 当value为空返回字符串提示 当formatStr为空返回date 不为空返回字符串时间 
  */
-function convertStamp(value, type, formatStr) {
-  let myDate = new Date(type == null || type === "ms" ? value : value * 1000),
-    time = myDate.getTime();
-  if (isNaN(time)) { return "请输入正确的时间戳"; }
+function convertStamp(value, sFlag = false, formatStr) {
+  let myDate = new Date(!sFlag ? value : value * 1000);
+  if (isNaN(myDate.getTime())) { return "请输入正确的时间戳"; }
   if (formatStr) { return format(myDate, formatStr); }
   return myDate;
 };
 
 /**
  * 按时间顺序排序数组
- * @param {Array} array 时间数组
- * @param {Boolean} isAsc 是否升序 true升序 新日期在前 false降序 旧日期在前 默认false
- * @param {String} key 排序数组元素为对象时的key值
+ * 
+ * @param {Array} array 时间数组 支持字符串时间 时间戳 json时间
+ * @param {Boolean} [isAsc = false] 是否升序 默认false true升序 新日期在前 false降序 旧日期在前
+ * @param {String} [key] 排序数组元素为对象时的key值
+ * 
  * @returns {Array} 排序后的数组
  */
-function sortDate(array, isAsc, key) {
+function sortDate(array, isAsc = false, key) {
   if (!(array instanceof Array) || array.length === 0) {
     return [];
   }
-  let ele = key == null ? array[0] : array[0][key];
-  let flag = 1;// flag为二进制数据 第一位表示是否为普通 第二位表示是否有key 第三位表示是否为json格式
-  flag = parseInt((
-    Number(String(ele).indexOf("Date") !== -1).toString() +
-    Number(key != null).toString() +
-    Number(String(ele).indexOf("Date") === -1).toString()), 2);
-  array.sort((a, b) => {
+  let arr = array.concat(),
+    ele = key == null ? arr[0] : arr[0][key],
+    // flag为二进制数据
+    flag = parseInt((
+      Number(String(ele).indexOf("Date") !== -1).toString() + // 是否为json格式
+      Number(key != null).toString() + // 是否有key
+      Number(String(ele).indexOf("Date") === -1).toString()) // 是否为普通 new Date()可转换
+      , 2);
+  arr.sort((a, b) => {
     let left = a,
       right = b;
     switch (flag) {
@@ -140,22 +138,23 @@ function sortDate(array, isAsc, key) {
     }
     return right > left ? 1 : -1; // 旧日期在前
   });
-  return array
+  return arr
 }
 
 /**
- * 当前时间/给定时间增加/减去多长时间
+ * 给定时间增加/减去多长时间
+ * 
  * @param {Date | String | Number} value 时间值
  * @param {Array | Object} opt 增加的对象或者是对象数组
  * @param {Number} opt.value 计算数值 正值表示加 负值表示减
  * @param {String} opt.type 时间类型 毫秒ms | 秒s | 分m | 时h | 天d | 月mm | 年y
- * @param {String} formatStr 格式化字符串 例如:YYYY-MM-DD hh:mm:ss(依赖format方法)
- * @returns {Date | String} 当date为空返回字符串提示,当formatStr为空返回date,不为空返回字符串时间 
+ * @param {String} [formatStr] 格式化规则 依赖format方法
+ * 
+ * @returns {Date | String} 当value为空返回字符串提示 当formatStr为空返回date 不为空返回字符串时间 
  */
 function getCalcDate(value, opt, formatStr) {
-  let myDate = typeof value === "object" ? value : new Date(value),
-    time = myDate.getTime();
-  if (isNaN(time)) { return "请输入正确的日期"; }
+  let myDate = typeof value === "object" ? value : new Date(value);
+  if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   if (opt == null || typeof opt !== "object") { return "参数错误"; }
   let set = function (data) {
     let { value, type } = data;
@@ -182,7 +181,7 @@ function getCalcDate(value, opt, formatStr) {
         myDate.setFullYear(myDate.getFullYear() + value);
         break;
       default:
-        console.log("参数类型错误")
+        console.log("opt.type类型错误")
         break;
     }
   }
@@ -198,29 +197,31 @@ function getCalcDate(value, opt, formatStr) {
 };
 
 /**
- * 求两个时间的差
- * @param {Array} arr 时间数组
+ * 求两个/多个时间的最大最小之间的差(多个时间依赖sortDate排序方法)
+ * 
+ * @param {Array} array 时间数组
+ * 
  * @returns {Array} 返回时间差数组 返回[日,时,分,秒] 年月误差较严重无返回
  */
-function getDateDiff(arr) {
-  let sortArr = sortDate(arr),
-    minuteNumber = 60,
-    hourNumber = 60 * 60,
-    dayNumber = hourNumber * 24,
+function getDateDiff(array) {
+  if (!(array instanceof Array) || array.length === 0) {
+    return [];
+  }
+  let sortArr = arr.length === 2 ? array.concat() : sortDate(array.concat()),
     time = Math.abs(Date.parse(sortArr[0]) - Date.parse(sortArr[sortArr.length - 1])) / 1000,
-    difference = new Array(4).fill(0);
-  let array = [
-    dayNumber,
-    hourNumber,
-    minuteNumber,
-    1
-  ];
-  for (let index = 0; index < array.length; index++) {
-    if (index === array.length - 1) {
-      difference[index] = Math.floor(time / array[index]);
+    difference = new Array(4).fill(0),
+    numberArray = [
+      60 * 60 * 24,
+      60 * 60,
+      60,
+      1
+    ];
+  for (let index = 0; index < numberArray.length; index++) {
+    if (index === numberArray.length - 1) {
+      difference[index] = Math.floor(time / numberArray[index]);
       break
     }
-    const element = array[index],
+    const element = numberArray[index],
       value = Math.floor(time / element);
     if (value >= 1) {
       difference[index] = value;
@@ -232,8 +233,10 @@ function getDateDiff(arr) {
 
 /**
  * 判断是否为闰年
- * @param {Number} val 年份
- * @returns {Boolean} 返回今年或者指定年份是否为闰年 
+ * 
+ * @param {Number} [val] 年份 默认今年
+ * 
+ * @returns {Boolean} 返回年份是否为闰年 
  */
 function isLeapYear(val) {
   let year = !!val ? val : new Date().getYear();
@@ -243,12 +246,15 @@ function isLeapYear(val) {
 
 /**
  * 获取当前月份天数(依赖isLeapYear方法)
+ * 
  * @param {Date | String | Number} value 时间值
- * @returns {Number} 返回当月天数
+ * 
+ * @returns {Number} 当value为空返回字符串提示 不为空返回当月天数 
  */
 function getDays(value) {
-  let myDate = typeof value === "object" ? value : new Date(value),
-    year = myDate.getFullYear(),
+  let myDate = typeof value === "object" ? value : new Date(value);
+  if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
+  let year = myDate.getFullYear(),
     mouth = myDate.getMonth() + 1,
     days;
   if (mouth == 2) {
@@ -265,22 +271,27 @@ function getDays(value) {
 }
 
 /**
- * 获取从当前日期指定天数的日期 也可以使用getCalcDate方法 格式化依赖format方法
- * @param {Number} index 天数
- * @param {String} formatStr 格式化字符串 依赖format方法
- * @returns {String} 指定日期
+ * 获取从当前日期指定天数的字符串日期 也可以使用getCalcDate方法
+ * 
+ * @param {Number} index 天数 
+ * @param {String} [formatStr] 格式化规则 依赖format方法
+ * 
+ * @returns {String} 指定日期字符串
  */
-function getMyDate(index, formatStr) {
-  let date = new Date(); //当前日期
+function getDesignDate(index, formatStr) {
+  let date = new Date();
   let newDate = new Date();
-  newDate.setDate(date.getDate() + index);//官方文档上虽然说setDate参数是1-31,其实是可以设置负数的
-  return format(newDate, formatStr || "YYYY-MM-DD hh:mm:ss")
+  newDate.setDate(date.getDate() + index != null ? index : 0);
+  return format(newDate, formatStr);
 }
 
 /**
  * 时间数值转换字符串时间长度
+ * 
  * @param {Number} val 时间数值
- * @param {String} type 类型 ms毫秒 s秒 m分 h时
+ * @param {String} [type = "s"] 数值类型 默认s ms毫秒 s秒 m分 h时
+ * 
+ * @returns {String} 字符串时间长度 val为空返回空字符串
  */
 function getDateStr(val, type) {
   if (!val) { return ""; }
@@ -304,7 +315,7 @@ function getDateStr(val, type) {
       time = val * hourNumber;
       break;
     default:
-      console.log("时间类型错误");
+      time = val;
       return "";
   }
   if (time <= 0) { return ""; }
@@ -351,17 +362,3 @@ function getDateStr(val, type) {
   }
   return str;
 }
-
-module.exports = {
-  format,
-  convertJson,
-  convertToStamp,
-  convertStamp,
-  sortDate,
-  getCalcDate,
-  getDateDiff,
-  isLeapYear,
-  getDays,
-  getMyDate,
-  getDateStr,
-};

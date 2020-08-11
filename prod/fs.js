@@ -7,7 +7,7 @@ const fs = require('fs');
 function delPath(path) {
   let files = [];
   if (fs.existsSync(path)) {
-    if (fs.statSync(path).isDirectory()) {      
+    if (fs.statSync(path).isDirectory()) {
       files = fs.readdirSync(path);
       files.forEach((file, index) => {
         let curPath = path + "/" + file;
@@ -29,7 +29,7 @@ function delPath(path) {
  * @param {String} path 路径
  * @param {Function} callback 回调方法 参数为file文件 index序号
  */
-function readDir(path,callback) {
+function readDir(path, callback) {
   let files = [];
   if (fs.existsSync(path)) {
     files = fs.readdirSync(path);

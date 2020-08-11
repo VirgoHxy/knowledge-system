@@ -1,6 +1,8 @@
 /**
  * 字符串去重
+ * 
  * @param {String} val 字符串
+ * 
  * @returns {String}
  */
 function removeRepeat(val) {
@@ -16,8 +18,10 @@ function removeRepeat(val) {
 
 /**
  * 字符串中子字符串的重复次数
+ * 
  * @param {String} str 字符串
  * @param {String} val 某个字符或字符串
+ * 
  * @returns {Number} 字符串次数
  */
 function getRepeatNum(str, val) {
@@ -26,9 +30,11 @@ function getRepeatNum(str, val) {
 
 /**
  * 字符串中的子字符重复最多/少次数
+ * 
  * @param {String} str 字符串
  * @param {Boolean} minFlag 默认为false true查找最少的 false查找最多的
- * @returns {Object} 字符串次数和字符串,如果有同样多的,字符串则是个数组
+ * 
+ * @returns {Object | Array} 字符串次数和字符串,如果有同样多的,字符串则是个数组
  * {
  *    str,
  *    num
@@ -54,7 +60,7 @@ function getMmRepeatNum(str, minFlag) {
       }
     }
     return {
-      str: arr.slice(firstIndex, arrLen).map((val)=>{
+      str: arr.slice(firstIndex, arrLen).map((val) => {
         return val[0]
       }),
       num: lastLen
@@ -69,7 +75,7 @@ function getMmRepeatNum(str, minFlag) {
     }
   }
   return {
-    str: arr.slice(0, lastIndex+1).map((val)=>{
+    str: arr.slice(0, lastIndex + 1).map((val) => {
       return val[0]
     }),
     num: firstLen
