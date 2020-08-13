@@ -1,3 +1,4 @@
+
 // 对象方法
 Array.from("hxy", ele => { return ele + 1 }, this); // 返回["h1","x1","y1"] 对拥有length属性的对象或可迭代的对象来返回一个数组
 Array.isArray([]); // true 判断一个对象是否为数组
@@ -140,3 +141,142 @@ console.log(JSON.stringify(removeItem([{
 }, {
   id: "3"
 }], ["1", "3"], "id")))
+
+/**
+ * 判断复杂数组(数组元素可包含对象,数组等等)是否相等(数组元素所在位置必须相同,元素类型必须完全相同)
+ * @param {Array} x 数组1
+ * @param {Array} y 数组2
+ * 
+ * @returns {Boolean}
+ */
+function compareComplexArray(x, y) {
+  if (!(x instanceof Array) || !(y instanceof Array) || x.length !== y.length) {
+    return false;
+  }
+  let type = function (o) {
+    var s = Object.prototype.toString.call(o);
+    return s.match(/\[object (.*?)\]/)[1].toLowerCase();
+  };
+  let compareObject = function (a, b) {
+    // 指向同一内存时
+    if (a === b) {
+      return true;
+    } else if ((typeof a == "object" && a != null) && (typeof b == "object" && b != null)) {
+      if (Object.keys(a).length != Object.keys(b).length) {
+        return false;
+      }
+      for (var prop in a) {
+        if (b.hasOwnProperty(prop)) {
+          if (!compareObject(a[prop], b[prop])) {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
+  };
+  let compare = function (m, n, type) {
+    if (type === "object") {
+      if (!compareObject(m, n)) {
+        return true;
+      }
+    } else if (type === "array") {
+      if (!compareComplexArray(m, n)) {
+        return true;
+      }
+    } else {
+      if (m !== n) {
+        return true;
+      }
+    }
+    return false;
+  };
+  const xLen = x.length,
+    yLen = y.length,
+    evenFlag = xLen % 2 === 0;
+  for (let i = 0; i < xLen; i++) {
+    const xElement = x[i],
+      xType = type(xElement);
+    for (let j = yLen - 1; j >= 0; j--) {
+      const yElement = y[j],
+        yType = type(yElement);
+      if (xType !== type(y[i]) || yType !== type(x[j])) {
+        return false;
+      }
+      let xFlag = compare(xElement, y[i], xType),
+        yFlag = compare(yElement, x[j], yType);
+      if (xFlag || yFlag) {
+        return false;
+      }
+      if (evenFlag) {
+        if(i >= (xLen / 2) - 1){
+          return true;
+        }
+      } else {
+        if(i >= Math.floor(xLen / 2)) {
+          return true;
+        }
+      }
+    }
+  }
+}
+console.log(compareComplexArray([
+  {
+    "ID": "31e175d0-aa01-11ea-b6dd-55eb193e1f02",
+    "Account": "xm",
+    "ProjectID": "1b1ec490-a9fe-11ea-b6dd-55eb193e1f02",
+    "BussinessID": null,
+    "OperatorType": 1,
+    "Tel": "",
+    "RoleID": "1f763070-aa01-11ea-b6dd-55eb193e1f02",
+    "CreateTime": "2020-06-09T03:27:32.000Z",
+    "Name": "项目管理员",
+    "Password": "202CB962AC59075B964B07152D234B70",
+    "RoleName": "项目权限"
+  }, 2, [2, 1], 2
+], [
+  {
+    "Account": "xm",
+    "ID": "31e175d0-aa01-11ea-b6dd-55eb193e1f02",
+    "ProjectID": "1b1ec490-a9fe-11ea-b6dd-55eb193e1f02",
+    "OperatorType": 1,
+    "BussinessID": null,
+    "RoleID": "1f763070-aa01-11ea-b6dd-55eb193e1f02",
+    "Tel": "",
+    "CreateTime": "2020-06-09T03:27:32.000Z",
+    "Password": "202CB962AC59075B964B07152D234B70",
+    "Name": "项目管理员",
+    "RoleName": "项目权限"
+  }, 2, [2, 1], 2
+],false))
+
+/**
+ * 判断简单数组是否相等(元素类型必须完全相同)
+ * @param {Array} x 数组1
+ * @param {Array} y 数组2
+ * @param {Array} [positionFlag = true] 数组元素所在位置是否必须相同 默认true false可不相同
+ * 
+ * @returns {Boolean}
+ */
+function compareArray(x, y, positionFlag = true) {
+  if (x.length !== y.length) {
+    return false
+  } else {
+    if (!positionFlag) {
+      x = x.sort();
+      y = y.sort();
+    }
+    for (let i = 0; i < x.length; i++) {
+      if (x[i] !== y[i]) {
+        return false
+      }
+    }
+    return true;
+  }
+}
+
+console.log(compareArray(["3", "11", "21", "1"], ["1", "11", "21", "3"], false))

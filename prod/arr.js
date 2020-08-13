@@ -1,3 +1,5 @@
+const {compareObject,getType} = require("./obj");
+
 /**
  * 操作重复数组
  * 
@@ -82,4 +84,95 @@ function removeItem(arr, removeArr, key) {
     return arr.filter(item => removeArr.indexOf(item) == -1)
   }
   return arr.filter(item => removeArr.indexOf(item[key]) == -1)
+}
+
+/**
+ * 判断复杂数组(数组元素可包含对象,数组等等)是否相等(数组元素所在位置必须相同,元素类型必须完全相同)
+ * @param {Array} x 数组1
+ * @param {Array} y 数组2
+ * 
+ * @returns {Boolean}
+ */
+function compareComplexArray(x, y) {
+  if (!(x instanceof Array) || !(y instanceof Array) || x.length !== y.length) {
+    return false;
+  }
+  let compare = function (m, n, type) {
+    if (type === "object") {
+      if (!compareObject(m, n)) {
+        return true;
+      }
+    } else if (type === "array") {
+      if (!compareComplexArray(m, n)) {
+        return true;
+      }
+    } else {
+      if (m !== n) {
+        return true;
+      }
+    }
+    return false;
+  };
+  const xLen = x.length,
+    yLen = y.length,
+    evenFlag = xLen % 2 === 0;
+  for (let i = 0; i < xLen; i++) {
+    const xElement = x[i],
+      xType = getType(xElement);
+    for (let j = yLen - 1; j >= 0; j--) {
+      const yElement = y[j],
+        yType = getType(yElement);
+      if (xType !== getType(y[i]) || yType !== getType(x[j])) {
+        return false;
+      }
+      let xFlag = compare(xElement, y[i], xType),
+        yFlag = compare(yElement, x[j], yType);
+      if (xFlag || yFlag) {
+        return false;
+      }
+      if (evenFlag) {
+        if(i >= (xLen / 2) - 1){
+          return true;
+        }
+      } else {
+        if(i >= Math.floor(xLen / 2)) {
+          return true;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * 判断简单数组是否相等(元素类型必须完全相同)
+ * @param {Array} x 数组1
+ * @param {Array} y 数组2
+ * @param {Array} [positionFlag = true] 数组元素所在位置是否必须相同 默认true false可不相同
+ * 
+ * @returns {Boolean}
+ */
+function compareArray(x, y, positionFlag = true) {
+  if (x.length !== y.length) {
+    return false
+  } else {
+    if (!positionFlag) {
+      x = x.sort();
+      y = y.sort();
+    }
+    for (let i = 0; i < x.length; i++) {
+      if (x[i] !== y[i]) {
+        return false
+      }
+    }
+    return true;
+  }
+}
+
+module.exports = {
+  operRepeatArray,
+  distinctOfObj,
+  distinctOfSet,
+  removeItem,
+  compareComplexArray,
+  compareArray
 }
