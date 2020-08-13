@@ -8,7 +8,7 @@
 * #### compareComplexArray 判断复杂数组(数组元素可包含对象,数组等等)是否相等(数组元素所在位置必须相同,元素类型必须完全相同)
 * #### compareArray 判断简单数组是否相等(元素类型必须完全相同)
 
-## arr.js 操作对象
+## obj.js 操作对象
 * #### compareObject 判断对象是否相等
 * #### clone 深拷贝对象
 * #### getType 判断数据类型
