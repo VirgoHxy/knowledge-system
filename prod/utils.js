@@ -121,3 +121,11 @@ function closeWindow() {
     window.AlipayJSBridge.call("closeWebview"); // 支付宝
   }
 }
+
+module.exports = {
+  isNull,
+  getUrlParam,
+  changeURLArg,
+  os,
+  closeWindow
+}
