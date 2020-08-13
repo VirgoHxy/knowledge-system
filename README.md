@@ -5,6 +5,8 @@
 * #### distinctOfObj 数组去重
 * #### distinctOfSet 数组去重
 * #### removeItem 去除数组指定元素
+* #### compareComplexArray 判断复杂数组(数组元素可包含对象,数组等等)是否相等(数组元素所在位置必须相同,元素类型必须完全相同)
+* #### compareArray 判断简单数组是否相等(元素类型必须完全相同)
 
 ## arr.js 操作对象
 * #### compareObject 判断对象是否相等
@@ -63,3 +65,11 @@
 * #### illegalStr 非法字符
 * #### image 图片
 * #### getFileName 取出一个路径的文件名
+
+## utils.js 工具
+* #### isNull 电话 判断null | undefined | 空字符串
+* #### getUrlParam 电话 获取url参数的值
+* #### changeURLArg 电话 修改url参数的值
+* #### os 电话 获取浏览器类型 终端类型
+* #### closeWindow 电话 关闭浏览器
+  
