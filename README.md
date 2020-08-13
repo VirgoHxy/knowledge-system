@@ -67,9 +67,9 @@
 * #### getFileName 取出一个路径的文件名
 
 ## utils.js 工具
-* #### isNull 电话 判断null | undefined | 空字符串
-* #### getUrlParam 电话 获取url参数的值
-* #### changeURLArg 电话 修改url参数的值
-* #### os 电话 获取浏览器类型 终端类型
-* #### closeWindow 电话 关闭浏览器
+* #### isNull 判断null | undefined | 空字符串
+* #### getUrlParam 获取url参数的值
+* #### changeURLArg 修改url参数的值
+* #### os 获取浏览器类型 终端类型
+* #### closeWindow 闭浏览器
   
