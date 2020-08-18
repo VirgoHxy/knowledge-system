@@ -141,3 +141,40 @@ console.log(`
 [/quote]`.match(/\[(.+?)\][\s\S]*?\[\/\1\]/g)); // [b]hello![/b],[quote]\n[url]http://google.com[/url]\n[/quote]
 // 标签
 console.log("<style> <styler> <style test='...'>".match(/<style(>|\s.*?>)/g)); // <style>,<style test='...'>
+
+// 断言
+// 前瞻断言 匹配\d仅在后面是€
+console.log("1 turkey costs 30€".match(/\d+(?=€)/)); // 30
+// 前瞻否定断言 匹配\d仅在后面不是€
+console.log("1 turkey costs 30€".match(/\d+(?!€)/)); // 1
+// 后瞻断言 匹配\d仅在前面是$
+console.log("1 turkey costs $30".match(/(?<=\$)\d+/)); // 30
+// 后瞻否定断言 匹配\d仅在前面不是$
+console.log("1 turkey costs $30".match(/(?<!\$)\d+/)); // 1
+// 多个单位
+console.log("1 turkey costs 30€ and 15kr".match(/\d+(?=€|kr)/g)); // 30,15
+// 非负数 
+console.log("0 12 -5 123 -18 +1".match(/(?<![-\d])\d+/g)); // 0,12,123,1
+// 捕获组 插入标签
+var str = `
+<html>
+  <body style="height: 200px">
+  ...
+  </body>
+</html>
+`
+console.log(str.replace(/(?<=(\<body.*?\>))/, "<h1>Hello</h1>"));
+// 防止无限回溯
+var str = "12312312222222222222222222222222222222222222222222222222222222232!";
+var str1 = "An input string that takes a long time or even makes this regexp to hang"
+// console.log(/^(\d+)*$/.test(str)); // 将会导致javascript挂起
+// console.log(/^(\w+\s?)*$/.test(str1)); // 将会导致javascript挂起
+// 解决 反向引用的n根据括号位置定义
+console.log(/(?=(\d+))\1/.test(str)); // true
+console.log(/^((?=(\w+))\2\s?)*$/.test(str1)); // true
+
+// 字符正则方法
+// 不带g的 第一个匹配 index input | 带g的返回所有匹配 不包含其他信息 | 没有匹配项返回null
+str.match(regexp)
+// 返回[object RegExp String Iterator] 可迭代对象 以不带g方式返回 没有匹配项返回空迭代对象
+str.matchAll(regexp)
