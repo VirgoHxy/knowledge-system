@@ -119,3 +119,25 @@ var [s, a, op, b] = "1.2 * 3.4".match(/([-+]?\d+(?:\.\d+)?)\s*([\+\-\*\/])\s*([-
 console.log(a); // 1.2
 console.log(op); // *
 console.log(b); // 3.4
+
+// 反向引用
+// 编号反向引用 \N
+console.log(`He said: "She's the one!".`.match(/(['"])(.*?)\1/g)); // "She's the one!"
+// 按命名反向引用：\k<name>
+console.log(`He said: "She's the one!".`.match(/(?<quote>['"])(.*?)\k<quote>/g)); // "She's the one!"
+
+// or |
+console.log("javascript typescript".match(/type|javascript/gi)); // javascript,type
+console.log("javascript typescript".match(/(type|java)script/gi)); // javascript,typescript
+// 时间
+console.log("12:12".match(/\b([01]\d|2[0-3]):[0-5]\d\b/g)); // 12:12
+// 编程语言 无法匹配一个单独字母C
+console.log("Java JavaScript C++ PHP C C1".match(/\bJava(Script)?\b|\bPHP\b|C(\+\+)?/g)); // Java,JavaScript,C++,PHP,C
+// 嵌套标签
+console.log(`
+[b]hello![/b]
+[quote]
+[url]http://google.com[/url]
+[/quote]`.match(/\[(.+?)\][\s\S]*?\[\/\1\]/g)); // [b]hello![/b],[quote]\n[url]http://google.com[/url]\n[/quote]
+// 标签
+console.log("<style> <styler> <style test='...'>".match(/<style(>|\s.*?>)/g)); // <style>,<style test='...'>
