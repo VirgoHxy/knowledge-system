@@ -175,6 +175,19 @@ console.log(/^((?=(\w+))\2\s?)*$/.test(str1)); // true
 
 // 字符正则方法
 // 不带g的 第一个匹配 index input | 带g的返回所有匹配 不包含其他信息 | 没有匹配项返回null
-str.match(regexp)
-// 返回[object RegExp String Iterator] 可迭代对象 以不带g方式返回 没有匹配项返回空迭代对象
-str.matchAll(regexp)
+console.log("1,2,3".match(/\d/g)); // 1,2,3
+console.log("1,2,3".match(/\d/)); // 1, index: 0, input: '1,2,3'
+console.log("abc".match(/\d/)); // null
+// 返回[object RegExp String Iterator] 可迭代对象 返回所有匹配 index input | 没有匹配项返回空迭代对象
+console.log(Array.from("abc1".matchAll(/\d/g))); // [ '1', index: 0, input: '1,2,3', groups: undefined ]
+// 返回数组 第二个参数限定个数
+console.log("1,2,3".split(/,/)); // 1,2,3
+console.log("1,2,3".split(/,/, 2)); // 1,2
+// 寻找匹配项index 未找到返回-1
+console.log("1,2,3".search(/2/)); // 2
+// 替换字符
+console.log("12-34-56".replace(/-/g, ":")); // 12:34:56
+// 插入字符
+console.log("12-34-56".replace(/-/g, "测试$&测试")); // 12--34--56
+// 之前插入字符
+console.log("12-34-56".replace(/-/g, "$`")); // 12--34--56
