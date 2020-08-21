@@ -5,7 +5,7 @@
 * #### distinctOfObj 数组去重
 * #### distinctOfSet 数组去重
 * #### removeItem 去除数组指定元素
-* #### compareComplexArray 判断复杂数组(数组元素可包含对象,数组等等)是否相等(数组元素所在位置必须相同,元素类型必须完全相同)
+* #### compareComplexArray 判断复杂数组(数组元素可包含对象,数组等等)是否相等(数组元素所在位置必须相同,元素类型必须完全相同) 依赖obj的compareObject getType方法
 * #### compareArray 判断简单数组是否相等(元素类型必须完全相同)
 
 ## obj.js 操作对象
