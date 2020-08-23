@@ -126,6 +126,7 @@ function removeItem(arr, removeArr, key) {
 
 /**
  * 判断复杂数组(数组元素可包含对象,数组等等)是否相等(数组元素所在位置必须相同,元素类型必须完全相同)
+ * 依赖obj的compareObject getType方法
  * @param {Array} x 数组1
  * @param {Array} y 数组2
  * 

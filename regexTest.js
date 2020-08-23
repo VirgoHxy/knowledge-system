@@ -1,3 +1,43 @@
+// 字符正则方法
+// 不带g的 第一个匹配 index input | 带g的返回所有匹配 不包含其他信息 | 没有匹配项返回null
+console.log("1,2,3".match(/\d/g)); // 1,2,3
+console.log("1,2,3".match(/\d/)); // 1, index: 0, input: '1,2,3'
+console.log("abc".match(/\d/)); // null
+// 返回[object RegExp String Iterator] 可迭代对象 返回所有匹配 index input | 没有匹配项返回空迭代对象
+console.log(Array.from("abc1".matchAll(/\d/g))); // [ '1', index: 0, input: '1,2,3', groups: undefined ]
+// 返回数组 第二个参数限定个数
+console.log("1,2,3".split(/,/)); // 1,2,3
+console.log("1,2,3".split(/,/, 2)); // 1,2
+// 寻找匹配项index 未找到返回-1
+console.log("1,2,3".search(/2/)); // 2
+// 替换字符
+console.log("12-34-56".replace(/-/g, ":")); // 12:34:56
+// 插入字符
+console.log("12-34-56".replace(/-/g, "测试$&测试")); // 12--34--56
+// 匹配项替换成匹配项之前字符 12前面没有字符就为空
+console.log("124".replace(/12/g, "$`")); // 4
+// 匹配项替换成匹配项之后字符
+console.log("124".replace(/12/g, "$'")); // 44
+// 捕获组number
+console.log("12-34-56".replace(/(\d+)-(\d+)-(\d+)/g, "$2-$3-$1")); // 34-56-12
+// 捕获组name
+console.log("12-34-56".replace(/(?<one>\d+)-(?<two>\d+)-(?<three>\d+)/g, "$<two>-$<three>-$<one>")); // 34-56-12
+// replace函数 没有捕获组 match匹配项 index位置 input源字符串
+console.log("html and css".replace(/html|css/gi, match => match.toUpperCase())); // HTML and CSS
+// replace函数 没有捕获组 match匹配项 p1,p2,...,pn分组内容 index位置 input源字符串 groups分组对象
+console.log("html and css".replace(/(html).*(css)/gi, (match, p1, p2, offset, input, groups) => `${p2} and ${p1}`)); // css and html
+// exec通过循环得到所有匹配项 matchAll的替代方法 返回 match匹配项 index位置 input源字符串 groups分组对象
+var regexp = /javascript/ig;
+while (result = regexp.exec("More about JavaScript at https://javascript.info")) {
+  console.log(`Found ${result[0]} at position ${result.index}`);
+}
+// 是否存在匹配项 等同于search的index!==-1
+console.log(/love/i.test("I love JavaScript")) // true
+
+// i 搜索时不区分大小写
+
+// g 搜索时会查找所有的匹配项
+
 // unicode修饰符 u
 // 16进制数字
 var regexp = /x\p{Hex_Digit}\p{Hex_Digit}/u;
@@ -19,6 +59,15 @@ console.log(str.match(/^\d+/gm)); // 1,2,33
 // 每行最后一个单词
 console.log(str.match(/\w+$/gm)); // Winnie,Piglet,Eeyore
 
+// 粘性标志 "y" 精准搜索
+var regexp = /\w+/y;
+// 第4个字符为空格 匹配失败
+regexp.lastIndex = 3;
+console.log("let varName = 'value'".match(regexp)); // null
+// 第5个字符为空格 匹配成功
+regexp.lastIndex = 4;
+console.log("let varName = 'value'".match(regexp)); // varName
+
 // 完全匹配 ^以开头 $以结尾
 // 时间
 var regexp = /^\d\d:\d\d$/;
@@ -26,22 +75,6 @@ console.log(regexp.test("12:34")); // true
 // 空字符串
 var regexp = /^$/;
 console.log(regexp.test("")); // true
-
-// 词边界
-// /bJava/b
-console.log("Hello, Java!".match(/\bJava\b/)); // Java
-// /bJava感叹号不是单词
-console.log("Hello, Java!".match(/\bJava/)); // Java
-// 空格不是单词Java/b
-console.log("Hello, Java!".match(/Java\b/)); // Java
-// /bJavaScript/b
-console.log("Hello, JavaScript!".match(/\bJava\b/)); // null
-// /bJavaScript
-console.log("Hello, JavaScript!".match(/\bJava/)); // Java
-// JavaScript/b
-console.log("Hello, JavaScript!".match(/Java\b/)); // null
-// 时间
-console.log("Breakfast at 09:00 in the room 123:456".match(/\b\d\d:\d\d\b/))
 
 // 集合范围
 // tm集合
@@ -120,6 +153,22 @@ console.log(a); // 1.2
 console.log(op); // *
 console.log(b); // 3.4
 
+// 词边界
+// \bJava\b
+console.log("Hello, Java!".match(/\bJava\b/)); // Java
+// \bJava感叹号不是单词
+console.log("Hello, Java!".match(/\bJava/)); // Java
+// 空格不是单词Java\b
+console.log("Hello, Java!".match(/Java\b/)); // Java
+// \bJavaScript\b
+console.log("Hello, JavaScript!".match(/\bJava\b/)); // null
+// \bJavaScript
+console.log("Hello, JavaScript!".match(/\bJava/)); // Java
+// JavaScript\b
+console.log("Hello, JavaScript!".match(/Java\b/)); // null
+// 时间
+console.log("Breakfast at 09:00 in the room 123:456".match(/\b\d\d:\d\d\b/))
+
 // 反向引用
 // 编号反向引用 \N
 console.log(`He said: "She's the one!".`.match(/(['"])(.*?)\1/g)); // "She's the one!"
@@ -172,48 +221,3 @@ var str1 = "An input string that takes a long time or even makes this regexp to 
 // 解决 反向引用的n根据括号位置定义
 console.log(/(?=(\d+))\1/.test(str)); // true
 console.log(/^((?=(\w+))\2\s?)*$/.test(str1)); // true
-
-// 粘性标志 "y" 精准搜索
-var regexp = /\w+/y;
-// 第4个字符为空格 匹配失败
-regexp.lastIndex = 3;
-console.log("let varName = 'value'".match(regexp)); // null
-// 第5个字符为空格 匹配成功
-regexp.lastIndex = 4;
-console.log("let varName = 'value'".match(regexp)); // varName
-
-// 字符正则方法
-// 不带g的 第一个匹配 index input | 带g的返回所有匹配 不包含其他信息 | 没有匹配项返回null
-console.log("1,2,3".match(/\d/g)); // 1,2,3
-console.log("1,2,3".match(/\d/)); // 1, index: 0, input: '1,2,3'
-console.log("abc".match(/\d/)); // null
-// 返回[object RegExp String Iterator] 可迭代对象 返回所有匹配 index input | 没有匹配项返回空迭代对象
-console.log(Array.from("abc1".matchAll(/\d/g))); // [ '1', index: 0, input: '1,2,3', groups: undefined ]
-// 返回数组 第二个参数限定个数
-console.log("1,2,3".split(/,/)); // 1,2,3
-console.log("1,2,3".split(/,/, 2)); // 1,2
-// 寻找匹配项index 未找到返回-1
-console.log("1,2,3".search(/2/)); // 2
-// 替换字符
-console.log("12-34-56".replace(/-/g, ":")); // 12:34:56
-// 插入字符
-console.log("12-34-56".replace(/-/g, "测试$&测试")); // 12--34--56
-// 匹配项替换成匹配项之前字符 12前面没有字符就为空
-console.log("124".replace(/12/g, "$`")); // 4
-// 匹配项替换成匹配项之后字符
-console.log("124".replace(/12/g, "$'")); // 44
-// 捕获组number
-console.log("12-34-56".replace(/(\d+)-(\d+)-(\d+)/g, "$2-$3-$1")); // 34-56-12
-// 捕获组name
-console.log("12-34-56".replace(/(?<one>\d+)-(?<two>\d+)-(?<three>\d+)/g, "$<two>-$<three>-$<one>")); // 34-56-12
-// replace函数 没有捕获组 match匹配项 index位置 input源字符串
-console.log("html and css".replace(/html|css/gi, match => match.toUpperCase())); // HTML and CSS
-// replace函数 没有捕获组 match匹配项 p1,p2,...,pn分组内容 index位置 input源字符串 groups分组对象
-console.log("html and css".replace(/(html).*(css)/gi, (match, p1, p2, offset, input, groups) => `${p2} and ${p1}`)); // css and html
-// exec通过循环得到所有匹配项 matchAll的替代方法 返回 match匹配项 index位置 input源字符串 groups分组对象
-var regexp = /javascript/ig;
-while (result = regexp.exec("More about JavaScript at https://javascript.info")) {
-  console.log(`Found ${result[0]} at position ${result.index}`);
-}
-// 是否存在匹配项 等同于search的index!==-1
-console.log(/love/i.test("I love JavaScript")) // true
