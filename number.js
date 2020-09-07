@@ -11,37 +11,37 @@ Number.EPSILON //表示js的最小精度,它表示1与大于1的最小浮点数�
  * 是否是个Number类型的整数(字符串类型整数也为false)
  * @returns {Boolean}
  */
-Number.isInteger(1) //true
+console.log(Number.isInteger(1)) //true
 
 /**
  * 是否是范围在-2^53到2^53的整数,超过这个范围,无法精确表示这个值
  * @returns {Boolean}
  */
-Number.isSafeInteger(Math.pow(2, 53) + 1) //false
+console.log(Number.isSafeInteger(Math.pow(2, 53) + 1)) //false
 
 /**
  * 判断参数是否为NaN
  * @returns {Boolean}
  */
-Number.isNaN(1 * 'qwe') //true
+console.log(Number.isNaN(1 * 'qwe')) //true
 
 /**
  * 判断参数是否为正常的数值
  * @returns {Boolean}
  */
-Number.isFinite(Infinity) //false
+console.log(Number.isFinite(Infinity)) //false
 
 /**
  * 返回浮点数
  * @returns {Number}
  */
-Number.parseFloat('1.2aaa') //1.2
+console.log(Number.parseFloat('1.2aaa')) //1.2
 
 /**
  * 返回整数
  * @returns {Number}
  */
-Number.parseInt('1.2aaa') //1
+console.log(Number.parseInt('1.2aaa')) //1
 
 // 实例方法
 
@@ -53,16 +53,16 @@ console.log((1.2).toFixed(2)) //1.20
 console.log((1.23).toFixed()) //1
 console.log((1.237).toFixed(2)) //1.24
 console.log(0.2 + 0.7); //0.8999999999999999
-console.log((0.2 + 0.7).toFixed(2)); //0.90
+console.log((0.2 + 0.7).toFixed(2)) //0.90
 
 /**
  * 数字转换为指定位数
  * @returns {String}
  */
-(13.23).toPrecision(2); //13
+console.log((13.23).toPrecision(2)) //13
 
 /**
- * 使用指定的进制，将一个数字转换为字符串,默认十进制
+ * 使用指定的进制2-36，将一个数字转换为字符串,默认十进制
  * @returns {String}
  */
 x = 10;
@@ -70,28 +70,36 @@ console.log(x.toString()); //10
 console.log(x.toString(2)); //1010
 console.log(x.toString(8)); //12
 console.log(x.toString(16)); //a
+console.log(x.toString(16)); //a
+console.log(123456..toString(36)); //将长的数字标识转为短的 用于二维码
 
 // 普通运算
-Math.abs(-1) // 返回1的绝对值 1
-Math.pow(2, 2) // 返回2的2次幂 4
-Math.sqrt(9) // 返回9平方根 3
-Math.cbrt(8) // 计算一个数的立方根 2
-Math.hypot(3, 4) // 返回所有参数的平方和的平方根 5
+console.log(Math.abs(-1)) // 返回1的绝对值 1
+console.log(Math.pow(2, 4)) // 返回2的4次幂 16
+console.log(Math.sqrt(9)) // 返回9平方根 3
+console.log(Math.cbrt(8)) // 计算一个数的立方根 2
+console.log(Math.hypot(3, 4)) // 返回所有参数的平方和的平方根 5
 
 // 取值
-Math.ceil(1.2) // 向上取整 2
-Math.floor(1.8) // 向下取整 1
-Math.round(1.4) // 四舍五入 1
-Math.random() // 随机返回 [0,1)
-Math.trunc(-0.12) // 去除一个数的小数部分,返回整数部分,空值和无法截取整数的值返回NaN -0
+console.log(Math.ceil(1.2)) // 向上(大)取整 2
+console.log(Math.ceil(-1.2)) // 向上(大)取整 -1
+console.log(Math.floor(1.8)) // 向下(小)取整 1
+console.log(Math.floor(-1.8)) // 向下(小)取整 -2
+console.log(Math.round(1.4)) // 四舍五入 1
+console.log(Math.round(-1.4)) // 四舍五入 -1
+console.log(Math.round(-1.7)) // 四舍五入 -2
+console.log(Math.random()) // 随机返回 [0,1)
+console.log(Math.trunc(-0.12)) // 去除一个数的小数部分,返回整数部分,空值和无法截取整数的值返回NaN -0
 
 // 返回最大/小值
-Math.max(1, 2, 3) //返回最大值 3
-Math.min(1, 2, 3) //返回最小值 1
+console.log(Math.max.apply(null,[1,2,3])) //返回数组最大值 3
+console.log(Math.min.apply(null,[1,2,3])) //返回数组最小值 1
+console.log(Math.max(1, 2, 3)) //返回最大值 3
+console.log(Math.min(1, 2, 3)) //返回最小值 1
 
 // 判断
-Math.sign(-0) //判断一个数到底是正数、负数、还是零 -0
-Math.sign('aaa') //NaN
+console.log(Math.sign(-0)) //判断一个数到底是正数、负数、还是零 -0
+console.log(Math.sign('aaa')) //NaN
 /* 
 参数为正数，返回+1；
 参数为负数，返回-1；

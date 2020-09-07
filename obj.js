@@ -1,3 +1,7 @@
+// 判断是否全等 除了 0和-0是false NaN和NaN是true 其他全和===相同
+console.log(Object.is(Number.NaN,Number.NaN)) // true
+console.log(Object.is(0,-1)) // false
+
 const target = {
   field1: 1,
   field2: undefined,
@@ -29,7 +33,7 @@ function compareObject(x, y) {
       return false;
     }
     for (var prop in x) {
-      if (y.hasOwnProperty(prop)) {
+      if (Object.prototype.hasOwnProperty.call(y,prop)) {
         if (!compareObject(x[prop], y[prop])) {
           return false;
         }
