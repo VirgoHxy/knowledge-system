@@ -99,9 +99,35 @@ function randomStr(length) {
   return str;
 }
 
+/**
+ * 获取大写字母数组
+ * 
+ */
+function upperLetter() {
+  var arr = [];
+  for (var i = 65; i < 91; i++) {
+    arr.push(String.fromCharCode(i));
+  }
+  return arr;
+}
+
+/**
+ * 获取小写字母数组
+ * 
+ */
+function lowerLetter() {
+  var arr = [];
+  for (var i = 97; i < 123; i++) {
+    arr.push(String.fromCharCode(i));
+  }
+  return arr;
+}
+
 module.exports = {
   removeRepeat,
   getRepeatNum,
   getMmRepeatNum,
-  randomStr
+  randomStr,
+  upperLetter,
+  lowerLetter
 }
