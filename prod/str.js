@@ -123,6 +123,19 @@ function lowerLetter() {
   return arr;
 }
 
+/**
+ * 超过最大长度的将用三个字符代替
+ * @param {String} str 字符串
+ * @param {Number} [maxlength = 10] 字符串最大长度
+ * @param {String} [character = .] 替换字符
+ * 
+ * @returns 长度13的字符串
+ */
+function truncate(str, maxlength = 10, character) {
+  return (str.length > maxlength) ?
+    str.slice(0, maxlength) + Array(3).fill(typeof character === "string" ? character : "." ).join("") : str;
+}
+
 module.exports = {
   removeRepeat,
   getRepeatNum,
