@@ -45,6 +45,36 @@ new Array(5).fill(0); // [0,0,0,0,0] 将数组元素都填充0 改变原数组
 [1, 2, 3].includes(1, 2); // false 从2索引开始判断一个数组是否包含1 包含返回true 不包含返回false
 
 /**
+ * 数组随机排序
+ * 
+ * @param {Array} arr 源数组
+ * 
+ * @returns {Array} 返回数组
+ */
+function shuffle(arr) {
+  let array = [].concat.apply([], arr);
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1)); // 从 0 到 i 的随机索引
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+let count = {
+  '123': 0,
+  '132': 0,
+  '213': 0,
+  '231': 0,
+  '321': 0,
+  '312': 0
+};
+for (let index = 0; index < 10000; index++) {
+  let arr = shuffle([1,2,3])
+  count[arr.join('')]++;
+}
+console.log(count)
+
+/**
  * 操作重复数组
  * 
  * @param {Array} arr 源数组

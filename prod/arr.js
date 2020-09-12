@@ -37,6 +37,21 @@ function getType(o) {
   return s.match(/\[object (.*?)\]/)[1].toLowerCase();
 };
 
+/**
+ * 数组随机排序
+ * 
+ * @param {Array} arr 源数组
+ * 
+ * @returns {Array} 返回数组
+ */
+function shuffle(arr) {
+  let array = [].concat.apply([], arr);
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1)); // 从 0 到 i 的随机索引
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 
 /**
  * 操作重复数组
@@ -208,6 +223,7 @@ function compareArray(x, y, positionFlag = true) {
 }
 
 module.exports = {
+  shuffle,
   operRepeatArray,
   distinctOfObj,
   distinctOfSet,
