@@ -7,7 +7,13 @@
  * @returns {String} 返回字符串时间
  */
 function format(value, formatStr) {
-  let myDate = typeof value === "object" ? value : new Date(/-/.test(value) ? value.replace(/-/g, "/"): value);
+  if(typeof value == "string"&&/T/g.test(value)){ // 去T
+    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  }
+  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+    value = value.replace(/-/g, "/");
+  }
+  let myDate = typeof value === "object" ? value : new Date(value);
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   let str = formatStr || "YYYY-MM-DD hh:mm:ss",
     week = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
@@ -20,20 +26,35 @@ function format(value, formatStr) {
     minute = myDate.getMinutes(),
     second = myDate.getSeconds(),
     mSecond = myDate.getMilliseconds();
+  //四位年份
   str = str.replace(/yyyy|YYYY/, fullYear);
+  //两位年份，小于10补零
   str = str.replace(/yy|YY/, year > 9 ? year : "0" + year);
+  //月份，小于10补零
   str = str.replace(/MM/, (month + 1) > 9 ? month + 1 : "0" + (month + 1));
+  //月份，不补零
   str = str.replace(/M/, month + 1);
+  //日期，小于10补零
   str = str.replace(/dd|DD/, date > 9 ? date : "0" + date);
+  //日期，不补零
   str = str.replace(/d|D/, date);
+  //小时，小于10补零
   str = str.replace(/hh|HH/, hour > 9 ? hour : "0" + hour);
+  //小时，不补零
   str = str.replace(/h|H/, hour);
+  //分钟，小于10补零
   str = str.replace(/mm/, minute > 9 ? minute : "0" + minute);
+  //分钟，不补零
   str = str.replace(/m/, minute);
+  //秒钟，小于10补零
   str = str.replace(/ss|SS/, second > 9 ? second : "0" + second);
+  //秒钟，不补零
   str = str.replace(/s|S/, second);
+  //星期几
   str = str.replace(/w|W/g, week[day]);
+  //毫秒，小于9或99补零
   str = str.replace(/MS/, mSecond > 9 ? mSecond > 99 ? mSecond : "0" + mSecond : "00" + mSecond);
+  //毫秒，不补零
   str = str.replace(/ms/, mSecond);
   return str;
 }
@@ -65,7 +86,13 @@ function convertJson(value, formatStr) {
  * @returns {Number} 返回毫秒/秒类型时间戳
  */
 function convertToStamp(value, sFlag = false) {
-  let myDate = typeof value === "object" ? value : new Date(/-/.test(value) ? value.replace(/-/g, "/"): value),
+  if(typeof value == "string"&&/T/g.test(value)){ // 去T
+    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  }
+  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+    value = value.replace(/-/g, "/");
+  }
+  let myDate = typeof value === "object" ? value : new Date(value),
     time = myDate.getTime();
   if (isNaN(time)) { return "请输入正确的日期"; }
   if (sFlag) { return Math.round(time / 1000); }
@@ -153,7 +180,13 @@ function sortDate(array, isAsc = false, key) {
  * @returns {Date | String} 当value为空返回字符串提示 当formatStr为空返回date 不为空返回字符串时间 
  */
 function getCalcDate(value, opt, formatStr) {
-  let myDate = typeof value === "object" ? value : new Date(/-/.test(value) ? value.replace(/-/g, "/"): value);
+  if(typeof value == "string"&&/T/g.test(value)){ // 去T
+    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  }
+  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+    value = value.replace(/-/g, "/");
+  }
+  let myDate = typeof value === "object" ? value : new Date(value);
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   if (opt == null || typeof opt !== "object") { return "参数错误"; }
   let set = function (data) {
@@ -252,7 +285,13 @@ function isLeapYear(val) {
  * @returns {Number} 当value为空返回字符串提示 不为空返回当月天数 
  */
 function getDays(value) {
-  let myDate = typeof value === "object" ? value : new Date(/-/.test(value) ? value.replace(/-/g, "/"): value);
+  if(typeof value == "string"&&/T/g.test(value)){ // 去T
+    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  }
+  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+    value = value.replace(/-/g, "/");
+  }
+  let myDate = typeof value === "object" ? value : new Date(value);
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   let year = myDate.getFullYear(),
     mouth = myDate.getMonth() + 1,

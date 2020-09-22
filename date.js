@@ -32,8 +32,13 @@ myDate.valueOf()  // 1596619591585 返回UTC(协调世界时)到该时间毫秒�
  * @returns {String} 返回字符串时间
  */
 function format(value, formatStr) {
-  // new Date -转/兼容ios
-  let myDate = typeof value === "object" ? value : new Date(/-/.test(value) ? value.replace(/-/g, "/"): value);
+  if(typeof value == "string"&&/T/g.test(value)){ // 去T
+    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  }
+  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+    value = value.replace(/-/g, "/");
+  }
+  let myDate = typeof value === "object" ? value : new Date(value);
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   let str = formatStr || "YYYY-MM-DD hh:mm:ss",
     week = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
@@ -107,7 +112,13 @@ console.log(convertJson(/Date(1278930470649)/))
  * @returns {Number} 返回毫秒/秒类型时间戳
  */
 function convertToStamp(value, sFlag = false) {
-  let myDate = typeof value === "object" ? value : new Date(/-/.test(value) ? value.replace(/-/g, "/"): value),
+  if(typeof value == "string"&&/T/g.test(value)){ // 去T
+    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  }
+  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+    value = value.replace(/-/g, "/");
+  }
+  let myDate = typeof value === "object" ? value : new Date(value),
     time = myDate.getTime();
   if (isNaN(time)) { return "请输入正确的日期"; }
   if (sFlag) { return Math.round(time / 1000); }
@@ -212,7 +223,13 @@ console.log(sortDate([
  * @returns {Date | String} 当value为空返回字符串提示 当formatStr为空返回date 不为空返回字符串时间 
  */
 function getCalcDate(value, opt, formatStr) {
-  let myDate = typeof value === "object" ? value : new Date(/-/.test(value) ? value.replace(/-/g, "/"): value);
+  if(typeof value == "string"&&/T/g.test(value)){ // 去T
+    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  }
+  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+    value = value.replace(/-/g, "/");
+  }
+  let myDate = typeof value === "object" ? value : new Date(value);
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   if (opt == null || typeof opt !== "object") { return "参数错误"; }
   let set = function (data) {
@@ -324,7 +341,13 @@ console.log(isLeapYear(2000));
  * @returns {Number} 当value为空返回字符串提示 不为空返回当月天数 
  */
 function getDays(value) {
-  let myDate = typeof value === "object" ? value : new Date(/-/.test(value) ? value.replace(/-/g, "/"): value);
+  if(typeof value == "string"&&/T/g.test(value)){ // 去T
+    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  }
+  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+    value = value.replace(/-/g, "/");
+  }
+  let myDate = typeof value === "object" ? value : new Date(value);
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   let year = myDate.getFullYear(),
     mouth = myDate.getMonth() + 1,
