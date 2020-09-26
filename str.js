@@ -190,6 +190,18 @@ console.log(lowerLetter())
  */
 function truncate(str, maxlength = 10, character) {
   return (str.length > maxlength) ?
-    str.slice(0, maxlength) + Array(3).fill(typeof character === "string" ? character : "." ).join("") : str;
+    str.slice(0, maxlength) + Array(3).fill(typeof character === "string" ? character : ".").join("") : str;
 }
 console.log(truncate("abcdefghijklmnopqrstuvwxyz"))
+
+/**
+ * 超过最大长度的将用三个字符代替
+ * @param {String} str 字符串
+ * @param {Number|Array} index 字符串索引或索引数组
+ * 
+ * @returns 字符串
+ */
+function deleteByIndex(str, index) {
+  return str.split("").reduce((start, ele, i) => (index instanceof Array ? index.indexOf(i) == -1 ? start + ele : start : i != index ? start + ele : start), "")
+}
+console.log(deleteByIndex("12345", [1, 3]))
