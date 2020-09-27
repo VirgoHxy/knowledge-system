@@ -44,7 +44,7 @@ function getUrlParam(key, url) {
   }
 }
 
-console.log(getUrlParam("c","http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"))
+console.log(getUrlParam("c", "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"))
 
 /**
  * 修改url参数的值
@@ -70,12 +70,12 @@ function changeURLArg(arg, argVal, url) {
       } else {
         return url + "?" + replaceText;
       }
-    } 
+    }
   } catch (error) {
     return "";
   }
 }
-console.log(changeURLArg("c", {a:1}, "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"))
+console.log(changeURLArg("c", { a: 1 }, "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"))
 
 /**
  * 获取浏览器类型 终端类型
@@ -117,6 +117,32 @@ function os() {
 }
 
 /**
+ * 获取浏览器类型 终端类型
+ * 
+ * @returns {Object} 包含终端类型的对象以及版本号
+ */
+function getBrowser() {
+  const sys = {};
+  const ua = navigator.userAgent.toLowerCase();
+  if (ua.indexOf("edge") !== -1) {
+    sys.edge = "edge";
+  } else if (ua.match(/rv:([\d.]+)\) like gecko/)) {
+    sys.ie = ua.match(/rv:([\d.]+)\) like gecko/)[1];
+  } else if (ua.match(/msie ([\d.]+)/)) {
+    sys.ie = ua.match(/msie ([\d.]+)/)[1];
+  } else if (ua.match(/firefox\/([\d.]+)/)) {
+    sys.firefox = ua.match(/firefox\/([\d.]+)/)[1];
+  } else if (ua.match(/chrome\/([\d.]+)/)) {
+    sys.chrome = ua.match(/chrome\/([\d.]+)/)[1];
+  } else if (ua.match(/opera.([\d.]+)/)) {
+    sys.opera = ua.match(/opera.([\d.]+)/)[1];
+  } else if (ua.match(/version\/([\d.]+).*safari/)) {
+    sys.safari = ua.match(/version\/([\d.]+).*safari/)[1];
+  }
+  return sys;
+}
+
+/**
  * 关闭浏览器
  */
 function closeWindow() {
@@ -129,5 +155,75 @@ function closeWindow() {
     window.WeixinJSBridge.call("closeWindow"); // 微信
   } else if (window.AlipayJSBridge) {
     window.AlipayJSBridge.call("closeWebview"); // 支付宝
+  }
+}
+
+/**
+ * 获取下载文件blob
+ * 
+ * @param {String} data 文件内容
+ * @param {String} type 文件类型
+ * 
+ * @returns {Blob}
+ */
+function getDownloadUri(data,type) {
+  switch (type) {
+    case "image": {
+      let parts = data.split(";base64,");
+      let contentType = parts[0].split(":")[1];
+      let raw = window.atob(parts[1]);
+      let rawLength = raw.length;
+      let uInt8Array = new Uint8Array(rawLength);
+      for (let i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i);
+      }
+      return new Blob([uInt8Array], { type: contentType });
+    }
+    case "txt": {
+      const _utf = "\uFEFF"; // 为了使文件以utf-8的编码模式，同时也是解决中文乱码的问题
+      return new Blob([_utf + data], {
+        type: "text/json" // 自己需要的数据格式
+      });
+    }
+    default:
+      console.log("下载文件类型不合规")
+      return false;
+  }
+}
+
+/**
+ * 下载文件(依赖getBrowser方法)
+ * 
+ * @param {String} data 文件内容
+ * @param {String} fileName 文件名称
+ * 
+ */
+function download(data, fileName) {
+  try {
+    const bw = getBrowser(); // 获取浏览器信息
+    let type = fileName.match(/.+\.(.+)$/)[1];
+    let blob = false;
+    if(/(gif|jpg|jpeg|png|gif|jpg|png)$/.test(type)){
+      type = "image";
+    }
+    blob = getDownloadUri(data,type); //new Blob([data]);
+    if (blob === false) {
+      console.log("下载失败,内容不合规")
+      return false;
+    }
+    if (!bw["edge"] && !bw["ie"]) {
+      let aLink = document.createElement("a");
+      // let evt = document.createEvent("HTMLEvents");
+      // evt.initEvent("click", true, true); //initEvent 事件类型，是否冒泡，是否阻止浏览器的默认行为
+      aLink.download = fileName;
+      aLink.href = URL.createObjectURL(blob);
+      // aLink.dispatchEvent(evt);
+      aLink.click();
+    } else if (bw["ie"] >= 10 || bw["edge"] === "edge") {
+      window.navigator.msSaveBlob(blob, fileName);
+    }
+  } catch (error) {
+    console.log(error,"下载失败")
+    return false;
   }
 }
