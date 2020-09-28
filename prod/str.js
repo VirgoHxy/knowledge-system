@@ -137,7 +137,7 @@ function truncate(str, maxlength = 10, character) {
 }
 
 /**
- * 超过最大长度的将用三个字符代替
+ * 通过字符串索引删除字符串
  * @param {String} str 字符串
  * @param {Number|Array} index 字符串索引或索引数组
  * 
@@ -145,6 +145,18 @@ function truncate(str, maxlength = 10, character) {
  */
 function deleteByIndex(str, index) {
   return str.split("").reduce((start, ele, i) => (index instanceof Array ? index.indexOf(i) == -1 ? start + ele : start : i != index ? start + ele : start), "")
+}
+
+/**
+ * 删除最后一个指定字符
+ * @param {String} str 源字符串
+ * @param {String} delStr 删除字符串
+ * 
+ * @returns 字符串
+ */
+function deleteLastStr(str, delStr) {
+  let index = str.lastIndexOf(delStr);
+  return str.substring(0, index) + str.substring(index + 1, str.length);
 }
 
 module.exports = {
@@ -155,5 +167,6 @@ module.exports = {
   upperLetter,
   lowerLetter,
   truncate,
-  deleteByIndex
+  deleteByIndex,
+  deleteLastStr
 }
