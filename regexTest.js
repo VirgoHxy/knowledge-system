@@ -26,6 +26,12 @@ console.log("12-34-56".replace(/(?<one>\d+)-(?<two>\d+)-(?<three>\d+)/g, "$<two>
 console.log("html and css".replace(/html|css/gi, match => match.toUpperCase())); // HTML and CSS
 // replace函数 没有捕获组 match匹配项 p1,p2,...,pn分组内容 index位置 input源字符串 groups分组对象
 console.log("html and css".replace(/(html).*(css)/gi, (match, p1, p2, offset, input, groups) => `${p2} and ${p1}`)); // css and html
+// 将下划线命名转换为大驼峰
+line2upper = str => str.replace(/\s/g,"").replace(/\_{0,1}([^_])([^_]*)/g, (_,$1,$2)=>$1.toUpperCase()+$2);
+console.log(line2upper("line__a_to_upper"))
+// 大小写互换
+lowerSwapUpper = str => str.replace(/([A-Z]*)([a-z]*)/g,(_,$1,$2) => $1.toLowerCase()+$2.toUpperCase());
+console.log(lowerSwapUpper("line__a_to_upper"))
 // exec通过循环得到所有匹配项 matchAll的替代方法 返回 match匹配项 index位置 input源字符串 groups分组对象
 var regexp = /javascript/ig;
 while (result = regexp.exec("More about JavaScript at https://javascript.info")) {
