@@ -77,7 +77,7 @@ console.log(removeRepeat("askdhg1231asdkjh123")) //askdhg123j
  * @returns {Number} 字符串次数
  */
 function getRepeatNum(str, val) {
-  return str.match(new RegExp(val, 'g')).length;
+  return (str == null || str === "" || val == null || val === "") ? 0 : str.match(new RegExp(val, 'g')).length;
 }
 console.log(getRepeatNum("askdhg1231asdkjh123", "as")) //2
 
@@ -193,7 +193,7 @@ function truncate(str, maxlength = 10, character) {
   return (str.length > maxlength) ?
     str.slice(0, maxlength) + Array(3).fill(typeof character === "string" ? character : ".").join("") : str;
 }
-console.log(truncate("abcdefghijklmnopqrstuvwxyz"))
+console.log(truncate("abcdefghijklmnopqrstuvwxyz")) //abcdefghij...
 
 /**
  * 通过字符串索引删除字符串
@@ -205,7 +205,7 @@ console.log(truncate("abcdefghijklmnopqrstuvwxyz"))
 function deleteByIndex(str, index) {
   return str.split("").reduce((start, ele, i) => (index instanceof Array ? index.indexOf(i) == -1 ? start + ele : start : i != index ? start + ele : start), "")
 }
-console.log(deleteByIndex("12345", [1, 3]))
+console.log(deleteByIndex("12345", [1, 3])) //135
 
 /**
  * 删除最后一个指定字符
@@ -218,4 +218,68 @@ function deleteLastStr(str, delStr) {
   let index = str.lastIndexOf(delStr);
   return str.substring(0, index) + str.substring(index + 1, str.length);
 }
-console.log(deleteLastStr("1231415", "1"))
+console.log(deleteLastStr("1231415", "1")) //123145
+
+/**
+ * encrypto 加密程序
+ * @param {Strng} str 待加密字符串
+ * @param {Number} xor 异或值
+ * @param {Number} hex 加密后的进制数
+ * 
+ * @return {Strng} 加密后的字符串
+ */
+function encrypto(str, xor, hex) {
+  if (typeof str !== 'string' || typeof xor !== 'number' || typeof hex !== 'number') {
+    return;
+  }
+  let resultList = [];
+  hex = hex <= 25 ? hex : hex % 25;
+  for (let i = 0; i < str.length; i++) {
+    // 提取字符串每个字符的ascll码
+    let charCode = str.charCodeAt(i);
+    console.log(charCode)
+    // 进行异或加密
+    charCode = (charCode * 1) ^ xor;
+    console.log(charCode)
+    // 异或加密后的字符转成 hex 位数的字符串
+    charCode = charCode.toString(hex);
+    console.log(charCode)
+    resultList.push(charCode);
+  }
+  let splitStr = String.fromCharCode(hex + 97);
+  let resultStr = resultList.join(splitStr);
+  return resultStr;
+}
+console.log(encrypto("123", 123, 25)) //2oz2nz2m
+
+/**
+ * decrypto 解密程序
+ * @param {Strng} str 待加密字符串
+ * @param {Number} xor 异或值
+ * @param {Number} hex 加密后的进制数
+ * 
+ * @return {Strng} 加密后的字符串
+ */
+function decrypto(str, xor, hex) {
+  if (typeof str !== 'string' || typeof xor !== 'number' || typeof hex !== 'number') {
+    return;
+  }
+  let strCharList = [];
+  let resultList = [];
+  hex = hex <= 25 ? hex : hex % 25;
+  // 解析出分割字符
+  let splitStr = String.fromCharCode(hex + 97);
+  // 分割出加密字符串的加密后的每个字符
+  strCharList = str.split(splitStr);
+  for (let i = 0; i < strCharList.length; i++) {
+    // 将加密后的每个字符转成加密后的ascll码
+    let charCode = parseInt(strCharList[i], hex);
+    // 异或解密出原字符的ascll码
+    charCode = (charCode * 1) ^ xor;
+    let strChar = String.fromCharCode(charCode);
+    resultList.push(strChar);
+  }
+  let resultStr = resultList.join('');
+  return resultStr;
+}
+console.log(decrypto(encrypto("123", 123, 25), 123, 25)) //123
