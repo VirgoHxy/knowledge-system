@@ -27,14 +27,17 @@ console.log("undefined".localeCompare('undefined')) //0
 // 是否包含子字符串 返回boolean
 console.log(str.includes('un')) //true
 
-// 截取字符串[1,4) 左闭右开
+// 截取字符串[1,4) 左闭右开 没有第二个参数默认到最后
 console.log(str.slice(1, 4)) //nde
+console.log(str.slice(1)) //ndefined
 
-// 截取字符串[1,4) 左闭右开
+// 截取字符串[1,4) 左闭右开 没有第二个参数默认到最后
 console.log(str.substring(1, 4)) //nde
+console.log(str.substring(1)) //ndefined
 
-// 从索引 1 截取 4 位字符串(subStr未在核心规范中 不推荐使用)
+// 从索引 1 截取 4 位字符串 没有第二个参数默认到最后(subStr未在核心规范中 不推荐使用)
 console.log(str.substr(1, 4)) //ndef
+console.log(str.substr(1)) //ndefined
 
 // 字符串检索指定的值,返回数组
 console.log(str.match(/d/g)) //['d',)'d']
@@ -248,13 +251,10 @@ function encrypto(str, xor, hex) {
   for (let i = 0; i < str.length; i++) {
     // 提取字符串每个字符的ascll码
     let charCode = str.charCodeAt(i);
-    console.log(charCode)
     // 进行异或加密
     charCode = (charCode * 1) ^ xor;
-    console.log(charCode)
     // 异或加密后的字符转成 hex 位数的字符串
     charCode = charCode.toString(hex);
-    console.log(charCode)
     resultList.push(charCode);
   }
   let splitStr = String.fromCharCode(hex + 97);
