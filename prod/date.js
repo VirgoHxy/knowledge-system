@@ -320,7 +320,7 @@ function getDays(value) {
 function getDesignDate(index, formatStr) {
   let date = new Date();
   let newDate = new Date();
-  newDate.setDate(date.getDate() + index != null ? index : 0);
+  newDate.setDate(date.getDate() + (index != null ? index : 0));
   return format(newDate, formatStr);
 }
 

@@ -3,9 +3,14 @@ var xx, str;
 
 // xx转换字符串
 str = String(xx) //undefined
+String.fromCodePoint(90) //大写Z
 
 // 所在位字符
 console.log(str.charAt(2)) //d
+
+// ascii码
+console.log("a".codePointAt(0)) //97
+console.log("A".codePointAt(0)) //65
 
 // ltr第一个字符所在位 没有为-1
 console.log(str.indexOf('d')) //2
@@ -24,6 +29,12 @@ console.log(str.includes('un')) //true
 
 // 截取字符串[1,4) 左闭右开
 console.log(str.slice(1, 4)) //nde
+
+// 截取字符串[1,4) 左闭右开
+console.log(str.substring(1, 4)) //nde
+
+// 从索引 1 截取 4 位字符串(subStr未在核心规范中 不推荐使用)
+console.log(str.substr(1, 4)) //ndef
 
 // 字符串检索指定的值,返回数组
 console.log(str.match(/d/g)) //['d',)'d']

@@ -1,4 +1,13 @@
 let myDate = new Date();
+// milliseconds 现在增加24小时
+console.log(new Date(24 * 3600 * 1000))
+// str 将字符串时间转换为Date ios ie firefox仅支持xxxx/xx/xx日期
+console.log(new Date("1998/09/09 12:13:14"))
+// year, month, date, hours, minutes, seconds, ms 
+console.log(new Date(1998,8,9))
+// 日期差值 以毫秒数显示
+console.log(+new Date())
+console.log(new Date() - new Date("1998/09/09"))
 // date日期方法 设置方法将get改为set
 let arr = [
   myDate.getFullYear(),         // 获取完整的年份(4位,1970-????)
@@ -378,7 +387,7 @@ function getDesignDate(index, formatStr) {
   let date = new Date(); //当前日期
   let newDate = new Date();
   //官方文档上虽然说setDate参数是1-31,其实是可以设置负数的
-  newDate.setDate(date.getDate() + index != null ? index : 0);
+  newDate.setDate(date.getDate() + (index != null ? index : 0));
   return format(newDate, formatStr);
 }
 console.log(getDesignDate(1))
