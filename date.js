@@ -327,6 +327,7 @@ function getDateDiff(array) {
   return difference;
 }
 console.log(getDateDiff(["2020-06-02 14:24:23.000Z", "2020-08-08 15:23:24.000Z"]))
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"]))
 
 /**
  * 判断是否为闰年

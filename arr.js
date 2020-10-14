@@ -272,3 +272,14 @@ function compareArray(x, y, positionFlag = true) {
 
 console.log(compareArray(["3", "11", "21", "1"], ["1", "11", "21", "3"], false))
 console.log(compareArray(["3", "11", "21", "1"], ["1", "11", "21", "3"]))
+
+// Anagrams是具有相同数量相同字母但是顺序不同的单词
+function aclean(arr) {
+  let obj = {};
+  for (let i = 0; i < arr.length; i++) {
+    let sorted = arr[i].toLowerCase().split("").sort().join("");
+    obj[sorted] = arr[i];
+  }
+  return Object.values(obj);
+}
+console.log(aclean(["nap", "teachers", "cheaters", "PAN", "ear", "era", "hectares"]));
