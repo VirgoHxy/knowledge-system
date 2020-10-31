@@ -4,7 +4,7 @@ console.log(new Date(24 * 3600 * 1000))
 // str 将字符串时间转换为Date ios ie firefox仅支持xxxx/xx/xx日期
 console.log(new Date("1998/09/09 12:13:14"))
 // year, month, date, hours, minutes, seconds, ms 
-console.log(new Date(1998,8,9))
+console.log(new Date(1998, 8, 9))
 // 日期差值 以毫秒数显示
 console.log(+new Date())
 console.log(new Date() - new Date("1998/09/09"))
@@ -41,10 +41,10 @@ myDate.valueOf()  // 1596619591585 返回UTC(协调世界时)到该时间毫秒�
  * @returns {String} 返回字符串时间
  */
 function format(value, formatStr) {
-  if(typeof value == "string"&&/T/g.test(value)){ // 去T
-    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  if (typeof value == "string" && /T/g.test(value)) { // 去T
+    value = value.replace(/T/g, " ").replace(/\.[\d]{3}Z/, "");
   }
-  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+  if (typeof value == "string" && /-/g.test(value)) { //new Date兼容ios ie firefox
     value = value.replace(/-/g, "/");
   }
   let myDate = typeof value === "object" ? value : new Date(value);
@@ -121,10 +121,10 @@ console.log(convertJson(/Date(1278930470649)/))
  * @returns {Number} 返回毫秒/秒类型时间戳
  */
 function convertToStamp(value, sFlag = false) {
-  if(typeof value == "string"&&/T/g.test(value)){ // 去T
-    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  if (typeof value == "string" && /T/g.test(value)) { // 去T
+    value = value.replace(/T/g, " ").replace(/\.[\d]{3}Z/, "");
   }
-  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+  if (typeof value == "string" && /-/g.test(value)) { //new Date兼容ios ie firefox
     value = value.replace(/-/g, "/");
   }
   let myDate = typeof value === "object" ? value : new Date(value),
@@ -178,12 +178,12 @@ function sortDate(array, isAsc = false, key) {
       right = b;
     switch (flag) {
       case 1:// 无key普通 001
-        left = new Date(/-/.test(a) ? a.replace(/-/g, "/"): a).getTime();
-        right = new Date(/-/.test(b) ? b.replace(/-/g, "/"): b).getTime();
+        left = new Date(/-/.test(a) ? a.replace(/-/g, "/") : a).getTime();
+        right = new Date(/-/.test(b) ? b.replace(/-/g, "/") : b).getTime();
         break;
       case 3:// 有key普通 011
-        left = new Date(/-/.test(a[key]) ? a[key].replace(/-/g, "/"): a[key]).getTime();
-        right = new Date(/-/.test(b[key]) ? b[key].replace(/-/g, "/"): b[key]).getTime();
+        left = new Date(/-/.test(a[key]) ? a[key].replace(/-/g, "/") : a[key]).getTime();
+        right = new Date(/-/.test(b[key]) ? b[key].replace(/-/g, "/") : b[key]).getTime();
         break;
       case 4:// 无keyjson 100
         left = Number(String(a).replace(/\/Date\((\d+)\)\//gi, "$1"));
@@ -232,10 +232,10 @@ console.log(sortDate([
  * @returns {Date | String} 当value为空返回字符串提示 当formatStr为空返回date 不为空返回字符串时间 
  */
 function getCalcDate(value, opt, formatStr) {
-  if(typeof value == "string"&&/T/g.test(value)){ // 去T
-    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  if (typeof value == "string" && /T/g.test(value)) { // 去T
+    value = value.replace(/T/g, " ").replace(/\.[\d]{3}Z/, "");
   }
-  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+  if (typeof value == "string" && /-/g.test(value)) { //new Date兼容ios ie firefox
     value = value.replace(/-/g, "/");
   }
   let myDate = typeof value === "object" ? value : new Date(value);
@@ -296,14 +296,15 @@ console.log(getCalcDate(new Date(), [{
  * 求两个/多个时间的最大最小之间的差(多个时间依赖sortDate排序方法)
  * 
  * @param {Array} array 时间数组
- * 
- * @returns {Array} 返回时间差数组 返回[日,时,分,秒] 年月误差较严重无返回
+ * @param {String} type 类型(向上取整) date,hour,minute,second
+ *
+ * @returns {Array} 返回时间差数组 返回[日,时,分,秒] 年月误差较严重无返回 type为特定字符串返回单独数值
  */
-function getDateDiff(array) {
+function getDateDiff(array, type) {
   if (!(array instanceof Array) || array.length === 0) {
     return [];
   }
-  let sortArr = arr.length === 2 ? array.concat() : sortDate(array.concat()),
+  let sortArr = array.length === 2 ? array.concat() : sortDate(array.concat()),
     time = Math.abs(Date.parse(sortArr[0]) - Date.parse(sortArr[sortArr.length - 1])) / 1000,
     difference = new Array(4).fill(0),
     numberArray = [
@@ -324,10 +325,25 @@ function getDateDiff(array) {
       time = (time - value * element);
     }
   }
-  return difference;
+  switch (type) {
+    case "date":
+      return difference[0] + ((difference[1] + ((difference[2] + difference[3] > 0 ? 1 : 0) > 0 ? 1 : 0)) > 0 ? 1 : 0);
+    case "hour":
+      return difference[1] + ((difference[2] + difference[3] > 0 ? 1 : 0) > 0 ? 1 : 0);
+    case "minute":
+      return difference[2] + (difference[3] > 0 ? 1 : 0);
+    case "second":
+      return difference[3];
+    default:
+      return difference;
+  }
 }
 console.log(getDateDiff(["2020-06-02 14:24:23.000Z", "2020-08-08 15:23:24.000Z"]))
 console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"]))
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"date"))
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"hour"))
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"minute"))
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"minute"))
 
 /**
  * 判断是否为闰年
@@ -351,10 +367,10 @@ console.log(isLeapYear(2000));
  * @returns {Number} 当value为空返回字符串提示 不为空返回当月天数 
  */
 function getDays(value) {
-  if(typeof value == "string"&&/T/g.test(value)){ // 去T
-    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
+  if (typeof value == "string" && /T/g.test(value)) { // 去T
+    value = value.replace(/T/g, " ").replace(/\.[\d]{3}Z/, "");
   }
-  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
+  if (typeof value == "string" && /-/g.test(value)) { //new Date兼容ios ie firefox
     value = value.replace(/-/g, "/");
   }
   let myDate = typeof value === "object" ? value : new Date(value);
@@ -389,9 +405,25 @@ function getDesignDate(index, formatStr) {
   let newDate = new Date();
   //官方文档上虽然说setDate参数是1-31,其实是可以设置负数的
   newDate.setDate(date.getDate() + (index != null ? index : 0));
-  return format(newDate, formatStr);
+  return formatStr!==undefined ? format(newDate, formatStr) : newDate;
 }
-console.log(getDesignDate(1))
+console.log(getDesignDate(1,false))
+
+/**
+ * 获取从当前日期指定月数的字符串日期 也可以使用getCalcDate方法
+ * 
+ * @param {Number} index 月数 
+ * @param {String} [formatStr] 格式化规则 依赖format方法
+ * 
+ * @returns {String} 指定日期字符串
+ */
+function getDesignMonth(index, formatStr) {
+  let date = new Date(); //当前日期
+  let newDate = new Date();
+  newDate.setMonth(date.getMonth() + (index != null ? index : 0));
+  return formatStr!==undefined ? format(newDate, formatStr) : newDate;
+}
+console.log(getDesignMonth(-1,false))
 
 /**
  * 时间数值转换字符串时间长度

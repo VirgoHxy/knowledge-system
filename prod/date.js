@@ -233,14 +233,15 @@ function getCalcDate(value, opt, formatStr) {
  * 求两个/多个时间的最大最小之间的差(多个时间依赖sortDate排序方法)
  * 
  * @param {Array} array 时间数组
- * 
- * @returns {Array} 返回时间差数组 返回[日,时,分,秒] 年月误差较严重无返回
+ * @param {String} type 类型(向上取整) date,hour,minute,second
+ *
+ * @returns {Array} 返回时间差数组 返回[日,时,分,秒] 年月误差较严重无返回 type为特定字符串返回单独数值
  */
-function getDateDiff(array) {
+function getDateDiff(array, type) {
   if (!(array instanceof Array) || array.length === 0) {
     return [];
   }
-  let sortArr = arr.length === 2 ? array.concat() : sortDate(array.concat()),
+  let sortArr = array.length === 2 ? array.concat() : sortDate(array.concat()),
     time = Math.abs(Date.parse(sortArr[0]) - Date.parse(sortArr[sortArr.length - 1])) / 1000,
     difference = new Array(4).fill(0),
     numberArray = [
@@ -261,7 +262,18 @@ function getDateDiff(array) {
       time = (time - value * element);
     }
   }
-  return difference;
+  switch (type) {
+    case "date":
+      return difference[0] + ((difference[1] + ((difference[2] + difference[3] > 0 ? 1 : 0) > 0 ? 1 : 0)) > 0 ? 1 : 0);
+    case "hour":
+      return difference[1] + ((difference[2] + difference[3] > 0 ? 1 : 0) > 0 ? 1 : 0);
+    case "minute":
+      return difference[2] + (difference[3] > 0 ? 1 : 0);
+    case "second":
+      return difference[3];
+    default:
+      return difference;
+  }
 }
 
 /**
@@ -318,10 +330,26 @@ function getDays(value) {
  * @returns {String} 指定日期字符串
  */
 function getDesignDate(index, formatStr) {
-  let date = new Date();
+  let date = new Date(); //当前日期
   let newDate = new Date();
+  //官方文档上虽然说setDate参数是1-31,其实是可以设置负数的
   newDate.setDate(date.getDate() + (index != null ? index : 0));
-  return format(newDate, formatStr);
+  return formatStr!==undefined ? format(newDate, formatStr) : newDate;
+}
+
+/**
+ * 获取从当前日期指定月数的字符串日期 也可以使用getCalcDate方法
+ * 
+ * @param {Number} index 月数 
+ * @param {String} [formatStr] 格式化规则 依赖format方法
+ * 
+ * @returns {String} 指定日期字符串
+ */
+function getDesignMonth(index, formatStr) {
+  let date = new Date(); //当前日期
+  let newDate = new Date();
+  newDate.setMonth(date.getMonth() + (index != null ? index : 0));
+  return formatStr!==undefined ? format(newDate, formatStr) : newDate;
 }
 
 /**
@@ -400,4 +428,19 @@ function getDateStr(val, type) {
     }
   }
   return str;
+}
+
+module.exports = {
+  format,
+  convertJson,
+  convertToStamp,
+  convertStamp,
+  sortDate,
+  getCalcDate,
+  getDateDiff,
+  isLeapYear,
+  getDays,
+  getDesignDate,
+  getDesignMonth,
+  getDateStr
 }

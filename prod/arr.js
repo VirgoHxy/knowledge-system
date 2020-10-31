@@ -186,7 +186,6 @@ function compareArray(x, y, positionFlag = true) {
 
 module.exports = {
   shuffle,
-  operRepeatArray,
   distinctOfObj,
   distinctOfSet,
   removeItem,
