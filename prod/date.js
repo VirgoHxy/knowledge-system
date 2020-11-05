@@ -1,5 +1,31 @@
 /**
- * 格式化时间
+ * 获取合规时间字符串
+ * 
+ * @param {Date | String | Number} value 时间字符串
+ * 
+ * @returns {Date} 返回时间对象
+ */
+function getRegularTime(value) {
+  if(typeof value == "string"){
+    var ms = value.match(/\.([\d]{1,})[Z]*/) ? value.match(/\.([\d]{1,})[Z]*/)[1] : 0;
+    if (/T/g.test(value)) { // 去T
+      value = value.replace(/T/g, " ");
+    }
+    if (/\./g.test(value)) { // 去毫秒 兼容ios ie firefox
+      value = value.replace(/\.[\d]{1,}[Z]*/, "");
+    }
+    if (/-/g.test(value)) { // new Date兼容ios ie firefox
+      value = value.replace(/-/g, "/");
+    }
+    var date = new Date(value);
+    date.setMilliseconds(ms);
+    return date;
+  }
+  return value;
+}
+
+/**
+ * 格式化时间(依赖getRegularTime方法)
  * 
  * @param {Date | String | Number} value 时间值
  * @param {String} [formatStr = "YYYY-MM-DD hh:mm:ss"] 格式化规则
@@ -7,13 +33,7 @@
  * @returns {String} 返回字符串时间
  */
 function format(value, formatStr) {
-  if(typeof value == "string"&&/T/g.test(value)){ // 去T
-    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
-  }
-  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
-    value = value.replace(/-/g, "/");
-  }
-  let myDate = typeof value === "object" ? value : new Date(value);
+  let myDate = getRegularTime(value);
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   let str = formatStr || "YYYY-MM-DD hh:mm:ss",
     week = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
@@ -78,7 +98,7 @@ function convertJson(value, formatStr) {
 };
 
 /**
- * 时间转换成时间戳 
+ * 时间转换成时间戳(依赖getRegularTime方法)
  * 
  * @param {Date | String} value 时间值
  * @param {Boolean} [sFlag = false] 类型 默认毫秒 false毫秒  true秒
@@ -86,13 +106,7 @@ function convertJson(value, formatStr) {
  * @returns {Number} 返回毫秒/秒类型时间戳
  */
 function convertToStamp(value, sFlag = false) {
-  if(typeof value == "string"&&/T/g.test(value)){ // 去T
-    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
-  }
-  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
-    value = value.replace(/-/g, "/");
-  }
-  let myDate = typeof value === "object" ? value : new Date(value),
+  let myDate = getRegularTime(value),
     time = myDate.getTime();
   if (isNaN(time)) { return "请输入正确的日期"; }
   if (sFlag) { return Math.round(time / 1000); }
@@ -141,12 +155,12 @@ function sortDate(array, isAsc = false, key) {
       right = b;
     switch (flag) {
       case 1:// 无key普通 001
-        left = new Date(/-/.test(a) ? a.replace(/-/g, "/"): a).getTime();
-        right = new Date(/-/.test(b) ? b.replace(/-/g, "/"): b).getTime();
+        left = new Date(/-/.test(a) ? a.replace(/-/g, "/") : a).getTime();
+        right = new Date(/-/.test(b) ? b.replace(/-/g, "/") : b).getTime();
         break;
       case 3:// 有key普通 011
-        left = new Date(/-/.test(a[key]) ? a[key].replace(/-/g, "/"): a[key]).getTime();
-        right = new Date(/-/.test(b[key]) ? b[key].replace(/-/g, "/"): b[key]).getTime();
+        left = new Date(/-/.test(a[key]) ? a[key].replace(/-/g, "/") : a[key]).getTime();
+        right = new Date(/-/.test(b[key]) ? b[key].replace(/-/g, "/") : b[key]).getTime();
         break;
       case 4:// 无keyjson 100
         left = Number(String(a).replace(/\/Date\((\d+)\)\//gi, "$1"));
@@ -169,7 +183,7 @@ function sortDate(array, isAsc = false, key) {
 }
 
 /**
- * 给定时间增加/减去多长时间
+ * 给定时间增加/减去多长时间(依赖getRegularTime方法)
  * 
  * @param {Date | String | Number} value 时间值
  * @param {Array | Object} opt 增加的对象或者是对象数组
@@ -180,13 +194,7 @@ function sortDate(array, isAsc = false, key) {
  * @returns {Date | String} 当value为空返回字符串提示 当formatStr为空返回date 不为空返回字符串时间 
  */
 function getCalcDate(value, opt, formatStr) {
-  if(typeof value == "string"&&/T/g.test(value)){ // 去T
-    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
-  }
-  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
-    value = value.replace(/-/g, "/");
-  }
-  let myDate = typeof value === "object" ? value : new Date(value);
+  let myDate = getRegularTime(value);
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   if (opt == null || typeof opt !== "object") { return "参数错误"; }
   let set = function (data) {
@@ -290,20 +298,14 @@ function isLeapYear(val) {
 }
 
 /**
- * 获取当前月份天数(依赖isLeapYear方法)
+ * 获取当前月份天数(依赖isLeapYear,getRegularTime方法)
  * 
  * @param {Date | String | Number} value 时间值
  * 
  * @returns {Number} 当value为空返回字符串提示 不为空返回当月天数 
  */
 function getDays(value) {
-  if(typeof value == "string"&&/T/g.test(value)){ // 去T
-    value = value.replace(/T/g," ").replace(/\.[\d]{3}Z/,"");
-  }
-  if(typeof value == "string"&&/-/g.test(value)){ //new Date兼容ios ie firefox
-    value = value.replace(/-/g, "/");
-  }
-  let myDate = typeof value === "object" ? value : new Date(value);
+  let myDate = getRegularTime(value);
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   let year = myDate.getFullYear(),
     mouth = myDate.getMonth() + 1,
@@ -334,7 +336,7 @@ function getDesignDate(index, formatStr) {
   let newDate = new Date();
   //官方文档上虽然说setDate参数是1-31,其实是可以设置负数的
   newDate.setDate(date.getDate() + (index != null ? index : 0));
-  return formatStr!==undefined ? format(newDate, formatStr) : newDate;
+  return formatStr !== undefined ? format(newDate, formatStr) : newDate;
 }
 
 /**
@@ -349,7 +351,7 @@ function getDesignMonth(index, formatStr) {
   let date = new Date(); //当前日期
   let newDate = new Date();
   newDate.setMonth(date.getMonth() + (index != null ? index : 0));
-  return formatStr!==undefined ? format(newDate, formatStr) : newDate;
+  return formatStr !== undefined ? format(newDate, formatStr) : newDate;
 }
 
 /**
@@ -431,6 +433,7 @@ function getDateStr(val, type) {
 }
 
 module.exports = {
+  getRegularTime,
   format,
   convertJson,
   convertToStamp,
