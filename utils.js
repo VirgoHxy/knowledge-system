@@ -181,6 +181,25 @@ function getBrowser() {
 }
 
 /**
+ * 获取支付浏览器类型
+ * 
+ * @returns {String} weixin 或者 alipay
+ */
+function getPayBrowser() {
+  //判断什么浏览器
+  var ua = window.navigator.userAgent.toLowerCase();
+  //判断是不是微信
+  if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+    return "weixin";
+  }
+  //判断是不是支付宝
+  if (ua.match(/AlipayClient/i) == 'alipayclient') {
+    return "alipay";
+  }
+  return false;
+}
+
+/**
  * 关闭浏览器
  */
 function closeWindow() {
@@ -196,6 +215,12 @@ function closeWindow() {
   }
 }
 
+/**
+ * 下载文本.txt(依赖getBrowser,getDownloadUri方法)
+ * 
+ * @param {String} data 数据
+ * @param {String} fileName 文件名称
+ */
 function downloadTxt(data, fileName) {
   const bw = getBrowser(); // 获取浏览器信息
   if (!bw["edge"] && !bw["ie"]) {
@@ -218,6 +243,12 @@ function downloadTxt(data, fileName) {
   }
 }
 
+/**
+ * 获取文本下载资源
+ * 
+ * @param {String} data 数据
+ * @returns {String}
+ */
 function getDownloadUri(data) {
   const mimeType = "attachment/csv";
   const charset = ";charset=utf-8,";
@@ -225,9 +256,15 @@ function getDownloadUri(data) {
   return "data:" + mimeType + charset + _utf + encodeURIComponent(data);
 }
 
-function downloadImg(content, fileName) {
+/**
+ * 下载图片(依赖getBrowser,base64ToBlob方法)
+ * 
+ * @param {String} data 数据
+ * @param {String} fileName 文件名称
+ */
+function downloadImg(data, fileName) {
   const bw = getBrowser(); // 获取浏览器信息
-  let blob = base64ToBlob(content); //new Blob([content]);
+  let blob = base64ToBlob(data); //new Blob([data]);
   if (!bw["edge"] && !bw["ie"]) {
     let aLink = document.createElement("a");
     let evt = document.createEvent("HTMLEvents");
@@ -241,8 +278,14 @@ function downloadImg(content, fileName) {
   }
 }
 
-function base64ToBlob(code) {
-  let parts = code.split(";base64,");
+/**
+ * 获取base64下载资源
+ * 
+ * @param {String} data 数据
+ * @returns {Blob}
+ */
+function base64ToBlob(data) {
+  let parts = data.split(";base64,");
   let contentType = parts[0].split(":")[1];
   let raw = window.atob(parts[1]);
   let rawLength = raw.length;
