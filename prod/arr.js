@@ -184,11 +184,52 @@ function compareArray(x, y, positionFlag = true) {
   }
 }
 
+/**
+ * 按数组长度分割数组成二维数组(分割长度不足够则会增加)
+ * @param {Array} array 原数组 
+ * @param {Number} length 数组最大位数
+ * @param {Number} number 数组元素最小长度
+ * 
+ * @returns 返回二维数组
+ */
+function splitOfArrayLength(array, length, number) {
+  if (array.length == 0) {
+    return [[]]
+  }
+  var num = Math.ceil(array.length / length)
+  var index = 0;
+  var newArray = [];
+  num = num <= number ? number : num
+  // 分割数组
+  while (index < array.length) {
+    newArray.push(array.slice(index, index += num));
+  }
+  return newArray;
+}
+
+/**
+ * 按元素长度分割数组成二维数组
+ * @param {Array} array 原数组 
+ * @param {Number} number 数组元素长度
+ * 
+ * @returns 返回二维数组
+ */
+function splitOfElementLength(array, number) {
+  var index = 0;
+  var newArray = [];
+  while (index < array.length) {
+    newArray.push(array.slice(index, index += number));
+  }
+  return newArray;
+}
+
 module.exports = {
   shuffle,
   distinctOfObj,
   distinctOfSet,
   removeItem,
   compareComplexArray,
-  compareArray
+  compareArray,
+  splitOfArrayLength,
+  splitOfElementLength
 }

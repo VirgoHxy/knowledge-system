@@ -283,3 +283,49 @@ function aclean(arr) {
   return Object.values(obj);
 }
 console.log(aclean(["nap", "teachers", "cheaters", "PAN", "ear", "era", "hectares"]));
+
+/**
+ * 按数组长度分割数组成二维数组(分割长度不足够则会增加)
+ * @param {Array} array 原数组 
+ * @param {Number} length 数组最大位数
+ * @param {Number} number 数组元素最小长度
+ * 
+ * @returns 返回二维数组
+ */
+function splitOfArrayLength(array, length, number) {
+  if (array.length == 0) {
+    return [[]]
+  }
+  var num = Math.ceil(array.length / length)
+  var index = 0;
+  var newArray = [];
+  num = num <= number ? number : num
+  // 分割数组
+  while (index < array.length) {
+    newArray.push(array.slice(index, index += num));
+  }
+  return newArray;
+}
+for (var index = 0,array = []; index < 100; index++) {
+  array.push(index)
+}
+// 这里生成5位数组 分割长度为20
+console.log(splitOfArrayLength(array, 5, 10))
+
+/**
+ * 按元素长度分割数组成二维数组
+ * @param {Array} array 原数组 
+ * @param {Number} number 数组元素长度
+ * 
+ * @returns 返回二维数组
+ */
+function splitOfElementLength(array, number) {
+  var index = 0;
+  var newArray = [];
+  while (index < array.length) {
+    newArray.push(array.slice(index, index += number));
+  }
+  return newArray;
+}
+// 这里生成10位数组 分割长度为10
+console.log(splitOfElementLength(array, 10))
