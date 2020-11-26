@@ -3,8 +3,8 @@
 ## 测试文件概括
 | 文件名称 | 说明 |
 | - | - |
-| operators.js | - | 操作符示例 |
-| regexpTest.js | - | 正则操作示例 |
+| operators.js | 操作符示例 |
+| regexpTest.js | 正则操作示例 |
 
 ## prod文件概括
 | 文件名称 | 类型 | 非导出的抛出对象 |
