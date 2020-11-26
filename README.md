@@ -33,7 +33,7 @@
 ### date.js
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
 | - | - | - | - | - |
-| getRegularTime | 获取合规时间字符串 | - | value: Date/String/Number | Date |
+| getRegularTime | 获取合规时间 | - | value: Date/String/Number | Date |
 | format | 格式化时间 | getRegularTime | value: Date/String/Number, [formatStr = "YYYY-MM-DD hh:mm:ss"]: String | String |
 | convertJson | json时间(/Date(*)/)转换成时间 | [format] | value: String, [formatStr: String] | Date/String |
 | convertToStamp | 时间转换成时间戳 | getRegularTime | value: String, [sFlag = false]: Boolean | Number |
@@ -69,21 +69,6 @@
 | compareObject | 判断对象是否相等 | - | x: Object, y: Object | Boolean |
 | clone | 深拷贝对象 | - | target: * | * |
 | getType | 判断数据详细类型 | - | o: * | String |
-
-### obj.js
-| 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
-| - | - | - | - | - |
-| removeRepeat | 字符串去重 | - | val: String | String |
-| getRepeatNum | 字符串中子字符串的重复次数 | - | str: String, val: String | String |
-| getMmRepeatNum | 字符串中的子字符重复最多/少次数 | - |str: String, minFlag: Boolean | Object/Array |
-| randomStr | 返回随机字符串 | - | length: Number | String |
-| upperLetter | 获取大写字母数组 | - | - | Array |
-| lowerLetter | 获取小写字母数组 | - | - | Array |
-| truncate | 超过最大长度的将用三个替换字符代替 | - | str: String, [maxlength = 10]: Number, [character = "."]: String | String |
-| deleteByIndex | 通过字符串索引删除字符串 | - | str: String, index: Number/Array | String |
-| deleteLastStr | 删除最后一个指定字符 | - | str: String, delStr: String | String |
-| encrypto | 加密字符串 | - | str: String, xor: Number, hex: Number | String |
-| decrypto | 解密字符串 | - | str: String, xor: Number, hex: Number | String |
 
 ### regexp.js
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |

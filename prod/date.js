@@ -2,7 +2,7 @@
   "use strict"
 
   /**
-   * 获取合规时间字符串
+   * 获取合规时间
    * 
    * @param {Date | String | Number} value 时间字符串
    * 

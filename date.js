@@ -34,7 +34,7 @@ myDate.valueOf()  // 1596619591585 返回UTC(协调世界时)到该时间毫秒�
 
 
 /**
- * 获取合规时间字符串
+ * 获取合规时间
  * 
  * @param {Date | String | Number} value 时间字符串
  * 
