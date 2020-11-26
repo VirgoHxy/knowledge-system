@@ -76,10 +76,13 @@ const target1 = {
   },
   field4: [2, 4, 8],
 };
+
 /**
  * 判断对象是否相等
+ * 
  * @param {Object} x 对象1
  * @param {Object} y 对象2
+ * 
  * @return {Boolean} true 为相等，false 为不等
  */
 function compareObject(x, y) {
@@ -109,11 +112,12 @@ console.log(
 )
 
 /**
- * 深拷贝对象
- * @param {*} target 克隆对象
- * @param {WeakMap} map map对象 防止循环引用
+ * 深拷贝对象(JSON.parse(JSON.stringify(target)) 可深拷贝一个对象.但有一定局限)
  * 
- * JSON.parse(JSON.stringify(target)) 可深拷贝一个对象.但有一定局限
+ * @param {*} target 克隆对象
+ * 
+ * @returns {*}
+ * 
  */
 function clone(target, map = new WeakMap()) {
   if (typeof target === 'object') {
@@ -138,11 +142,14 @@ console.log(
 
 /**
  * 判断数据类型
+ * 
  * @param {*} o 各种类型值
  * 
+ * @returns {String} 详细类型
  */
 function getType(o) {
   var s = Object.prototype.toString.call(o);
   return s.match(/\[object (.*?)\]/)[1].toLowerCase();
 };
 console.log(getType(1)) //number
+console.log(getType(new Date())) //date

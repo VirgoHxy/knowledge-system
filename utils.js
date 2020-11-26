@@ -49,19 +49,19 @@ console.log(getUrlParam("c", "http://wxy.ittiger.club:9999/In?p=2018071815295718
 /**
  * 修改url参数的值
  * 
- * @param {String} arg 参数的名称
- * @param {*} argVal 参数的值 非字符串转换为字符串
+ * @param {String} key 参数的名称
+ * @param {*} value 参数的值 非字符串转换为字符串
  * @param {String} [url] 链接地址 默认为当前浏览器地址
  * 
  * @returns 返回修改后的地址
  */
-function changeURLArg(arg, argVal, url) {
+function changeURLArg(key, value, url) {
   try {
-    var pattern = arg + "=([^&]*)";
-    var replaceText = arg + "=" + (!(argVal instanceof Object) ? argVal : JSON.stringify(argVal));
+    var pattern = key + "=([^&]*)";
+    var replaceText = key + "=" + (!(value instanceof Object) ? value : JSON.stringify(value));
     !url && (url = window.location.href);
     if (url.match(pattern)) {
-      var tmp = "/(" + arg + "=)([^&]*)/gi";
+      var tmp = "/(" + key + "=)([^&]*)/gi";
       tmp = url.replace(eval(tmp), replaceText);
       return tmp;
     } else {
@@ -79,11 +79,11 @@ console.log(changeURLArg("c", { a: 1 }, "http://wxy.ittiger.club:9999/In?p=20180
 
 /**
  * 设置期限Storage
+ * 
  * @param {Object} storage 存储对象类型 localStorage或者sessionStorage
  * @param {String} key 存储对象名称
- * @param {Any} value 存储对象值
+ * @param {*} value 存储对象值
  * @param {number} expire 存储时间(毫秒)
- *
  */
 function setExpire(storage, key, value, expire) {
   let obj = {
@@ -96,9 +96,11 @@ function setExpire(storage, key, value, expire) {
 
 /**
  * 获取Storage
+ * 
  * @param {Obeject} storage 存储对象类型 localStorage或者sessionStorage
  * @param {String} key 存储对象名称
- *
+ * 
+ * @returns {*}
  */
 function getExpire(storage, key) {
   let val = storage.getItem(key);
@@ -216,82 +218,70 @@ function closeWindow() {
 }
 
 /**
- * 下载文本.txt(依赖getBrowser,getDownloadUri方法)
+ * 获取下载文件blob
  * 
- * @param {String} data 数据
- * @param {String} fileName 文件名称
- */
-function downloadTxt(data, fileName) {
-  const bw = getBrowser(); // 获取浏览器信息
-  if (!bw["edge"] && !bw["ie"]) {
-    const element = document.createElement("a");
-    const uri = getDownloadUri(data);
-    element.href = uri;
-    element.download = fileName;
-    const a = document.body.appendChild(element);
-    // const evt = document.createEvent("HTMLEvents");
-    // evt.initEvent("click", false, false); // 不加后面两个参数在Firefox上报错
-    // a.dispatchEvent(evt);
-    a.click();
-    document.body.removeChild(element);
-  } else if (bw["ie"] >= 10 || bw["edge"] === "edge") {
-    const _utf = "\uFEFF"; // 为了使文件以utf-8的编码模式，同时也是解决中文乱码的问题
-    const blob = new Blob([_utf + data], {
-      type: "text/json" // 自己需要的数据格式
-    });
-    navigator.msSaveBlob(blob, fileName);
-  }
-}
-
-/**
- * 获取文本下载资源
+ * @param {String} data 文件内容
+ * @param {String} type 文件类型
  * 
- * @param {String} data 数据
- * @returns {String}
- */
-function getDownloadUri(data) {
-  const mimeType = "attachment/csv";
-  const charset = ";charset=utf-8,";
-  const _utf = "\uFEFF"; // 为了使文件以utf-8的编码模式，同时也是解决中文乱码的问题
-  return "data:" + mimeType + charset + _utf + encodeURIComponent(data);
-}
-
-/**
- * 下载图片(依赖getBrowser,base64ToBlob方法)
- * 
- * @param {String} data 数据
- * @param {String} fileName 文件名称
- */
-function downloadImg(data, fileName) {
-  const bw = getBrowser(); // 获取浏览器信息
-  let blob = base64ToBlob(data); //new Blob([data]);
-  if (!bw["edge"] && !bw["ie"]) {
-    let aLink = document.createElement("a");
-    let evt = document.createEvent("HTMLEvents");
-    evt.initEvent("click", true, true); //initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
-    aLink.download = fileName;
-    aLink.href = URL.createObjectURL(blob);
-    // aLink.dispatchEvent(evt);
-    aLink.click();
-  } else if (bw["ie"] >= 10 || bw["edge"] === "edge") {
-    window.navigator.msSaveBlob(blob, fileName);
-  }
-}
-
-/**
- * 获取base64下载资源
- * 
- * @param {String} data 数据
  * @returns {Blob}
  */
-function base64ToBlob(data) {
-  let parts = data.split(";base64,");
-  let contentType = parts[0].split(":")[1];
-  let raw = window.atob(parts[1]);
-  let rawLength = raw.length;
-  let uInt8Array = new Uint8Array(rawLength);
-  for (let i = 0; i < rawLength; ++i) {
-    uInt8Array[i] = raw.charCodeAt(i);
+function getDownloadUri(data, type) {
+  switch (type) {
+    case "image": {
+      let parts = data.split(";base64,");
+      let contentType = parts[0].split(":")[1];
+      let raw = window.atob(parts[1]);
+      let rawLength = raw.length;
+      let uInt8Array = new Uint8Array(rawLength);
+      for (let i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i);
+      }
+      return new Blob([uInt8Array], { type: contentType });
+    }
+    case "txt": {
+      const _utf = "\uFEFF"; // 为了使文件以utf-8的编码模式，同时也是解决中文乱码的问题
+      return new Blob([_utf + data], {
+        type: "text/json" // 自己需要的数据格式
+      });
+    }
+    default:
+      console.log("下载文件类型不合规")
+      return false;
   }
-  return new Blob([uInt8Array], { type: contentType });
+}
+
+/**
+ * 下载文件(依赖getBrowser,getDownloadUri方法)
+ * 
+ * @param {String} data 文件内容
+ * @param {String} fileName 文件名称
+ */
+function download(data, fileName) {
+  try {
+    const bw = getBrowser(); // 获取浏览器信息
+    let type = fileName.match(/.+\.(.+)$/)[1];
+    let blob = false;
+    if (/(gif|jpg|jpeg|png|gif|jpg|png)$/.test(type)) {
+      type = "image";
+    }
+    blob = getDownloadUri(data, type); //new Blob([data]);
+    if (blob === false) {
+      console.log("下载失败,内容不合规")
+      return false;
+    }
+    if (!bw["edge"] && !bw["ie"]) {
+      let aLink = document.createElement("a");
+      // let evt = document.createEvent("HTMLEvents");
+      // evt.initEvent("click", true, true); //initEvent 事件类型，是否冒泡，是否阻止浏览器的默认行为
+      aLink.download = fileName;
+      aLink.href = URL.createObjectURL(blob);
+      // aLink.dispatchEvent(evt);
+      aLink.click();
+    } else if (bw["ie"] >= 10 || bw["edge"] === "edge") {
+      window.navigator.msSaveBlob(blob, fileName);
+    }
+  } catch (error) {
+    console.log(error, "下载失败")
+    return false;
+  }
 }

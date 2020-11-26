@@ -41,7 +41,12 @@ myDate.valueOf()  // 1596619591585 返回UTC(协调世界时)到该时间毫秒�
  * @returns {Date} 返回时间对象
  */
 function getRegularTime(value) {
-  if(typeof value == "string"){
+  let getType = function(o) {
+    var s = Object.prototype.toString.call(o);
+    return s.match(/\[object (.*?)\]/)[1].toLowerCase();
+  };
+
+  if (getType(value) == "string") {
     var ms = value.match(/\.([\d]{1,})[Z]*/) ? value.match(/\.([\d]{1,})[Z]*/)[1] : 0;
     if (/T/g.test(value)) { // 去T
       value = value.replace(/T/g, " ");
@@ -55,9 +60,17 @@ function getRegularTime(value) {
     var date = new Date(value);
     date.setMilliseconds(ms);
     return date;
+  } else if(getType(value) == "number") {
+    return new Date(value);
+  } else if(getType(value) == "date") {
+    return value;
+  } else {
+    return false;
   }
-  return value;
 }
+console.log(getRegularTime("2020-12-12 11:22:33"))
+console.log(getRegularTime(1278930470649))
+console.log(getRegularTime(new Date()))
 
 /**
  * 格式化时间(依赖getRegularTime方法)
@@ -69,6 +82,7 @@ function getRegularTime(value) {
  */
 function format(value, formatStr) {
   let myDate = getRegularTime(value);
+  if (typeof myDate == "boolean") { return "请输入正确的日期"; }
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   let str = formatStr || "YYYY-MM-DD hh:mm:ss",
     week = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
@@ -117,7 +131,7 @@ console.log(format(new Date(), "YYYY-MM-DD hh:mm:ss.MS W"))
 console.log(format("2012/12/25 20:17:11.111", "YYYY-MM-DD hh:mm:ss.MS W"))
 
 /**
- * json时间转换成时间 格式化时间调用format方法
+ * json时间转换成时间
  * 
  * @param {String} value json时间值
  * @param {String} [formatStr] 格式化规则 依赖format方法
@@ -145,6 +159,7 @@ console.log(convertJson(/Date(1278930470649)/))
 function convertToStamp(value, sFlag = false) {
   let myDate = getRegularTime(value),
     time = myDate.getTime();
+  if (typeof myDate == "boolean") { return "请输入正确的日期"; }
   if (isNaN(time)) { return "请输入正确的日期"; }
   if (sFlag) { return Math.round(time / 1000); }
   return time;
@@ -249,6 +264,7 @@ console.log(sortDate([
  */
 function getCalcDate(value, opt, formatStr) {
   let myDate = getRegularTime(value);
+  if (typeof myDate == "boolean") { return "请输入正确的日期"; }
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   if (opt == null || typeof opt !== "object") { return "参数错误"; }
   let set = function (data) {
@@ -378,6 +394,7 @@ console.log(isLeapYear(2000));
  */
 function getDays(value) {
   let myDate = getRegularTime(value);
+  if (typeof myDate == "boolean") { return "请输入正确的日期"; }
   if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
   let year = myDate.getFullYear(),
     mouth = myDate.getMonth() + 1,
@@ -397,37 +414,32 @@ function getDays(value) {
 console.log(getDays("2020-4"))
 
 /**
- * 获取从当前日期指定天数的字符串日期 也可以使用getCalcDate方法
+ * 获取从当前日期指定数字时间的日期 也可以使用getCalcDate方法
  * 
- * @param {Number} index 天数 
+ * @param {Number} index 数值 
+ * @param {String} type 类型
  * @param {String} [formatStr] 格式化规则 依赖format方法
  * 
  * @returns {String} 指定日期字符串
  */
-function getDesignDate(index, formatStr) {
+function getDesignDate(index, type = "d", formatStr) {
   let date = new Date(); //当前日期
   let newDate = new Date();
-  //官方文档上虽然说setDate参数是1-31,其实是可以设置负数的
-  newDate.setDate(date.getDate() + (index != null ? index : 0));
-  return formatStr!==undefined ? format(newDate, formatStr) : newDate;
+  switch(type) {
+    case "mm":
+      newDate.setMonth(date.getMonth() + (index != null ? index : 0));
+      break;
+    case "d":
+      //官方文档上虽然说setDate参数是1-31,其实是可以设置负数的
+      newDate.setDate(date.getDate() + (index != null ? index : 0));
+      break;
+    default:
+      return "获取指定日期的类型未知"
+  }
+  return formatStr === undefined || typeof formatStr == "string" ? format(newDate, formatStr) : newDate;
 }
-console.log(getDesignDate(1,false))
-
-/**
- * 获取从当前日期指定月数的字符串日期 也可以使用getCalcDate方法
- * 
- * @param {Number} index 月数 
- * @param {String} [formatStr] 格式化规则 依赖format方法
- * 
- * @returns {String} 指定日期字符串
- */
-function getDesignMonth(index, formatStr) {
-  let date = new Date(); //当前日期
-  let newDate = new Date();
-  newDate.setMonth(date.getMonth() + (index != null ? index : 0));
-  return formatStr!==undefined ? format(newDate, formatStr) : newDate;
-}
-console.log(getDesignMonth(-1,false))
+console.log(getDesignDate(1,"d",false))
+console.log(getDesignDate(-1,"mm",false))
 
 /**
  * 时间数值转换字符串时间长度

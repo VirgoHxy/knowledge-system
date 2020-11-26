@@ -1,75 +1,135 @@
-# js容易忘记的操作 prod文件夹为生产使用(CommonJS 未压缩)
+# js容易忘记的操作,prod文件夹为生产使用(兼容写法,支持导出,非导出挂载在global对象上),也可直接复制某个所需方法,但是注意是否有依赖方法
 
-## arr.js 操作数组
-* #### operRepeatArray 获取数组重复/未重复/去重复的元素
-* #### distinctOfObj 数组去重
-* #### distinctOfSet 数组去重
-* #### removeItem 去除数组指定元素
-* #### compareComplexArray 判断复杂数组(数组元素可包含对象,数组等等)是否相等(数组元素所在位置必须相同,元素类型必须完全相同) 依赖obj的compareObject getType方法
-* #### compareArray 判断简单数组是否相等(元素类型必须完全相同)
+## 测试文件概括
+| 文件名称 | 说明 |
+| - | - |
+| operators.js | - | 操作符示例 |
+| regexpTest.js | - | 正则操作示例 |
 
-## obj.js 操作对象
-* #### compareObject 判断对象是否相等
-* #### clone 深拷贝对象
-* #### getType 判断数据类型
+## prod文件概括
+| 文件名称 | 类型 | 非导出的抛出对象 |
+| - | - | - |
+| arr.js | Array | JAFOArrMethod |
+| date.js | Date | JAFODateMethod |
+| fs.js | File | - |
+| number.js | Number | JAFONumberMethod |
+| obj.js | Object | JAFOObjMethod |
+| regexp.js | RegExp | JAFORegexpMethod |
+| str.js | String | JAFOStrMethod |
+| utils.js | * | JAFOUtilsMethod |
 
-## date.js 操作时间
-* #### format 格式化时间
-* #### convertJson json时间转换成时间(格式化依赖format)
-* #### convertToStamp 时间转换成时间戳
-* #### convertStamp 时间戳转换成时间(格式化依赖format)
-* #### sortDate 按时间顺序排序数组
-* #### getCalcDate 当前时间/给定时间增加/减去多长时间(格式化依赖format)
-* #### getDateDiff 求两个时间的差[日,时,分,秒]
-* #### isLeapYear 判断是否为闰年
-* #### getDays 当前月份天数(依赖isLeapYear)
-* #### getMyDate 获取从当前日期指定天数的日期(格式化依赖format)
-* #### getDateStr 时间数值转换字符串时间长度
+### arr.js
+| 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
+| - | - | - | - | - |
+| shuffle | 返回随机数组 | - | arr: Array | Array |
+| distinctOfObj | 通过对象数组去重 | - | arr: Array | Array |
+| distinctOfSet | 通过Set数组去重 | - | arr: Array | Array |
+| removeItem | 去除数组指定元素 | - | arr: Array, removeArr: Array, [key: String] | Array |
+| compareComplexArray | 判断复杂数组是否相等 | - | x: Array, y: Array | Boolean |
+| compareArray | 判断简单数组是否相等 | - | x: Array, y: Array, [positionFlag = Boolean]: true | Boolean |
+| splitOfArrayLength | 按数组长度分割数组成二维数组 | - | array: Array, length: Number, number: Number | Array |
+| splitOfElementLength | 按元素长度分割数组成二维数组 | - | array: Array, number: Number | Array |
 
-## fs.js 操作node的fs
-* #### delPath 同步删除文件夹或文件
-* #### readDir 同步读取文件夹
+### date.js
+| 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
+| - | - | - | - | - |
+| getRegularTime | 获取合规时间字符串 | - | value: Date/String/Number | Date |
+| format | 格式化时间 | getRegularTime | value: Date/String/Number, [formatStr = "YYYY-MM-DD hh:mm:ss"]: String | String |
+| convertJson | json时间(/Date(*)/)转换成时间 | [format] | value: String, [formatStr: String] | Date/String |
+| convertToStamp | 时间转换成时间戳 | getRegularTime | value: String, [sFlag = false]: Boolean | Number |
+| convertStamp | 时间戳转换成时间 | [format] | value: Number, [sFlag = false]: Boolean, [formatStr: String] | Date/String |
+| sortDate | 按时间顺序排序数组 | - | array: Array, [isAsc = false]: Boolean, [key: String] | Array |
+| getCalcDate | 给定时间增加/减去多长时间 | getRegularTime,[format] | value: Date/String/Number, opt: {value: Number,type: String}, [formatStr: String] | Date/String |
+| getDateDiff | 求两个/多个时间的最大最小之间的差 | [sortDate] | array: Array, [type: String] | Array/Number |
+| isLeapYear | 判断是否为闰年 | - | val: Number | Boolean |
+| getDays | 获取当前月份天数 | isLeapYear,getRegularTime | value: Date/String/Number | Number |
+| getDesignDate | 获取从当前日期指定数字时间的日期 | [format] | index: Number, [type = "d"]: String, [formatStr: *] | Date/String |
+| getDateStr | 时间数值转换字符串时间长度 | - | val: Number, [type = "s"]: String | String |
 
-## str.js 操作字符串
-* #### removeRepeat 字符串去重
-* #### getRepeatNum 字符串中子字符串的重复次数
-* #### getMmRepeatNum 字符串中的子字符重复最多/少次数
-* #### randomStr 返回随机字符串
+## fs.js(需要node环境)
+| 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
+| - | - | - | - | - |
+| delPath | 同步删除文件夹或文件 | - | path: String | - |
+| readDir | 同步读取文件夹 | - | path: String, callback: Function | - |
 
-## number.js 操作数字
-* #### accuracyObj 解决运算精度对象
-  * ##### add 加
-  * ##### subtract 减
-  * ##### multiply 乘
-  * ##### divide 除
-* #### random 随机数方法
-* #### S4 生成4位16进制数字
-* #### guid 生成唯一guid
-* #### id16 生成唯一16长度id
-* #### isOdd 是否为奇数
+## number.js
+| 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
+| - | - | - | - | - |
+| fixed | 解决运算精度 | - | x: Number, y: Number, type: String, fixedLength: Number | Number |
+| random | 返回n到m的随机数[n,m) | - | n: Number, m: Number | Number |
+| S4 | 生成4位16进制数字 | - | - | String |
+| guid | 生成唯一guid | S4 | - | String |
+| id16 | 生成唯一16长度id | S4 | - | String |
+| isOdd | 判断数字是否为奇数 | - | num: Number | Boolean |
+| padNumber | 数字补零 | - | num: Number,fill: Number | String |
 
-## regex.js 操作正则
-* #### phone 电话
-* #### identityCard 身份证
-* #### plate 车牌
-* #### chWord 汉字
-* #### isNumber 数字
-* #### integer 整数
-* #### positiveNum 正数
-* #### positiveInteger 正整数
-* #### checkIP ip
-* #### dateTime 检测日期时间
-* #### date 日期
-* #### time 时间
-* #### illegalReplace 非法字符替换
-* #### illegalStr 非法字符
-* #### image 图片
-* #### getFileName 取出一个路径的文件名
+### obj.js
+| 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
+| - | - | - | - | - |
+| compareObject | 判断对象是否相等 | - | x: Object, y: Object | Boolean |
+| clone | 深拷贝对象 | - | target: * | * |
+| getType | 判断数据详细类型 | - | o: * | String |
 
-## utils.js 工具
-* #### isNull 判断null | undefined | 空字符串
-* #### getUrlParam 获取url参数的值
-* #### changeURLArg 修改url参数的值
-* #### os 获取浏览器类型 终端类型
-* #### closeWindow 闭浏览器
-  
+### obj.js
+| 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
+| - | - | - | - | - |
+| removeRepeat | 字符串去重 | - | val: String | String |
+| getRepeatNum | 字符串中子字符串的重复次数 | - | str: String, val: String | String |
+| getMmRepeatNum | 字符串中的子字符重复最多/少次数 | - |str: String, minFlag: Boolean | Object/Array |
+| randomStr | 返回随机字符串 | - | length: Number | String |
+| upperLetter | 获取大写字母数组 | - | - | Array |
+| lowerLetter | 获取小写字母数组 | - | - | Array |
+| truncate | 超过最大长度的将用三个替换字符代替 | - | str: String, [maxlength = 10]: Number, [character = "."]: String | String |
+| deleteByIndex | 通过字符串索引删除字符串 | - | str: String, index: Number/Array | String |
+| deleteLastStr | 删除最后一个指定字符 | - | str: String, delStr: String | String |
+| encrypto | 加密字符串 | - | str: String, xor: Number, hex: Number | String |
+| decrypto | 解密字符串 | - | str: String, xor: Number, hex: Number | String |
+
+### regexp.js
+| 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
+| - | - | - | - | - |
+| phone | 电话 | - | val: * | Boolean |
+| identityCard | 身份证 | - | val: * | Boolean |
+| plate | 车牌 | - | val: * | Boolean |
+| chWord | 汉字 | - | val: * | Boolean |
+| number | 数字 | - | val: * | Boolean |
+| integer | 整数 | - | val: * | Boolean |
+| positiveNum | 正数 | - | val: * | Boolean |
+| positiveInteger | 正整数 | - | val: * | Boolean |
+| checkIP | ip | - | val: * | Boolean |
+| dateTime | 日期时间格式 | - | val: * | Boolean |
+| date | 日期格式 | - | val: * | Boolean |
+| time | 时间格式 | - | val: * | Boolean |
+| illegalReplace | 非法字符替换 | - | val: * | String |
+| illegalStr | 非法字符 | - | val: * | Boolean |
+| image | 图片 | - | val: * | Boolean |
+| getFileName | 获取路径的文件名 | - | val: * | String |
+
+## str.js
+| 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
+| - | - | - | - | - |
+| removeRepeat | 字符串去重 | - | val: String | String |
+| getRepeatNum | 字符串中子字符串的重复次数 | - | str: String, val: String | Number |
+| getMmRepeatNum | 字符串中的子字符重复最多/少次数 | - | str: String, minFlag: Boolean | Object/Array |
+| randomStr | 返回随机字符串 | - | length: Number | String |
+| upperLetter | 获取大写字母数组 | - | - | Array |
+| lowerLetter | 获取小写字母数组 | - | - | Array |
+| truncate | 超过最大长度的将用三个替换字符代替 |  | str: String, [maxlength = 10]: String, [character = "."]: String | String |
+| deleteByIndex | 通过字符串索引删除字符串 | - | str: String, index: Number/Array | String |
+| deleteLastStr | 删除最后一个指定字符 | - | str: String, delStr: String | String |
+| encrypto | 加密程序 | - | str: String, xor: Number, hex: Number | String |
+| decrypto | 解密程序 | - | str: String, xor: Number, hex: Number | String |
+
+## utils.js
+| 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
+| - | - | - | - | - |
+| isNull | 判断null/undefined/空字符串 | - | val: * | Boolean |
+| getUrlParam | 获取url参数的值 | - | key: String, [url = window.location.href]: String | * |
+| changeURLArg | 修改url参数的值 | - | key: String, value: *, [url = window.location.href]: String | String |
+| setExpire | 设置期限Storage | - | storage: Storage, key: String, value: *,expire: Number | - |
+| getExpire | 获取Storage(已自动json) | - | storage: Storage, key: String | * |
+| os | 获取终端类型 | - | - | Object |
+| getBrowser | 获取浏览器类型 | - | - | Object |
+| getPayBrowser | 获取支付浏览器类型 | - | - | String/Boolean |
+| closeWindow | 关闭浏览器 | - | - | - |
+| download | 下载文件 | getBrowser, getDownloadUri | data: String, type: String | - |

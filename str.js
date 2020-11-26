@@ -69,7 +69,9 @@ console.log('  s  t  r  '.replace(/\b(\s*)\b/g, '')) //__str__
 
 /**
  * 字符串去重
+ * 
  * @param {String} val 字符串
+ * 
  * @returns {String}
  */
 function removeRepeat(val) {
@@ -86,8 +88,10 @@ console.log(removeRepeat("askdhg1231asdkjh123")) //askdhg123j
 
 /**
  * 字符串中子字符串的重复次数
+ * 
  * @param {String} str 字符串
  * @param {String} val 某个字符或字符串
+ * 
  * @returns {Number} 字符串次数
  */
 function getRepeatNum(str, val) {
@@ -98,8 +102,10 @@ console.log(getRepeatNum("askdhg1231asdkjh123", "as")) //2
 
 /**
  * 字符串中的子字符重复最多/少次数
+ * 
  * @param {String} str 字符串
  * @param {Boolean} minFlag 默认为false true查找最少的 false查找最多的
+ * 
  * @returns {Object | Array} 字符串次数和字符串,如果有同样多的,字符串则是个数组
  * {
  *    str,
@@ -154,8 +160,10 @@ console.log(getMmRepeatNum("aaaabbbccd", true)) //{str:a,num:4}
 
 /**
  * 返回随机字符串
+ * 
  * @param {Number} length 字符串长度
  * 
+ * @returns {String}
  */
 function randomStr(length) {
   var ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -172,6 +180,7 @@ function randomStr(length) {
 /**
  * 获取大写字母数组
  * 
+ * @returns {Array}
  */
 function upperLetter() {
   var arr = [];
@@ -185,6 +194,7 @@ console.log(upperLetter())
 /**
  * 获取小写字母数组
  * 
+ * @returns {Array}
  */
 function lowerLetter() {
   var arr = [];
@@ -197,20 +207,22 @@ console.log(lowerLetter())
 
 /**
  * 超过最大长度的将用三个字符代替
+ * 
  * @param {String} str 字符串
  * @param {Number} [maxlength = 10] 字符串最大长度
  * @param {String} [character = .] 替换字符
  * 
  * @returns 长度13的字符串
  */
-function truncate(str, maxlength = 10, character) {
+function truncate(str, maxlength = 10, character = ".") {
   return (str.length > maxlength) ?
-    str.slice(0, maxlength) + Array(3).fill(typeof character === "string" ? character : ".").join("") : str;
+    str.slice(0, maxlength) + Array(3).fill(character).join("") : str;
 }
 console.log(truncate("abcdefghijklmnopqrstuvwxyz")) //abcdefghij...
 
 /**
  * 通过字符串索引删除字符串
+ * 
  * @param {String} str 字符串
  * @param {Number|Array} index 字符串索引或索引数组
  * 
@@ -223,6 +235,7 @@ console.log(deleteByIndex("12345", [1, 3])) //135
 
 /**
  * 删除最后一个指定字符
+ * 
  * @param {String} str 源字符串
  * @param {String} delStr 删除字符串
  * 
@@ -236,6 +249,7 @@ console.log(deleteLastStr("1231415", "1")) //123145
 
 /**
  * encrypto 加密程序
+ * 
  * @param {Strng} str 待加密字符串
  * @param {Number} xor 异或值
  * @param {Number} hex 加密后的进制数
@@ -265,11 +279,12 @@ console.log(encrypto("123", 123, 25)) //2oz2nz2m
 
 /**
  * decrypto 解密程序
- * @param {Strng} str 待加密字符串
+ * 
+ * @param {Strng} str 待解密字符串
  * @param {Number} xor 异或值
  * @param {Number} hex 加密后的进制数
  * 
- * @return {Strng} 加密后的字符串
+ * @return {Strng} 解密后的字符串
  */
 function decrypto(str, xor, hex) {
   if (typeof str !== 'string' || typeof xor !== 'number' || typeof hex !== 'number') {

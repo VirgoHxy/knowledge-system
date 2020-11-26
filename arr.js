@@ -69,7 +69,7 @@ let count = {
   '312': 0
 };
 for (let index = 0; index < 10000; index++) {
-  let arr = shuffle([1,2,3])
+  let arr = shuffle([1, 2, 3])
   count[arr.join('')]++;
 }
 console.log(count)
@@ -135,6 +135,7 @@ console.log(JSON.stringify(removeItem([{
 
 /**
  * 判断复杂数组(数组元素可包含对象,数组等等)是否相等(数组元素所在位置必须相同,元素类型必须完全相同)
+ * 
  * @param {Array} x 数组1
  * @param {Array} y 数组2
  * 
@@ -144,21 +145,18 @@ function compareComplexArray(x, y) {
   if (!(x instanceof Array) || !(y instanceof Array) || x.length !== y.length) {
     return false;
   }
-  let type = function (o) {
-    var s = Object.prototype.toString.call(o);
-    return s.match(/\[object (.*?)\]/)[1].toLowerCase();
-  };
-  let compareObject = function (a, b) {
+  // 判断对象是否相等
+  let compareObject = function (x, y) {
     // 指向同一内存时
-    if (a === b) {
+    if (x === y) {
       return true;
-    } else if ((typeof a == "object" && a != null) && (typeof b == "object" && b != null)) {
-      if (Object.keys(a).length != Object.keys(b).length) {
+    } else if ((typeof x == "object" && x != null) && (typeof y == "object" && y != null)) {
+      if (Object.keys(x).length != Object.keys(y).length) {
         return false;
       }
-      for (var prop in a) {
-        if (b.hasOwnProperty(prop)) {
-          if (!compareObject(a[prop], b[prop])) {
+      for (var prop in x) {
+        if (Object.prototype.hasOwnProperty.call(y, prop)) {
+          if (!compareObject(x[prop], y[prop])) {
             return false;
           }
         } else {
@@ -169,6 +167,11 @@ function compareComplexArray(x, y) {
     } else {
       return false;
     }
+  }
+  // 获取类型
+  let getType = function (o) {
+    var s = Object.prototype.toString.call(o);
+    return s.match(/\[object (.*?)\]/)[1].toLowerCase();
   };
   let compare = function (m, n, type) {
     if (type === "object") {
@@ -191,11 +194,11 @@ function compareComplexArray(x, y) {
     evenFlag = xLen % 2 === 0;
   for (let i = 0; i < xLen; i++) {
     const xElement = x[i],
-      xType = type(xElement);
+      xType = getType(xElement);
     for (let j = yLen - 1; j >= 0; j--) {
       const yElement = y[j],
-        yType = type(yElement);
-      if (xType !== type(y[i]) || yType !== type(x[j])) {
+        yType = getType(yElement);
+      if (xType !== getType(y[i]) || yType !== getType(x[j])) {
         return false;
       }
       let xFlag = compare(xElement, y[i], xType),
@@ -204,11 +207,11 @@ function compareComplexArray(x, y) {
         return false;
       }
       if (evenFlag) {
-        if(i >= (xLen / 2) - 1){
+        if (i >= (xLen / 2) - 1) {
           return true;
         }
       } else {
-        if(i >= Math.floor(xLen / 2)) {
+        if (i >= Math.floor(xLen / 2)) {
           return true;
         }
       }
@@ -247,6 +250,7 @@ console.log(compareComplexArray([
 
 /**
  * 判断简单数组是否相等(元素类型必须完全相同)
+ * 
  * @param {Array} x 数组1
  * @param {Array} y 数组2
  * @param {Array} [positionFlag = true] 数组元素所在位置是否必须相同 默认true false可不相同
@@ -286,6 +290,7 @@ console.log(aclean(["nap", "teachers", "cheaters", "PAN", "ear", "era", "hectare
 
 /**
  * 按数组长度分割数组成二维数组(分割长度不足够则会增加)
+ * 
  * @param {Array} array 原数组 
  * @param {Number} length 数组最大位数
  * @param {Number} number 数组元素最小长度
@@ -306,7 +311,7 @@ function splitOfArrayLength(array, length, number) {
   }
   return newArray;
 }
-for (var index = 0,array = []; index < 100; index++) {
+for (var index = 0, array = []; index < 100; index++) {
   array.push(index)
 }
 // 这里生成5位数组 分割长度为20
@@ -314,6 +319,7 @@ console.log(splitOfArrayLength(array, 5, 10))
 
 /**
  * 按元素长度分割数组成二维数组
+ * 
  * @param {Array} array 原数组 
  * @param {Number} number 数组元素长度
  * 
@@ -327,5 +333,5 @@ function splitOfElementLength(array, number) {
   }
   return newArray;
 }
-// 这里生成10位数组 分割长度为10
-console.log(splitOfElementLength(array, 10))
+// 这里生成7位数组 分割长度为16
+console.log(splitOfElementLength(array, 16))
