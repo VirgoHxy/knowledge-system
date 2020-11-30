@@ -212,7 +212,7 @@ console.log(lowerLetter())
  * @param {Number} [maxlength = 10] 字符串最大长度
  * @param {String} [character = .] 替换字符
  * 
- * @returns 长度13的字符串
+ * @returns 长度-的字符串
  */
 function truncate(str, maxlength = 10, character = ".") {
   return (str.length > maxlength) ?

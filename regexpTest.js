@@ -10,7 +10,11 @@
 
 // "."表示除了换行符以外的任何字符
 
-// 动态正则 new RegExp(demo, "im")
+// 动态正则 new RegExp(`/@import\\s+(\\S+)\\.js/`)
+var ext = "js"
+console.log("@import 'demo.js';@import 'demo.css';".match(new RegExp(`@import\\s+'\\S+\\.${ext}'`,"g"))[0]);
+var ext = "css"
+console.log("@import 'demo.js';@import 'demo.css';".match(new RegExp(`@import\\s+'\\S+\\.${ext}'`,"g"))[0]);
 
 // 字符正则方法
 // 不带g的 第一个匹配 index input | 带g的返回所有匹配 不包含其他信息 | 没有匹配项返回null
