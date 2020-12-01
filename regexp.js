@@ -133,23 +133,169 @@ console.log(time("08:22:13"))// true
 console.log(time("08:22"))// true
 console.log(time("8:22"))// false
 
-//非法字符替换
-function illegalReplace(val) {
+/**
+ * 替换非法字符
+ * 
+ * @param {String} val 字符串
+ * @param {Array} exceptionsArray 数组中去除的字符 
+ * 
+ * @returns {String}
+ */
+function illegalReplace(val, exceptionsArray) {
   if (val == null || val === "") {
     return "";
   }
-  return val.replace(/[`~!@#$%^&*()_+<>?:"{},.\/;"[\]]/img, "");
+  let array = [
+    // 英文
+    "`",
+    "~",
+    "!",
+    "@",
+    "#",
+    "$",
+    "%",
+    "^",
+    "&",
+    "*",
+    "(",
+    ")",
+    "-",
+    "_",
+    "=",
+    "+",
+    "[",
+    "{",
+    "]",
+    "}",
+    "\\",
+    "|",
+    ";",
+    ":",
+    "'",
+    '"',
+    ",",
+    "<",
+    ".",
+    ">",
+    "/",
+    "?",
+    // 中文
+    "·",
+    "！",
+    "￥",
+    "…",
+    "（",
+    "）",
+    "—",
+    "【",
+    "】",
+    "、",
+    "；",
+    "：",
+    "‘",
+    "’",
+    "“",
+    "”",
+    "，",
+    "《",
+    "。",
+    "》",
+    "？"
+  ];
+  if (exceptionsArray) {
+    array = array.filter(item => exceptionsArray.indexOf(item) == -1);
+  }
+  val = val.replace(/\s+/img, "");
+  val = val.replace(new RegExp(`[${array.join("\\")}]`, "img"), "");
+  return val;
 }
-console.log(illegalReplace("*&^*&as123a%^jsd"))// as123ajsd
+console.log(illegalReplace("abc 123 "))// abc123
+console.log(illegalReplace("abc;123 "))// abc123
+console.log(illegalReplace("abc；123 "))// abc123
 
-//非法字符
-function illegalStr(val) {
+/**
+ * 是否存在非法字符
+ * 
+ * @param {String} val 字符串
+ * @param {Array} exceptionsArray 数组中去除的字符 
+ * 
+ * @returns {Boolean}
+ */
+function illegalStr(val, exceptionsArray) {
   if (val == null || val === "") {
     return false;
   }
-  return (/[`~!@#$%^&*()_+<>?:"{},.\/;"[\]]/im.test(val));
+  let array = [
+    // 英文
+    "`",
+    "~",
+    "!",
+    "@",
+    "#",
+    "$",
+    "%",
+    "^",
+    "&",
+    "*",
+    "(",
+    ")",
+    "-",
+    "_",
+    "=",
+    "+",
+    "[",
+    "{",
+    "]",
+    "}",
+    "\\",
+    "|",
+    ";",
+    ":",
+    "'",
+    '"',
+    ",",
+    "<",
+    ".",
+    ">",
+    "/",
+    "?",
+    // 中文
+    "·",
+    "！",
+    "￥",
+    "…",
+    "（",
+    "）",
+    "—",
+    "【",
+    "】",
+    "、",
+    "；",
+    "：",
+    "‘",
+    "’",
+    "“",
+    "”",
+    "，",
+    "《",
+    "。",
+    "》",
+    "？"
+  ];
+  if (exceptionsArray) {
+    array = array.filter(item => exceptionsArray.indexOf(item) == -1);
+  }
+  if (/\s+/g.test(val)) {
+    return true;
+  } else if (new RegExp(`[${array.join("\\")}]`, "im").test(val)) {
+    return true;
+  } else {
+    return false;
+  }
 }
-console.log(illegalStr("*&^*&%^askjdkjkajsd"))// true
+console.log(illegalStr("abc 123 "))// true
+console.log(illegalStr("abc;123 "))// true
+console.log(illegalStr("abc；123 "))// true
 
 //图片
 function image(val) {

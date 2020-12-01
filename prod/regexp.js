@@ -1,6 +1,6 @@
 ; (function (undefined) {
   "use strict"
-  
+
   //电话
   function phone(val) {
     if (val == null || val === "") {
@@ -97,20 +97,162 @@
     return (/^(20|21|22|23|[0-1]\d):[0-5]\d(:[0-5]\d)?$/.test(val));
   }
 
-  //非法字符替换
-  function illegalReplace(val) {
+  /**
+   * 替换非法字符
+   * 
+   * @param {String} val 字符串
+   * @param {Array} exceptionsArray 数组中去除的字符 
+   * 
+   * @returns {String}
+   */
+  function illegalReplace(val, exceptionsArray) {
     if (val == null || val === "") {
       return "";
     }
-    return val.replace(/[`~!@#$%^&*()_+<>?:"{},.\/;"[\]]/img, "");
+    let array = [
+      // 英文
+      "`",
+      "~",
+      "!",
+      "@",
+      "#",
+      "$",
+      "%",
+      "^",
+      "&",
+      "*",
+      "(",
+      ")",
+      "-",
+      "_",
+      "=",
+      "+",
+      "[",
+      "{",
+      "]",
+      "}",
+      "\\",
+      "|",
+      ";",
+      ":",
+      "'",
+      '"',
+      ",",
+      "<",
+      ".",
+      ">",
+      "/",
+      "?",
+      // 中文
+      "·",
+      "！",
+      "￥",
+      "…",
+      "（",
+      "）",
+      "—",
+      "【",
+      "】",
+      "、",
+      "；",
+      "：",
+      "‘",
+      "’",
+      "“",
+      "”",
+      "，",
+      "《",
+      "。",
+      "》",
+      "？"
+    ];
+    if (exceptionsArray) {
+      array = array.filter(item => exceptionsArray.indexOf(item) == -1);
+    }
+    val = val.replace(/\s+/img, "");
+    val = val.replace(new RegExp(`[${array.join("\\")}]`, "img"), "");
+    return val;
   }
 
-  //非法字符
-  function illegalStr(val) {
+  /**
+   * 是否存在非法字符
+   * 
+   * @param {String} val 字符串
+   * @param {Array} exceptionsArray 数组中去除的字符 
+   * 
+   * @returns {Boolean}
+   */
+  function illegalStr(val, exceptionsArray) {
     if (val == null || val === "") {
       return false;
     }
-    return (/[`~!@#$%^&*()_+<>?:"{},.\/;"[\]]/im.test(val));
+    let array = [
+      // 英文
+      "`",
+      "~",
+      "!",
+      "@",
+      "#",
+      "$",
+      "%",
+      "^",
+      "&",
+      "*",
+      "(",
+      ")",
+      "-",
+      "_",
+      "=",
+      "+",
+      "[",
+      "{",
+      "]",
+      "}",
+      "\\",
+      "|",
+      ";",
+      ":",
+      "'",
+      '"',
+      ",",
+      "<",
+      ".",
+      ">",
+      "/",
+      "?",
+      // 中文
+      "·",
+      "！",
+      "￥",
+      "…",
+      "（",
+      "）",
+      "—",
+      "【",
+      "】",
+      "、",
+      "；",
+      "：",
+      "‘",
+      "’",
+      "“",
+      "”",
+      "，",
+      "《",
+      "。",
+      "》",
+      "？"
+    ];
+    if (exceptionsArray) {
+      array = array.filter(item => exceptionsArray.indexOf(item) == -1);
+    }
+    if (/\s+/g.test(val)) {
+      return true;
+    } else if (new RegExp(`[${array.join("\\")}]`, "im").test(val)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   //图片

@@ -73,22 +73,22 @@
 ### regexp.js
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
 | - | - | - | - | - |
-| phone | 电话 | - | val: * | Boolean |
-| identityCard | 身份证 | - | val: * | Boolean |
-| plate | 车牌 | - | val: * | Boolean |
-| chWord | 汉字 | - | val: * | Boolean |
-| number | 数字 | - | val: * | Boolean |
-| integer | 整数 | - | val: * | Boolean |
-| positiveNum | 正数 | - | val: * | Boolean |
-| positiveInteger | 正整数 | - | val: * | Boolean |
-| checkIP | ip | - | val: * | Boolean |
-| dateTime | 日期时间格式 | - | val: * | Boolean |
-| date | 日期格式 | - | val: * | Boolean |
-| time | 时间格式 | - | val: * | Boolean |
-| illegalReplace | 非法字符替换 | - | val: * | String |
-| illegalStr | 非法字符 | - | val: * | Boolean |
-| image | 图片 | - | val: * | Boolean |
-| getFileName | 获取路径的文件名 | - | val: * | String |
+| phone | 电话 | - | val: String | Boolean |
+| identityCard | 身份证 | - | val: String | Boolean |
+| plate | 车牌 | - | val: String | Boolean |
+| chWord | 汉字 | - | val: String | Boolean |
+| number | 数字 | - | val: String | Boolean |
+| integer | 整数 | - | val: String | Boolean |
+| positiveNum | 正数 | - | val: String | Boolean |
+| positiveInteger | 正整数 | - | val: String | Boolean |
+| checkIP | ip | - | val: String | Boolean |
+| dateTime | 日期时间格式 | - | val: String | Boolean |
+| date | 日期格式 | - | val: String | Boolean |
+| time | 时间格式 | - | val: String | Boolean |
+| illegalReplace | 非法字符替换 | - | val: String, [exceptionsArray: Array] | String |
+| illegalStr | 非法字符 | - | val: String, [exceptionsArray: Array] | Boolean |
+| image | 图片 | - | val: String | Boolean |
+| getFileName | 获取路径的文件名 | - | val: String | String |
 
 ## str.js
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
