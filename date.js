@@ -3,12 +3,12 @@ let myDate = new Date();
 console.log(new Date(24 * 3600 * 1000))
 // str 将字符串时间转换为Date ios ie firefox仅支持xxxx/xx/xx日期
 console.log(new Date("1998/09/09 12:13:14"))
-// year, month, date, hours, minutes, seconds, ms 
+// year, month, [date = 1], [hours = 0], [minutes = 0], [seconds = 0], [ms = 0] 
 console.log(new Date(1998, 8, 9))
 // 日期差值 以毫秒数显示
 console.log(+new Date())
 console.log(new Date() - new Date("1998/09/09"))
-// date日期方法 设置方法将get改为set
+// 当地时区date日期方法 设置方法将get改为set
 let arr = [
   myDate.getFullYear(),         // 获取完整的年份(4位,1970-????)
   myDate.getMonth(),            // 获取当前月份(0-11,0代表1月)
@@ -19,19 +19,38 @@ let arr = [
   myDate.getSeconds(),          // 获取当前秒数(0-59)
   myDate.getMilliseconds(),     // 获取当前毫秒数(0-999)
   myDate.getTime(),             // 获取当前时间(从1970.1.1开始的毫秒数)
-  myDate.toLocaleDateString(),  // 获取当前日期
-  myDate.toLocaleTimeString(),  // 获取当前时间(am/pm)
-  myDate.toLocaleString()       // 获取日期与时间(am/pm)
 ]
+console.log(arr)
+// UTC+0时区
+let utcArr = [
+  myDate.getUTCFullYear(),      // 获取完整的年份(4位,1970-????)
+  myDate.getUTCMonth(),         // 获取当前月份(0-11,0代表1月)
+  myDate.getUTCDate(),          // 获取当前日(1-31)
+  myDate.getUTCDay(),           // 获取当前星期X(0-6,0代表星期天)
+  myDate.getUTCHours(),         // 获取当前小时数(0-23)
+  myDate.getUTCMinutes(),       // 获取当前分钟数(0-59)
+  myDate.getUTCSeconds(),       // 获取当前秒数(0-59)
+  myDate.getUTCMilliseconds(),  // 获取当前毫秒数(0-999)
+  myDate.getTime(),             // 获取当前时间(从1970.1.1开始的毫秒数)
+]
+console.log(utcArr)
 
 // 对象方法
-Date.parse() // 解析一个日期时间字符串,返回UTC(协调世界时)到该时间毫秒数
-Date.now()   // 1596619591585 返回UTC(协调世界时)至今的毫秒数
+console.log(Date.parse("1998/09/09")) // 解析一个日期时间字符串,返回UTC(协调世界时)到该时间毫秒数 905270400000
+console.log(Date.now())               // 返回UTC(协调世界时)至今的毫秒数 1596619591585
 
 // 实例方法
-myDate.toJSON()   // 2020-08-05T09:25:38.559Z 将Date对象转化字符串,并格式化为JSON数据 
-myDate.valueOf()  // 1596619591585 返回UTC(协调世界时)到该时间毫秒数
-
+console.log(myDate.toJSON())              // 将Date对象转化字符串,并返回格式化为JSON数据 2020-12-02T06:35:50.087Z
+console.log(myDate.getTimezoneOffset())   // 返回时区偏移的分钟 -480分钟
+console.log(myDate.valueOf())             // 返回UTC(协调世界时)到该时间毫秒数 1596619591585
+console.log(myDate.toISOString())         // 返回ISO 8601时间字符串 2020-12-02T06:35:50.087Z
+console.log(myDate.toUTCString())         // 返回UTC时区时间字符串 Wed, 02 Dec 2020 03:44:19 GMT
+console.log(myDate.toString())            // 返回日期对象的字符串 Wed Dec 02 2020 11:41:09 GMT+0800 (GMT+08:00)
+console.log(myDate.toDateString())        // 返回人类易读日期 Wed Dec 02 2020
+console.log(myDate.toTimeString())        // 返回人类易读时间 11:41:09 GMT+0800 (GMT+08:00)
+console.log(myDate.toLocaleDateString())  // 返回当前地区日期 2020/12/2
+console.log(myDate.toLocaleTimeString())  // 返回当前地区时间(am/pm) 上午11:08:23
+console.log(myDate.toLocaleString())      // 返回当前地区日期与时间(am/pm) 2020/12/2 上午11:08:23
 
 /**
  * 获取合规时间
