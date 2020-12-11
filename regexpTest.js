@@ -58,11 +58,11 @@ while (result = regexp.exec("More about JavaScript at https://javascript.info"))
 // 是否存在匹配项 等同于search的index!==-1
 console.log(/love/i.test("I love JavaScript")) // true
 
+// "."实际上匹配任何字符 等同于[\s\S]
+
 // i 搜索时不区分大小写
 
 // g 搜索时会查找所有的匹配项
-
-// s "."实际上匹配任何字符
 
 // unicode修饰符 u
 // 16进制数字
