@@ -285,3 +285,64 @@ function download(data, fileName) {
     return false;
   }
 }
+
+/**
+ * 防抖装饰器
+ * 
+ * @param {Function} func 函数
+ * @param {Number} ms 毫秒延时
+ * 
+ * @returns {Function}
+ */
+function debounce(func, ms) {
+  let timeout;
+  return function () {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, arguments), ms);
+  };
+}
+var demo = debounce(function () {
+  console.log("debounce");
+}, 1000)
+// 只会执行一次
+for (let index = 0; index < 10000; index++) {
+  demo()
+}
+
+/**
+ * 节流装饰器
+ * 
+ * @param {Function} func 函数
+ * @param {Number} ms 毫秒延时
+ * 
+ * @returns {Function}
+ */
+function throttle(func, ms) {
+  let isThrottled = false,
+    savedArgs,
+    savedThis;
+  function wrapper() {
+    if (isThrottled) {
+      savedArgs = arguments;
+      savedThis = this;
+      return;
+    }
+    func.apply(this, arguments);
+    isThrottled = true;
+    setTimeout(function () {
+      isThrottled = false;
+      if (savedArgs) {
+        wrapper.apply(savedThis, savedArgs);
+        savedArgs = savedThis = null;
+      }
+    }, ms);
+  }
+  return wrapper;
+}
+var demo = throttle(function (x) {
+  console.log("throttle"+x);
+}, 2000)
+demo(1) // throttle1
+demo(2) // 节流 
+demo(3) // 节流
+// 2000ms后 输出throttle3 2被3替换

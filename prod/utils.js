@@ -279,6 +279,53 @@
     }
   }
 
+  /**
+   * 防抖装饰器
+   * 
+   * @param {Function} func 函数
+   * @param {Number} ms 毫秒延时
+   * 
+   * @returns {Function}
+   */
+  function debounce(func, ms) {
+    let timeout;
+    return function () {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, arguments), ms);
+    };
+  }
+
+  /**
+   * 节流装饰器
+   * 
+   * @param {Function} func 函数
+   * @param {Number} ms 毫秒延时
+   * 
+   * @returns {Function}
+   */
+  function throttle(func, ms) {
+    let isThrottled = false,
+      savedArgs,
+      savedThis;
+    function wrapper() {
+      if (isThrottled) {
+        savedArgs = arguments;
+        savedThis = this;
+        return;
+      }
+      func.apply(this, arguments);
+      isThrottled = true;
+      setTimeout(function () {
+        isThrottled = false;
+        if (savedArgs) {
+          wrapper.apply(savedThis, savedArgs);
+          savedArgs = savedThis = null;
+        }
+      }, ms);
+    }
+    return wrapper;
+  }
+
   let global = (function () { return this || (0, eval)('this'); }());
   let JAFOUtilsMethod = {
     isNull,
@@ -290,7 +337,9 @@
     getBrowser,
     getPayBrowser,
     closeWindow,
-    download
+    download,
+    debounce,
+    throttle
   }
 
   // 最后将插件对象暴露给全局对象

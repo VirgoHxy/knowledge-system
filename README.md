@@ -5,6 +5,7 @@
 | - | - |
 | operators.js | 操作符示例 |
 | regexpTest.js | 正则操作示例 |
+| tips.js | 不常用基础提示 |
 
 ## prod文件概括
 | 文件名称 | 类型 | 非导出的抛出对象 |
@@ -118,3 +119,5 @@
 | getPayBrowser | 获取支付浏览器类型 | - | - | String/Boolean |
 | closeWindow | 关闭浏览器 | - | - | - |
 | download | 下载文件 | getBrowser, getDownloadUri | data: String, type: String | - |
+| debounce | 去抖装饰器 | - | func: Function, ms: Number | Function |
+| throttle | 节流装饰器 | - | func: Function, ms: Number | Function |
