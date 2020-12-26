@@ -121,7 +121,7 @@ function format(value, formatStr) {
   //月份，小于10补零
   str = str.replace(/MM/, (month + 1) > 9 ? month + 1 : "0" + (month + 1));
   //月份，不补零
-  str = str.replace(/M/, month + 1);
+  str = str.replace(/\bM\b/, month + 1);
   //日期，小于10补零
   str = str.replace(/dd|DD/, date > 9 ? date : "0" + date);
   //日期，不补零
@@ -133,11 +133,11 @@ function format(value, formatStr) {
   //分钟，小于10补零
   str = str.replace(/mm/, minute > 9 ? minute : "0" + minute);
   //分钟，不补零
-  str = str.replace(/m/, minute);
+  str = str.replace(/\bm\b/, minute);
   //秒钟，小于10补零
   str = str.replace(/ss|SS/, second > 9 ? second : "0" + second);
   //秒钟，不补零
-  str = str.replace(/s|S/, second);
+  str = str.replace(/\bs\b|\bS\b/, second);
   //星期几
   str = str.replace(/w|W/g, week[day]);
   //毫秒，小于9或99补零
@@ -538,3 +538,4 @@ function getDateStr(val, type) {
   return str;
 }
 console.log(getDateStr(124, "m"))
+console.log(format(new Date(), "MS"))
