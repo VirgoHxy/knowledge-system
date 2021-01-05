@@ -188,7 +188,7 @@
    */
   function splitOfArrayLength(array, length, number) {
     if (array.length == 0) {
-      return [[]]
+      return [[]];
     }
     var num = Math.ceil(array.length / length)
     var index = 0;
@@ -210,6 +210,9 @@
    * @returns 返回二维数组
    */
   function splitOfElementLength(array, number) {
+    if (array.length == 0) {
+      return [[]];
+    }
     var index = 0;
     var newArray = [];
     while (index < array.length) {
