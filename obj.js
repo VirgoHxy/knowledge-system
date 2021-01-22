@@ -156,5 +156,9 @@ function getType(o) {
   var s = Object.prototype.toString.call(o);
   return s.match(/\[object (.*?)\]/)[1].toLowerCase();
 };
+let user = {
+  [Symbol.toStringTag]: "User"
+};
 console.log(getType(1)) //number
 console.log(getType(new Date())) //date
+console.log(getType(user)) //user
