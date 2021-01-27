@@ -363,7 +363,7 @@
       default:
         return "获取指定日期的类型未知"
     }
-    return formatStr === undefined || typeof formatStr == "string" ? format(newDate, formatStr) : newDate;
+    return (formatStr === undefined || typeof formatStr == "string") ? format(newDate, formatStr) : newDate;
   }
 
   /**
@@ -375,8 +375,9 @@
    * @returns {String} 字符串时间长度 val为空返回空字符串
    */
   function getDateStr(val, type) {
-    if (!val) { return ""; }
-    let str = "",
+    if (val==null || val==="") { return ""; }
+    let value = Number(val), 
+      str = "",
       minuteNumber = 60,
       hourNumber = 60 * 60,
       dayNumber = hourNumber * 24,
@@ -384,22 +385,24 @@
       time = 0;
     switch (type) {
       case "ms":
-        time = val / 1000;
+        time = value / 1000;
+        if (time == 0) { return "0毫秒" }
         break;
       case "s":
-        time = val;
+        time = value;
+        if (time == 0) { return "0秒" }
         break;
       case "m":
-        time = val * minuteNumber;
+        time = value * minuteNumber;
+        if (time == 0) { return "0分钟" }
         break;
       case "h":
-        time = val * hourNumber;
+        time = value * hourNumber;
+        if (time == 0) { return "0小时" }
         break;
       default:
-        time = val;
-        return "";
+        time = value;
     }
-    if (time <= 0) { return ""; }
     let array = [
       {
         text: "个月",
