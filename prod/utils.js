@@ -68,7 +68,7 @@
         }
       }
       if (hrefFlag) {
-        history.replaceState(null, null, returnUrl)
+        window.history.replaceState(null, null, returnUrl)
       }
       return returnUrl;
     } catch (error) {
