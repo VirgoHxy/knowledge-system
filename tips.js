@@ -101,3 +101,22 @@ let triple = mul.bind(null, 3);
 console.log(triple(3)); // 9
 console.log(triple(4)); // 12
 console.log(triple(5)); // 15
+
+// Generator函数 函数调用时候返回Object Generator
+function* generateSequence() {
+  yield 1;
+  yield 2;
+  return 3; // 这个值在 for of 循环、spread语法中不会返回(因为done为true) 要返回请用 yield
+}
+let generator = generateSequence();
+console.log(generator); // Object [Generator] {}
+console.log(generator.next()); // { value: 1, done: false }
+console.log(generator.next().value); // 2
+console.log(generator.next().value); // 3 { value: 3, done: true }
+console.log(generator.next().value); // undefined { done: true }
+let generator1 = generateSequence();
+for (const iterator of generator1) {
+  console.log(iterator);
+}
+let generator2 = generateSequence();
+console.log([...generator2]);

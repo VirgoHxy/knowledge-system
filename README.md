@@ -111,7 +111,7 @@
 | - | - | - | - | - |
 | isNull | 判断null/undefined/空字符串 | - | val: * | Boolean |
 | getUrlParam | 获取url参数的值 | - | key: String, [url = window.location.href]: String | * |
-| changeURLArg | 修改url参数的值 | - | key: String, value: *, [url = window.location.href]: String | String |
+| changeURLArg | 修改url参数的值 | - | key: String, value: *, [url = window.location.href]: String, hrefFlag: Boolean | String |
 | setExpire | 设置期限Storage | - | storage: Storage, key: String, value: *,expire: Number | - |
 | getExpire | 获取Storage(已自动json) | - | storage: Storage, key: String | * |
 | os | 获取终端类型 | - | - | Object |

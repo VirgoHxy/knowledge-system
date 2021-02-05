@@ -3,7 +3,7 @@ function phone(val) {
   if (val == null || val === "") {
     return false;
   }
-  return (/^1[3|4|5|6|7|8|9][0-9]{9}$/.test(val));
+  return (/^((13[0-9])|(14[5-9])|(15([0-3]|[5-9]))|(16[6-7])|(17[1-8])|(18[0-9])|(19[1|3])|(19[5|6])|(19[8|9]))\d{8}$/.test(val));
 }
 console.log(phone("17790462501"))// true
 console.log(phone("1779046251"))// fasle

@@ -21,7 +21,7 @@ console.log(isNull(false))
  * 
  * @param {String} key 参数的名称
  * 
- * @param {String} [url] 链接地址 默认为当前浏览器地址
+ * @param {String} [url] 链接地址 默认为当前浏览器地址(不填url,必须在浏览器环境下运行)
  */
 function getUrlParam(key, url) {
   try {
@@ -51,31 +51,39 @@ console.log(getUrlParam("c", "http://wxy.ittiger.club:9999/In?p=2018071815295718
  * 
  * @param {String} key 参数的名称
  * @param {*} value 参数的值 非字符串转换为字符串
- * @param {String} [url] 链接地址 默认为当前浏览器地址
+ * @param {String} [url] 链接地址 默认为当前浏览器地址(不填url,必须在浏览器环境下运行)
+ * @param {String} [hrefFlag = false] 是否修改当前地址 true 修改当前地址
  * 
  * @returns 返回修改后的地址
  */
-function changeURLArg(key, value, url) {
+function changeURLArg(key, value, url, hrefFlag) {
   try {
     var pattern = key + "=([^&]*)";
     var replaceText = key + "=" + (!(value instanceof Object) ? value : JSON.stringify(value));
     !url && (url = window.location.href);
+    var returnUrl = "";
     if (url.match(pattern)) {
       var tmp = "/(" + key + "=)([^&]*)/gi";
       tmp = url.replace(eval(tmp), replaceText);
-      return tmp;
+      returnUrl = tmp;
     } else {
       if (url.match("[\?]")) {
-        return url + "&" + replaceText;
+        returnUrl = url + "&" + replaceText;
       } else {
-        return url + "?" + replaceText;
+        returnUrl = url + "?" + replaceText;
       }
     }
+    if (hrefFlag) {
+      history.replaceState(null, null, returnUrl)
+    }
+    return returnUrl;
   } catch (error) {
+    console.log(error);
     return "";
   }
 }
-console.log(changeURLArg("c", { a: 1 }, "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"))
+console.log(changeURLArg("c", 123, "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"))
+console.log(changeURLArg("b", 123, "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"))
 
 /**
  * 设置期限Storage
@@ -120,10 +128,10 @@ function getExpire(storage, key) {
 /**
  * 获取终端类型
  * 
- * @returns {Object} 包含终端类型的对象
+ * @returns {Object} 包含终端类型的对象(必须在浏览器环境下运行)
  */
 function os() {
-  var u = navigator.userAgent,
+  var u = window.navigator.userAgent,
     trident = u.indexOf("Trident") > -1, //IE内核
     presto = u.indexOf("Presto") > -1, //opera内核
     webKit = u.indexOf("AppleWebKit") > -1, //苹果、谷歌内核
@@ -159,11 +167,11 @@ function os() {
 /**
  * 获取浏览器类型
  * 
- * @returns {Object} 包含浏览器类型类型的对象以及版本号
+ * @returns {Object} 包含浏览器类型类型的对象以及版本号(必须在浏览器环境下运行)
  */
 function getBrowser() {
   const sys = {};
-  const ua = navigator.userAgent.toLowerCase();
+  const ua = window.navigator.userAgent.toLowerCase();
   if (ua.indexOf("edge") !== -1) {
     sys.edge = "edge";
   } else if (ua.match(/rv:([\d.]+)\) like gecko/)) {
@@ -183,7 +191,7 @@ function getBrowser() {
 }
 
 /**
- * 获取支付浏览器类型
+ * 获取支付浏览器类型(必须在浏览器环境下运行)
  * 
  * @returns {String} weixin 或者 alipay
  */
@@ -202,7 +210,7 @@ function getPayBrowser() {
 }
 
 /**
- * 关闭浏览器
+ * 关闭浏览器(必须在浏览器环境下运行)
  */
 function closeWindow() {
   // window
@@ -219,7 +227,7 @@ function closeWindow() {
 }
 
 /**
- * 获取下载文件blob
+ * 获取下载文件blob(必须在浏览器环境下运行)
  * 
  * @param {String} data 文件内容
  * @param {String} type 文件类型
@@ -252,7 +260,7 @@ function getDownloadUri(data, type) {
 }
 
 /**
- * 下载文件(依赖getBrowser,getDownloadUri方法)
+ * 下载文件(依赖getBrowser,getDownloadUri方法)(必须在浏览器环境下运行)
  * 
  * @param {String} data 文件内容
  * @param {String} fileName 文件名称
