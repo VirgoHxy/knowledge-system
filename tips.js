@@ -120,3 +120,76 @@ for (const iterator of generator1) {
 }
 let generator2 = generateSequence();
 console.log([...generator2]);
+
+// 异步迭代
+let range = {
+  from: 1,
+  to: 5,
+  [Symbol.asyncIterator]() { // (1)
+    return {
+      current: this.from,
+      last: this.to,
+      async next() { // (2)
+        // 注意：我们可以在 async next 内部使用 "await"
+        await new Promise(resolve => setTimeout(resolve, 1000)); // (3)
+        if (this.current <= this.last) {
+          return { done: false, value: this.current++ };
+        } else {
+          return { done: true };
+        }
+      }
+    };
+  }
+};
+
+(async () => {
+  for await (let value of range) { // (4)
+    // 每隔一秒
+    console.log(value); // 1,2,3,4,5
+  }
+})()
+
+// 异步 Generator函数
+async function* asyncGenerateSequence(start, end) {
+  for (let i = start; i <= end; i++) {
+    // 哇，可以使用 await 了！
+    let j = await new Promise(resolve => setTimeout((i) => {
+      console.log(i)
+      resolve(i)
+    }, 1000));
+    yield j;
+  }
+}
+
+(async () => {
+  let generator = asyncGenerateSequence(1, 5);
+  for await (let value of generator) {
+    // 每隔一秒
+    console.log(value);// 1,2,3,4,5
+  }
+})();
+
+// 柯里化(只允许柯里化 确定参数长度的函数)
+function curry(func) {
+  return function curried(...args) {
+    if (args.length >= func.length) {
+      return func.apply(this, args);
+    } else {
+      return function(...args2) {
+        return curried.apply(this, args.concat(args2));
+      }
+    }
+  };
+}
+
+function sum(a, b, c) {
+  return a+b+c;
+}
+
+let currySum = curry(sum);
+let fn1 = currySum(1);
+let fn2 = fn1(2);
+console.log(fn1); // [Function]
+console.log(fn2); // [Function]
+console.log("第一个参数柯里"+fn1(3,5)); // 9
+console.log("全部参数柯里"+fn2(3)); // 6

@@ -174,6 +174,19 @@ function random(n, m) {
 console.log(random(1, 100));
 
 /**
+ * 返回几位随机数
+ * 
+ * @param {Number} n
+ * 
+ * @returns {String}
+ */
+function randomOfDigit(n) {
+  return Math.random().toString().slice(-n);
+}
+console.log(randomOfDigit(0)) // 随机小数
+console.log(randomOfDigit(6)) // 6位随机数
+
+/**
  * 生成4位16进制数字
  * 
  * @returns {String}

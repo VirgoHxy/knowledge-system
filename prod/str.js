@@ -140,7 +140,7 @@
    * @returns {String} 长度-的字符串
    */
   function truncate(str, maxlength = 10, character = ".") {
-    return (str.length > maxlength) ?
+    return ((str ? str.length : 0) > maxlength) ?
       str.slice(0, maxlength) + Array(3).fill(character).join("") : str;
   }
 
@@ -178,7 +178,7 @@
    * 
    * @return {Strng} 加密后的字符串
    */
-  function encrypto(str, xor, hex) {
+  function encrypto(str, xor = 1998, hex = 16) {
     if (typeof str !== 'string' || typeof xor !== 'number' || typeof hex !== 'number') {
       return;
     }
@@ -210,7 +210,7 @@
    * 
    * @return {Strng} 解密后的字符串
    */
-  function decrypto(str, xor, hex) {
+  function decrypto(str, xor = 1998, hex = 16) {
     if (typeof str !== 'string' || typeof xor !== 'number' || typeof hex !== 'number') {
       return;
     }

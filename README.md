@@ -58,6 +58,7 @@
 | - | - | - | - | - |
 | fixed | 解决运算精度 | - | x: Number, y: Number, type: String, fixedLength: Number | Number |
 | random | 返回n到m的随机数[n,m) | - | n: Number, m: Number | Number |
+| randomOfDigit | 返回n位随机数 | - | n: Number | String |
 | S4 | 生成4位16进制数字 | - | - | String |
 | guid | 生成唯一guid | S4 | - | String |
 | id16 | 生成唯一16长度id | S4 | - | String |
@@ -103,8 +104,8 @@
 | truncate | 超过最大长度的将用三个替换字符代替 |  | str: String, [maxlength = 10]: String, [character = "."]: String | String |
 | deleteByIndex | 通过字符串索引删除字符串 | - | str: String, index: Number/Array | String |
 | deleteLastStr | 删除最后一个指定字符 | - | str: String, delStr: String | String |
-| encrypto | 加密程序 | - | str: String, xor: Number, hex: Number | String |
-| decrypto | 解密程序 | - | str: String, xor: Number, hex: Number | String |
+| encrypto | 加密程序 | - | str: String, [xor = 1998]: Number, [hex = 16]: Number | String |
+| decrypto | 解密程序 | - | str: String, [xor = 1998]: Number, [hex = 16]: Number | String |
 
 ## utils.js
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |

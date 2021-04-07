@@ -206,11 +206,22 @@
    */
   function closeWindow() {
     // window
-    window.opener = null;
-    window.open("", "_self");
-    window.location.href = "about:blank";
-    window.close();
-
+    var userAgent = navigator.userAgent;
+    if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") != -1) {
+      window.location.href = "about:blank";
+      window.location.replace(window.location.href);
+    } else if (
+      userAgent.indexOf("Android") > -1 ||
+      userAgent.indexOf("Linux") > -1
+    ) {
+      window.opener = null;
+      window.open("about:blank", "_self", "").close();
+    } else {
+      window.pener = null;
+      window.open("about:blank", "_self");
+      window.close();
+    }
+  
     if (window.WeixinJSBridge) {
       window.WeixinJSBridge.call("closeWindow"); // 微信
     } else if (window.AlipayJSBridge) {

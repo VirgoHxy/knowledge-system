@@ -39,6 +39,17 @@
   }
 
   /**
+   * 返回几位随机数
+   * 
+   * @param {Number} n 
+   * 
+   * @returns {String}
+   */
+  function randomOfDigit(n) {
+    return Math.random().toString().slice(-n);
+  }
+
+  /**
    * 生成4位16进制数字
    * 
    * @returns {String}
@@ -95,6 +106,7 @@
   let JAFONumberMethod = {
     fixed,
     random,
+    randomOfDigit,
     S4,
     guid,
     id16,

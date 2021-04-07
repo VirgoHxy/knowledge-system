@@ -33,7 +33,7 @@ console.log(obj.globalConfig.b)
 
 // 将一个或多个源对象可枚举属性浅拷贝到目标对象
 var obj = { a: 1 }
-var obj1 = Object.assign(obj, { b: 1 }, { c: 1 });
+var obj1 = Object.assign(obj, { b: 1 }, { c: 1 }, { d: {test: 1} });
 obj1.a = 2;
 obj1.b = 3;
 console.log(obj) // { a: 2, b: 3, c: 1 }
@@ -46,10 +46,15 @@ console.log(obj2) // [Number: 1]
 console.log(obj3) // [Boolean: true]
 console.log(Object.keys(obj4)) // [0,1,2]
 console.log(Object.values(obj4)) // [a,b,c]
-// create新建对象 可以用来克隆对象 以obj的原型为原型 获取obj1的所有属性
-var cloneObj = Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj1));
+// create新建对象 可以用来深克隆没有复制类型值得对象 以obj的原型为原型 获取obj1的所有属性
+var cloneObj = Object.create({}, Object.getOwnPropertyDescriptors(obj1));
 console.log(cloneObj === obj1); // false
-console.log(cloneObj);// { a: 2, b: 3, c: 1 }
+cloneObj.a = 666; // false
+console.log(cloneObj);// { a: 666, b: 3, c: 1, d: {test: 1} }
+console.log(obj1);// { a: 2, b: 3, c: 1, d: {test: 1} }
+cloneObj.d.test = 666; // false
+console.log(cloneObj);// { a: 666, b: 3, c: 1, d: {test: 666} }
+console.log(obj1);// { a: 2, b: 3, c: 1, d: {test: 666} }
 // 注意点
 // 1浅拷贝 2同名属性替换 3数组处理将会看成对象 4值复制 取值函数将转换为值
 console.log(obj === obj1) // true
