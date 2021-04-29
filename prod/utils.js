@@ -209,7 +209,7 @@
     var userAgent = navigator.userAgent;
     if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") != -1) {
       window.location.href = "about:blank";
-      window.location.replace(window.location.href);
+      window.location.replace("about:blank");
     } else if (
       userAgent.indexOf("Android") > -1 ||
       userAgent.indexOf("Linux") > -1
