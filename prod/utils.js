@@ -46,7 +46,7 @@
    * @param {String} key 参数的名称
    * @param {*} value 参数的值 非字符串转换为字符串
    * @param {String} [url] 链接地址 默认为当前浏览器地址(不填url,必须在浏览器环境下运行)
-   * @param {String} [hrefFlag = false] 是否修改当前地址 true 修改当前地址
+   * @param {Boolean} [hrefFlag = false] 是否修改当前地址 true 修改当前地址
    * 
    * @returns 返回修改后的地址
    */
@@ -74,6 +74,43 @@
     } catch (error) {
       console.log(error);
       return "";
+    }
+  }
+
+/**
+ * 操作url的方法
+ * 
+ * @param {String} [data.url] 链接地址 默认为当前浏览器地址
+ * @param {String} data.type 操作类型
+ * @param {String} data.key 参数的名称
+ * @param {*} data.value 参数的值 非字符串转换为字符串
+ * @param {Boolean} [data.hrefFlag = false] 是否返回字符串地址 true 返回字符串地址
+ * 
+ * @returns {*} 返回值
+ */
+ function urlMethod(data = {}) {
+    let {url, type, key, value, hrefFlag} = data;
+    let href = url || (window ? window.location.href : "");
+    if (!href) {
+      return "url不能为空"
+    }
+    let URLObject = new URL(url);
+    let params = URLObject.searchParams;
+    // set get has delete
+    switch (type) {
+      case "set":
+        params.set(key, value);
+        return !hrefFlag ? URLObject : URLObject.href;
+      case "get":
+        return params.get(key);
+      case "has":
+        return params.has(key);
+      case "delete":
+        params.delete(key);
+        return !hrefFlag ? URLObject : URLObject.href;
+    
+      default:
+        return "type类型错误 set,get,has,delete";
     }
   }
 
@@ -350,6 +387,7 @@
     isNull,
     getUrlParam,
     changeURLArg,
+    urlMethod,
     setExpire,
     getExpire,
     os,
