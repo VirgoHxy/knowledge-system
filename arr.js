@@ -10,7 +10,7 @@ Array.isArray([]); // true 判断一个对象是否为数组
 [1, 2, 3].lastIndexOf(1, 2); // 0 从2索引rtl开始判断一个数组是否包含1 包含返回索引 不包含返回-1
 [1, 2, 3].every(ele => { return ele > 1 }); // false 检测数组中的所有元素是否都符合条件
 [1, 2, 3].some(ele => { return ele > 1 }); // true 检测数组中是否有一个或多个元素符合条件
-[1, 2, 3].join("-"); // 1-2-3 把数组中的所有元素转换一个字符串
+[1, 2, 3].join("-"); // 1-2-3 把数组中的所有元素转换一个字符串 反之字符串转数组str.split()
 [1, 2, 3].toString(); // 1,2,3 把数组中的所有元素转换一个字符串
 [1, 2, 3, 1, 2].filter(ele => { return ele > 1 }); // [2,3] 不改变原数组 返回一个符合条件的数组 重复元素只返回一次
 [1, 2, 3].forEach((ele, index, arr) => { }, this); // 遍历数组 ele数组元素 index索引 arr原数组 this代表回调函数的this指向
@@ -314,8 +314,14 @@ function splitOfArrayLength(array, length, number) {
 for (var index = 0, array = []; index < 100; index++) {
   array.push(index)
 }
-// 这里生成5位数组 分割长度为20
+// 原本生成5位数组 分割长度为10
+// 这里为了达到生成5位数组 分割长度增加到20
 console.log(splitOfArrayLength(array, 5, 10))
+for (var index = 0, array1 = []; index < 95; index++) {
+  array1.push(index)
+}
+// 生成5位数组 每组长度(接近)平均分配(15)
+console.log(splitOfArrayLength(array1, 5))
 
 /**
  * 按元素长度分割数组成二维数组
