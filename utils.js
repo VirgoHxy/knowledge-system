@@ -21,7 +21,7 @@ console.log(isNull(false))
  * 
  * @param {String} key 参数的名称
  * 
- * @param {String} [url] 链接地址 默认为当前浏览器地址(不填url,必须在浏览器环境下运行)
+ * @param {String} [url] 链接地址 默认为当前浏览器地址
  */
 function getUrlParam(key, url) {
   try {
@@ -51,7 +51,7 @@ console.log(getUrlParam("c", "http://wxy.ittiger.club:9999/In?p=2018071815295718
  * 
  * @param {String} key 参数的名称
  * @param {*} value 参数的值 非字符串转换为字符串
- * @param {String} [url] 链接地址 默认为当前浏览器地址(不填url,必须在浏览器环境下运行)
+ * @param {String} [url] 链接地址 默认为当前浏览器地址
  * @param {Boolean} [hrefFlag = false] 是否修改当前地址 true 修改当前地址
  * 
  * @returns 返回修改后的地址
@@ -195,9 +195,64 @@ function getExpire(storage, key) {
 }
 
 /**
- * 获取终端类型
+ * 获取cookie(必须在浏览器环境下运行)
  * 
- * @returns {Object} 包含终端类型的对象(必须在浏览器环境下运行)
+ * @param {String} name 存储对象名称
+ * 
+ * @returns {String | Undefined}
+ */
+function getCookie(name) {
+  let matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+/**
+ * 设置cookie(必须在浏览器环境下运行)
+ * 
+ * @param {String} name 存储对象名称
+ * @param {String} value 存储对象
+ * @param {Object} options 该cookie的配置值
+ * 
+ */
+function setCookie(name, value, options = {}) {
+  options = {
+    path: '/',
+    // 如果需要，可以在这里添加其他默认值
+    ...options
+  };
+  if (options.expires instanceof Date) {
+    options.expires = options.expires.toUTCString();
+  }
+  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+  for (let optionKey in options) {
+    updatedCookie += "; " + optionKey;
+    let optionValue = options[optionKey];
+    if (optionValue !== true) {
+      updatedCookie += "=" + optionValue;
+    }
+  }
+  document.cookie = updatedCookie;
+}
+
+/**
+ * 删除cookie(依赖setCookie方法)(必须在浏览器环境下运行)
+ * 
+ * @param {String} name 存储对象名称
+ * 
+ */
+function deleteCookie(name) {
+  // 设置到期时间 max-age(秒数) expires(时间)
+  setCookie(name, "", {
+    'max-age': -1
+  })
+}
+
+/**
+ * 获取终端类型(必须在浏览器环境下运行)
+ * 
+ * @returns {Object} 包含终端类型的对象
  */
 function os() {
   var u = window.navigator.userAgent,
@@ -234,9 +289,9 @@ function os() {
 }
 
 /**
- * 获取浏览器类型
+ * 获取浏览器类型(必须在浏览器环境下运行)
  * 
- * @returns {Object} 包含浏览器类型类型的对象以及版本号(必须在浏览器环境下运行)
+ * @returns {Object} 包含浏览器类型类型的对象以及版本号
  */
 function getBrowser() {
   const sys = {};

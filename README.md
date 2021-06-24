@@ -111,15 +111,18 @@
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
 | - | - | - | - | - |
 | isNull | 判断null/undefined/空字符串 | - | val: * | Boolean |
-| getUrlParam | 获取url参数的值 | - | key: String, [url = window.location.href]: String | * |
+| getUrlParam | 获取url参数的值(必须在浏览器环境下运行) | - | key: String, [url = window.location.href]: String | * |
 | changeURLArg | 修改url参数的值 | - | key: String, value: *, [url = window.location.href]: String, hrefFlag: Boolean | String |
 | urlMethod | 操作url的方法 | - | {[url = window.location.href]: String, type: String, key: String, value: *, hrefFlag: Boolean} | * |
 | setExpire | 设置期限Storage | - | storage: Storage, key: String, value: *,expire: Number | - |
 | getExpire | 获取Storage(已自动json) | - | storage: Storage, key: String | * |
-| os | 获取终端类型 | - | - | Object |
-| getBrowser | 获取浏览器类型 | - | - | Object |
-| getPayBrowser | 获取支付浏览器类型 | - | - | String/Boolean |
-| closeWindow | 关闭浏览器 | - | - | - |
-| download | 下载文件 | getBrowser, getDownloadUri | data: String, type: String | - |
+| getCookie | 获取cookie(必须在浏览器环境下运行) | - | name: String | String,Undefined |
+| setCookie | 设置cookie(必须在浏览器环境下运行) | - | name: String, value: String, options: Object | - |
+| deleteCookie | 删除cookie(必须在浏览器环境下运行) | setCookie | name: String | - |
+| os | 获取终端类型(必须在浏览器环境下运行) | - | - | Object |
+| getBrowser | 获取浏览器类型(必须在浏览器环境下运行) | - | - | Object |
+| getPayBrowser | 获取支付浏览器类型(必须在浏览器环境下运行) | - | - | String/Boolean |
+| closeWindow | 关闭浏览器(必须在浏览器环境下运行) | - | - | - |
+| download | 下载文件(必须在浏览器环境下运行) | getBrowser, getDownloadUri | data: String, type: String | - |
 | debounce | 去抖装饰器 | - | func: Function, ms: Number | Function |
 | throttle | 节流装饰器 | - | func: Function, ms: Number | Function |
