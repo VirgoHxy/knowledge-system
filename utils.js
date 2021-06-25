@@ -194,6 +194,14 @@ function getExpire(storage, key) {
   return val.data;
 }
 
+/*
+// 遍历缓存键值对
+for(let i = 0; i < localStorage.length; i++) {
+  let key = localStorage.key(i);
+  console.log(`${key}: ${localStorage.getItem(key)}`);
+}
+*/
+
 /**
  * 获取cookie(必须在浏览器环境下运行)
  * 
