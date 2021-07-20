@@ -1,13 +1,13 @@
 let myDate = new Date();
 // milliseconds 现在增加24小时
-console.log(new Date(24 * 3600 * 1000))
+console.log(new Date(24 * 3600 * 1000));
 // str 将字符串时间转换为Date ios ie firefox仅支持xxxx/xx/xx日期
-console.log(new Date("1998/09/09 12:13:14"))
+console.log(new Date("1998/09/09 12:13:14"));
 // year, month, [date = 1], [hours = 0], [minutes = 0], [seconds = 0], [ms = 0] 
-console.log(new Date(1998, 8, 9))
+console.log(new Date(1998, 8, 9));
 // 日期差值 以毫秒数显示
-console.log(+new Date())
-console.log(new Date() - new Date("1998/09/09"))
+console.log(+new Date());
+console.log(new Date() - new Date("1998/09/09"));
 // 当地时区date日期方法 设置方法将get改为set
 let arr = [
   myDate.getFullYear(),         // 获取完整的年份(4位,1970-????)
@@ -19,8 +19,8 @@ let arr = [
   myDate.getSeconds(),          // 获取当前秒数(0-59)
   myDate.getMilliseconds(),     // 获取当前毫秒数(0-999)
   myDate.getTime(),             // 获取当前时间(从1970.1.1开始的毫秒数)
-]
-console.log(arr)
+];
+console.log(arr);
 // UTC+0时区
 let utcArr = [
   myDate.getUTCFullYear(),      // 获取完整的年份(4位,1970-????)
@@ -32,25 +32,25 @@ let utcArr = [
   myDate.getUTCSeconds(),       // 获取当前秒数(0-59)
   myDate.getUTCMilliseconds(),  // 获取当前毫秒数(0-999)
   myDate.getTime(),             // 获取当前时间(从1970.1.1开始的毫秒数)
-]
-console.log(utcArr)
+];
+console.log(utcArr);
 
 // 对象方法
-console.log(Date.parse("1998/09/09")) // 解析一个日期时间字符串,返回UTC(协调世界时)到该时间毫秒数 905270400000
-console.log(Date.now())               // 返回UTC(协调世界时)至今的毫秒数 1596619591585
+console.log(Date.parse("1998/09/09")); // 解析一个日期时间字符串,返回UTC(协调世界时)到该时间毫秒数 905270400000
+console.log(Date.now());               // 返回UTC(协调世界时)至今的毫秒数 1596619591585
 
 // 实例方法
-console.log(myDate.toJSON())              // 将Date对象转化字符串,并返回格式化为JSON数据 2020-12-02T06:35:50.087Z
-console.log(myDate.getTimezoneOffset())   // 返回时区偏移的分钟 -480分钟
-console.log(myDate.valueOf())             // 返回UTC(协调世界时)到该时间毫秒数 1596619591585
-console.log(myDate.toISOString())         // 返回ISO 8601时间字符串 2020-12-02T06:35:50.087Z
-console.log(myDate.toUTCString())         // 返回UTC时区时间字符串 Wed, 02 Dec 2020 03:44:19 GMT
-console.log(myDate.toString())            // 返回日期对象的字符串 Wed Dec 02 2020 11:41:09 GMT+0800 (GMT+08:00)
-console.log(myDate.toDateString())        // 返回人类易读日期 Wed Dec 02 2020
-console.log(myDate.toTimeString())        // 返回人类易读时间 11:41:09 GMT+0800 (GMT+08:00)
-console.log(myDate.toLocaleDateString())  // 返回当前地区日期 2020/12/2
-console.log(myDate.toLocaleTimeString())  // 返回当前地区时间(am/pm) 上午11:08:23
-console.log(myDate.toLocaleString())      // 返回当前地区日期与时间(am/pm) 2020/12/2 上午11:08:23
+console.log(myDate.toJSON());              // 将Date对象转化字符串,并返回格式化为JSON数据 2020-12-02T06:35:50.087Z
+console.log(myDate.getTimezoneOffset());   // 返回时区偏移的分钟 -480分钟
+console.log(myDate.valueOf());             // 返回UTC(协调世界时)到该时间毫秒数 1596619591585
+console.log(myDate.toISOString());         // 返回ISO 8601时间字符串 2020-12-02T06:35:50.087Z
+console.log(myDate.toUTCString());         // 返回UTC时区时间字符串 Wed, 02 Dec 2020 03:44:19 GMT
+console.log(myDate.toString());            // 返回日期对象的字符串 Wed Dec 02 2020 11:41:09 GMT+0800 (GMT+08:00)
+console.log(myDate.toDateString());        // 返回人类易读日期 Wed Dec 02 2020
+console.log(myDate.toTimeString());        // 返回人类易读时间 11:41:09 GMT+0800 (GMT+08:00)
+console.log(myDate.toLocaleDateString());  // 返回当前地区日期 2020/12/2
+console.log(myDate.toLocaleTimeString());  // 返回当前地区时间(am/pm) 上午11:08:23
+console.log(myDate.toLocaleString());      // 返回当前地区日期与时间(am/pm) 2020/12/2 上午11:08:23
 
 /**
  * 获取合规时间
@@ -61,12 +61,12 @@ console.log(myDate.toLocaleString())      // 返回当前地区日期与时间(a
  */
 function getRegularTime(value) {
   let getType = function(o) {
-    var s = Object.prototype.toString.call(o);
+    let s = Object.prototype.toString.call(o);
     return s.match(/\[object (.*?)\]/)[1].toLowerCase();
   };
 
   if (getType(value) == "string") {
-    var ms = value.match(/\.([\d]{1,})[Z]*/) ? value.match(/\.([\d]{1,})[Z]*/)[1] : 0;
+    let ms = value.match(/\.([\d]{1,})[Z]*/) ? value.match(/\.([\d]{1,})[Z]*/)[1] : 0;
     if (/T/g.test(value)) { // 去T
       value = value.replace(/T/g, " ");
     }
@@ -76,7 +76,7 @@ function getRegularTime(value) {
     if (/-/g.test(value)) { // new Date兼容ios ie firefox
       value = value.replace(/-/g, "/");
     }
-    var date = new Date(value);
+    let date = new Date(value);
     date.setMilliseconds(ms);
     return date;
   } else if(getType(value) == "number") {
@@ -87,9 +87,9 @@ function getRegularTime(value) {
     return false;
   }
 }
-console.log(getRegularTime("2020-12-12 11:22:33"))
-console.log(getRegularTime(1278930470649))
-console.log(getRegularTime(new Date()))
+console.log(getRegularTime("2020-12-12 11:22:33"));
+console.log(getRegularTime(1278930470649));
+console.log(getRegularTime(new Date()));
 
 /**
  * 格式化时间(依赖getRegularTime方法)
@@ -146,8 +146,8 @@ function format(value, formatStr) {
   str = str.replace(/ms/, mSecond);
   return str;
 }
-console.log(format(new Date(), "YYYY-MM-DD hh:mm:ss.MS W"))
-console.log(format("2012/12/25 20:17:11.111", "YYYY-MM-DD hh:mm:ss.MS W"))
+console.log(format(new Date(), "YYYY-MM-DD hh:mm:ss.MS W"));
+console.log(format("2012/12/25 20:17:11.111", "YYYY-MM-DD hh:mm:ss.MS W"));
 
 /**
  * json时间转换成时间
@@ -163,9 +163,9 @@ function convertJson(value, formatStr) {
   myDate.setTime(String(value).replace(/\/Date\((\d+)\)\//gi, "$1")); //value通过截取字符串只取数字。
   if (isNaN(myDate.getTime())) { return "请输入正确的json日期"; }
   if (formatStr) { return format(myDate, formatStr); }
-  return myDate
-};
-console.log(convertJson(/Date(1278930470649)/))
+  return myDate;
+}
+console.log(convertJson(/Date(1278930470649)/));
 
 /**
  * 时间转换成时间戳(依赖getRegularTime方法)
@@ -182,8 +182,8 @@ function convertToStamp(value, sFlag = false) {
   if (isNaN(time)) { return "请输入正确的日期"; }
   if (sFlag) { return Math.round(time / 1000); }
   return time;
-};
-console.log(convertToStamp(new Date()))
+}
+console.log(convertToStamp(new Date()));
 
 /**
  * 时间戳转换成时间
@@ -199,8 +199,8 @@ function convertStamp(value, sFlag = false, formatStr) {
   if (isNaN(myDate.getTime())) { return "请输入正确的时间戳"; }
   if (formatStr) { return format(myDate, formatStr); }
   return myDate;
-};
-console.log(convertStamp(Date.now()))
+}
+console.log(convertStamp(Date.now()));
 
 /**
  * 按时间顺序排序数组
@@ -244,7 +244,7 @@ function sortDate(array, isAsc = false, key) {
         right = Number(String(b[key]).replace(/\/Date\((\d+)\)\//gi, "$1"));
         break;
       default:
-        console.log("flag类型错误")
+        console.log("flag类型错误");
         break;
     }
     if (!isAsc) {
@@ -252,23 +252,23 @@ function sortDate(array, isAsc = false, key) {
     }
     return right > left ? 1 : -1; // 旧日期在前
   });
-  return arr
+  return arr;
 }
 console.log(sortDate([
   /Date(1594361486000)/,
   /Date(1594363486000)/,
   /Date(1594362486000)/
-]))
+]));
 console.log(sortDate([
   1594361486000,
   1594363486000,
   1594362486000
-]))
+]));
 console.log(sortDate([
   "3999-01-01 00:00:00",
   "3020-08-04 14:56:46",
   "3970-01-19 19:28:43"
-]))
+]));
 
 /**
  * 给定时间增加/减去多长时间(依赖getRegularTime方法)
@@ -311,10 +311,10 @@ function getCalcDate(value, opt, formatStr) {
         myDate.setFullYear(myDate.getFullYear() + value);
         break;
       default:
-        console.log("opt.type类型错误")
+        console.log("opt.type类型错误");
         break;
     }
-  }
+  };
   if (!(opt instanceof Array)) {
     set(opt);
   } else {
@@ -322,20 +322,20 @@ function getCalcDate(value, opt, formatStr) {
       set(element);
     });
   }
-  if (!!formatStr) { return format(myDate, formatStr); }
+  if (formatStr) { return format(myDate, formatStr); }
   return myDate;
-};
+}
 console.log(getCalcDate(new Date(), {
   type: "ms",
   value: 10000
-}))
+}));
 console.log(getCalcDate(new Date(), [{
   type: "ms",
   value: 10000
 }, {
   type: "h",
   value: 24
-}]))
+}]));
 
 /**
  * 求两个/多个时间的最大最小之间的差(多个时间依赖sortDate排序方法)
@@ -361,7 +361,7 @@ function getDateDiff(array, type) {
   for (let index = 0; index < numberArray.length; index++) {
     if (index === numberArray.length - 1) {
       difference[index] = Math.floor(time / numberArray[index]);
-      break
+      break;
     }
     const element = numberArray[index],
       value = Math.floor(time / element);
@@ -383,12 +383,12 @@ function getDateDiff(array, type) {
       return difference;
   }
 }
-console.log(getDateDiff(["2020-06-02 14:24:23.000Z", "2020-08-08 15:23:24.000Z"]))
-console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"]))
-console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"date"))
-console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"hour"))
-console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"minute"))
-console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"minute"))
+console.log(getDateDiff(["2020-06-02 14:24:23.000Z", "2020-08-08 15:23:24.000Z"]));
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"]));
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"date"));
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"hour"));
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"minute"));
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"minute"));
 
 /**
  * 判断是否为闰年
@@ -398,7 +398,7 @@ console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"minute")
  * @returns {Boolean} 返回年份是否为闰年 
  */
 function isLeapYear(val) {
-  let year = !!val ? val : new Date().getYear();
+  let year = val ? val : new Date().getYear();
   // 普通闰年 4的倍数不是100的倍数 世纪闰年 400的倍数
   return (0 == year % 4 && year % 100 != 0) || year % 400 == 0;
 }
@@ -430,7 +430,7 @@ function getDays(value) {
   }
   return days;
 }
-console.log(getDays("2020-4"))
+console.log(getDays("2020-4"));
 
 /**
  * 获取从当前日期指定数字时间的日期 也可以使用getCalcDate方法
@@ -453,12 +453,12 @@ function getDesignDate(index, type = "d", formatStr) {
       newDate.setDate(date.getDate() + (index != null ? index : 0));
       break;
     default:
-      return "获取指定日期的类型未知"
+      return "获取指定日期的类型未知";
   }
   return (formatStr === undefined || typeof formatStr == "string") ? format(newDate, formatStr) : newDate;
 }
-console.log(getDesignDate(1,"d",false))
-console.log(getDesignDate(-1,"mm",false))
+console.log(getDesignDate(1,"d",false));
+console.log(getDesignDate(-1,"mm",false));
 
 /**
  * 时间数值转换字符串时间长度
@@ -480,19 +480,19 @@ function getDateStr(val, type) {
   switch (type) {
     case "ms":
       time = value / 1000;
-      if (time == 0) { return "0毫秒" }
+      if (time == 0) { return "0毫秒"; }
       break;
     case "s":
       time = value;
-      if (time == 0) { return "0秒" }
+      if (time == 0) { return "0秒"; }
       break;
     case "m":
       time = value * minuteNumber;
-      if (time == 0) { return "0分钟" }
+      if (time == 0) { return "0分钟"; }
       break;
     case "h":
       time = value * hourNumber;
-      if (time == 0) { return "0小时" }
+      if (time == 0) { return "0小时"; }
       break;
     default:
       time = value;
@@ -530,17 +530,17 @@ function getDateStr(val, type) {
       break;
     }
     const element = array[index],
-      nextElement = array[index + 1]
+      nextElement = array[index + 1];
     if (element.value >= 1) {
       let value1 = Math.floor(element.value),
         value2 = Math.floor((time - value1 * element.number) / nextElement.number);
-      str = `${value1}${element.text}${!!value2 ? value2 + nextElement.text : ""}`;
+      str = `${value1}${element.text}${value2 ? value2 + nextElement.text : ""}`;
       break;
     }
   }
   return str;
 }
-console.log(getDateStr(0, "m"))
-console.log(getDateStr(124, "m"))
-console.log(getDateStr(124))
-console.log(getDateStr(12224, "m"))
+console.log(getDateStr(0, "m"));
+console.log(getDateStr(124, "m"));
+console.log(getDateStr(124));
+console.log(getDateStr(12224, "m"));

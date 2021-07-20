@@ -50,8 +50,10 @@
 ## fs.js(需要node环境)
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |
 | - | - | - | - | - |
-| delPath | 同步删除文件夹或文件 | - | path: String | - |
-| readDir | 同步读取文件夹 | - | path: String, callback: Function | - |
+| writeByPathSync | 同步写入文件夹或文件 | - | paramPath: String, contentStr: String | - |
+| delByPathSync | 同步删除文件夹或文件 | - | paramPath: String | - |
+| readByPathSync | 同步读取文件夹或文件 | - | paramPath: String | String |
+| copyByPathSync | 同步拷贝文件夹或文件 | - | sourcePath: String, copyPath: String | - |
 
 ## number.js
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 |

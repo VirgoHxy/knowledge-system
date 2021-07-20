@@ -1,5 +1,5 @@
-; (function (undefined) {
-  "use strict"
+!(function () {
+  "use strict";
 
   /**
    * 数组随机排序
@@ -34,7 +34,7 @@
         obj[i] = 1;
       }
     }
-    return result
+    return result;
   }
 
   /**
@@ -46,7 +46,7 @@
    */
   function distinctOfSet(arr) {
     let array = [].concat.apply([], arr);
-    return Array.from(new Set(array))
+    return Array.from(new Set(array));
   }
 
   /**
@@ -60,9 +60,9 @@
    */
   function removeItem(arr, removeArr, key) {
     if (!key) {
-      return arr.filter(item => removeArr.indexOf(item) == -1)
+      return arr.filter(item => removeArr.indexOf(item) == -1);
     }
-    return arr.filter(item => removeArr.indexOf(item[key]) == -1)
+    return arr.filter(item => removeArr.indexOf(item[key]) == -1);
   }
 
   /**
@@ -86,7 +86,7 @@
         if (Object.keys(x).length != Object.keys(y).length) {
           return false;
         }
-        for (var prop in x) {
+        for (let prop in x) {
           if (Object.prototype.hasOwnProperty.call(y, prop)) {
             if (!compareObject(x[prop], y[prop])) {
               return false;
@@ -99,10 +99,10 @@
       } else {
         return false;
       }
-    }
+    };
     // 获取类型
     let getType = function (o) {
-      var s = Object.prototype.toString.call(o);
+      let s = Object.prototype.toString.call(o);
       return s.match(/\[object (.*?)\]/)[1].toLowerCase();
     };
     let compare = function (m, n, type) {
@@ -162,7 +162,7 @@
    */
   function compareArray(x, y, positionFlag = true) {
     if (x.length !== y.length) {
-      return false
+      return false;
     } else {
       if (!positionFlag) {
         x = x.sort();
@@ -170,7 +170,7 @@
       }
       for (let i = 0; i < x.length; i++) {
         if (x[i] !== y[i]) {
-          return false
+          return false;
         }
       }
       return true;
@@ -190,10 +190,10 @@
     if (array.length == 0) {
       return [[]];
     }
-    var num = Math.ceil(array.length / length)
-    var index = 0;
-    var newArray = [];
-    num = num <= number ? number : num
+    let num = Math.ceil(array.length / length);
+    let index = 0;
+    let newArray = [];
+    num = num <= number ? number : num;
     // 分割数组
     while (index < array.length) {
       newArray.push(array.slice(index, index += num));
@@ -213,8 +213,8 @@
     if (array.length == 0) {
       return [[]];
     }
-    var index = 0;
-    var newArray = [];
+    let index = 0;
+    let newArray = [];
     while (index < array.length) {
       newArray.push(array.slice(index, index += number));
     }
@@ -231,7 +231,7 @@
     compareArray,
     splitOfArrayLength,
     splitOfElementLength
-  }
+  };
 
   // 最后将插件对象暴露给全局对象
   if (typeof module !== "undefined" && module.exports) {

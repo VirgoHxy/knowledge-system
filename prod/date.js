@@ -1,5 +1,5 @@
-; (function (undefined) {
-  "use strict"
+!(function () {
+  "use strict";
 
   /**
    * 获取合规时间
@@ -10,12 +10,12 @@
    */
   function getRegularTime(value) {
     let getType = function(o) {
-      var s = Object.prototype.toString.call(o);
+      let s = Object.prototype.toString.call(o);
       return s.match(/\[object (.*?)\]/)[1].toLowerCase();
     };
   
     if (getType(value) == "string") {
-      var ms = value.match(/\.([\d]{1,})[Z]*/) ? value.match(/\.([\d]{1,})[Z]*/)[1] : 0;
+      let ms = value.match(/\.([\d]{1,})[Z]*/) ? value.match(/\.([\d]{1,})[Z]*/)[1] : 0;
       if (/T/g.test(value)) { // 去T
         value = value.replace(/T/g, " ");
       }
@@ -25,7 +25,7 @@
       if (/-/g.test(value)) { // new Date兼容ios ie firefox
         value = value.replace(/-/g, "/");
       }
-      var date = new Date(value);
+      let date = new Date(value);
       date.setMilliseconds(ms);
       return date;
     } else if(getType(value) == "number") {
@@ -108,8 +108,8 @@
     myDate.setTime(String(value).replace(/\/Date\((\d+)\)\//gi, "$1"));
     if (isNaN(myDate.getTime())) { return "请输入正确的json日期"; }
     if (formatStr) { return format(myDate, formatStr); }
-    return myDate
-  };
+    return myDate;
+  }
 
   /**
    * 时间转换成时间戳(依赖getRegularTime方法)
@@ -120,13 +120,13 @@
    * @returns {Number} 返回毫秒/秒类型时间戳
    */
   function convertToStamp(value, sFlag = false) {
-    let myDate = getRegularTime(value)
+    let myDate = getRegularTime(value);
     if (typeof myDate == "boolean") { return "请输入正确的日期"; }
     let time = myDate.getTime();
     if (isNaN(time)) { return "请输入正确的日期"; }
     if (sFlag) { return Math.round(time / 1000); }
     return time;
-  };
+  }
 
   /**
    * 时间戳转换成时间
@@ -142,7 +142,7 @@
     if (isNaN(myDate.getTime())) { return "请输入正确的时间戳"; }
     if (formatStr) { return format(myDate, formatStr); }
     return myDate;
-  };
+  }
 
   /**
    * 按时间顺序排序数组
@@ -186,7 +186,7 @@
           right = Number(String(b[key]).replace(/\/Date\((\d+)\)\//gi, "$1"));
           break;
         default:
-          console.log("flag类型错误")
+          console.log("flag类型错误");
           break;
       }
       if (!isAsc) {
@@ -194,7 +194,7 @@
       }
       return right > left ? 1 : -1; // 旧日期在前
     });
-    return arr
+    return arr;
   }
 
   /**
@@ -238,10 +238,10 @@
           myDate.setFullYear(myDate.getFullYear() + value);
           break;
         default:
-          console.log("opt.type类型错误")
+          console.log("opt.type类型错误");
           break;
       }
-    }
+    };
     if (!(opt instanceof Array)) {
       set(opt);
     } else {
@@ -249,9 +249,9 @@
         set(element);
       });
     }
-    if (!!formatStr) { return format(myDate, formatStr); }
+    if (formatStr) { return format(myDate, formatStr); }
     return myDate;
-  };
+  }
 
   /**
    * 求两个/多个时间的最大最小之间的差(多个时间依赖sortDate排序方法)
@@ -277,7 +277,7 @@
     for (let index = 0; index < numberArray.length; index++) {
       if (index === numberArray.length - 1) {
         difference[index] = Math.floor(time / numberArray[index]);
-        break
+        break;
       }
       const element = numberArray[index],
         value = Math.floor(time / element);
@@ -308,7 +308,7 @@
    * @returns {Boolean} 返回年份是否为闰年 
    */
   function isLeapYear(val) {
-    let year = !!val ? val : new Date().getYear();
+    let year = val ? val : new Date().getYear();
     // 普通闰年 4的倍数不是100的倍数 世纪闰年 400的倍数
     return (0 == year % 4 && year % 100 != 0) || year % 400 == 0;
   }
@@ -361,7 +361,7 @@
         newDate.setDate(date.getDate() + (index != null ? index : 0));
         break;
       default:
-        return "获取指定日期的类型未知"
+        return "获取指定日期的类型未知";
     }
     return (formatStr === undefined || typeof formatStr == "string") ? format(newDate, formatStr) : newDate;
   }
@@ -386,19 +386,19 @@
     switch (type) {
       case "ms":
         time = value / 1000;
-        if (time == 0) { return "0毫秒" }
+        if (time == 0) { return "0毫秒"; }
         break;
       case "s":
         time = value;
-        if (time == 0) { return "0秒" }
+        if (time == 0) { return "0秒"; }
         break;
       case "m":
         time = value * minuteNumber;
-        if (time == 0) { return "0分钟" }
+        if (time == 0) { return "0分钟"; }
         break;
       case "h":
         time = value * hourNumber;
-        if (time == 0) { return "0小时" }
+        if (time == 0) { return "0小时"; }
         break;
       default:
         time = value;
@@ -436,11 +436,11 @@
         break;
       }
       const element = array[index],
-        nextElement = array[index + 1]
+        nextElement = array[index + 1];
       if (element.value >= 1) {
         let value1 = Math.floor(element.value),
           value2 = Math.floor((time - value1 * element.number) / nextElement.number);
-        str = `${value1}${element.text}${!!value2 ? value2 + nextElement.text : ""}`;
+        str = `${value1}${element.text}${value2 ? value2 + nextElement.text : ""}`;
         break;
       }
     }
@@ -461,7 +461,7 @@
     getDays,
     getDesignDate,
     getDateStr
-  }
+  };
 
   // 最后将插件对象暴露给全局对象
   if (typeof module !== "undefined" && module.exports) {

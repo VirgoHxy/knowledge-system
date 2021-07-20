@@ -1,5 +1,5 @@
-; (function (undefined) {
-  "use strict"
+!(function () {
+  "use strict";
 
   /**
    * 解决精度问题
@@ -22,7 +22,7 @@
       case "/":
         return parseFloat((x / y).toFixed(fixedLength || 10));
       default:
-        return "类型错误"
+        return "类型错误";
     }
   }
 
@@ -35,7 +35,7 @@
    * @returns {Number}
    */
   function random(n, m) {
-    return parseInt(Math.random() * (m - n) + n)
+    return parseInt(Math.random() * (m - n) + n);
   }
 
   /**
@@ -96,7 +96,7 @@
    * @returns {String}
    */
   function padNumber(num, fill) {
-    var len = ('' + num).length;
+    let len = ('' + num).length;
     return (Array(
       fill > len ? fill - len + 1 || 0 : 0
     ).join(0) + num);
@@ -112,7 +112,7 @@
     id16,
     isOdd,
     padNumber
-  }
+  };
 
   // 最后将插件对象暴露给全局对象
   if (typeof module !== "undefined" && module.exports) {

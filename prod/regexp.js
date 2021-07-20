@@ -1,5 +1,5 @@
-; (function (undefined) {
-  "use strict"
+!(function () {
+  "use strict";
 
   //电话
   function phone(val) {
@@ -78,7 +78,7 @@
     if (val == null || val === "") {
       return false;
     }
-    return (/^[1-9]\d{3}[-\/](0[1-9]|1[0-2])[-\/](0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d(:[0-5]\d)?$/.test(val));
+    return (/^[1-9]\d{3}[-/](0[1-9]|1[0-2])[-/](0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d(:[0-5]\d)?$/.test(val));
   }
 
   //日期格式 2019-12-02 2019/12/02
@@ -86,7 +86,7 @@
     if (val == null || val === "") {
       return false;
     }
-    return (/^[1-9]\d{3}[-\/](0[1-9]|1[0-2])[-\/](0[1-9]|[1-2][0-9]|3[0-1])$/.test(val));
+    return (/^[1-9]\d{3}[-/](0[1-9]|1[0-2])[-/](0[1-9]|[1-2][0-9]|3[0-1])$/.test(val));
   }
 
   //时间格式 08:22 08:22:13
@@ -266,9 +266,9 @@
   //取出一个路径的文件名
   function getFileName(val) {
     if (val == null || val === "") {
-      return null
+      return null;
     }
-    return val.match(/[^\\/]*$/)[0]
+    return val.match(/[^\\/]*$/)[0];
   }
 
   let global = (function () { return this || (0, eval)('this'); }());
@@ -289,7 +289,7 @@
     illegalReplace,
     image,
     getFileName
-  }
+  };
 
   // 最后将插件对象暴露给全局对象
   if (typeof module !== "undefined" && module.exports) {

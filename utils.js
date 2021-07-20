@@ -8,13 +8,13 @@
 function isNull(val) {
   return (val == null || val === "");
 }
-console.log(isNull(1))
-console.log(isNull(0))
-console.log(isNull())
-console.log(isNull(null))
-console.log(isNull(""))
-console.log(isNull({}))
-console.log(isNull(false))
+console.log(isNull(1));
+console.log(isNull(0));
+console.log(isNull());
+console.log(isNull(null));
+console.log(isNull(""));
+console.log(isNull({}));
+console.log(isNull(false));
 
 /**
  * 获取url参数的值
@@ -25,26 +25,26 @@ console.log(isNull(false))
  */
 function getUrlParam(key, url) {
   try {
-    var query = [];
+    let query = [];
     if (url) {
       let matchUrl = url.match(/.+?\?(.*)/);
       query = matchUrl ? matchUrl[1] : "";
     } else {
       query = window.location.search.substring(1);
     }
-    var querys = query.split("&");
-    for (var i = 0; i < querys.length; i++) {
-      var pair = querys[i].split("=");
+    let querys = query.split("&");
+    for (let i = 0; i < querys.length; i++) {
+      let pair = querys[i].split("=");
       if (pair[0] == key) {
         return typeof pair[1] == "string" ? decodeURIComponent(pair[1]) : pair[1];
       }
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
-console.log(getUrlParam("c", "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"))
+console.log(getUrlParam("c", "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"));
 
 /**
  * 修改url参数的值
@@ -58,23 +58,23 @@ console.log(getUrlParam("c", "http://wxy.ittiger.club:9999/In?p=2018071815295718
  */
 function changeURLArg(key, value, url, hrefFlag) {
   try {
-    var pattern = key + "=([^&]*)";
-    var replaceText = key + "=" + (!(value instanceof Object) ? value : JSON.stringify(value));
+    let pattern = key + "=([^&]*)";
+    let replaceText = key + "=" + (!(value instanceof Object) ? value : JSON.stringify(value));
     !url && (url = window.location.href);
-    var returnUrl = "";
+    let returnUrl = "";
     if (url.match(pattern)) {
-      var tmp = "/(" + key + "=)([^&]*)/gi";
+      let tmp = "/(" + key + "=)([^&]*)/gi";
       tmp = url.replace(eval(tmp), replaceText);
       returnUrl = tmp;
     } else {
-      if (url.match("[\?]")) {
+      if (url.match("[?]")) {
         returnUrl = url + "&" + replaceText;
       } else {
         returnUrl = url + "?" + replaceText;
       }
     }
     if (hrefFlag) {
-      window.history.replaceState(null, null, returnUrl)
+      window.history.replaceState(null, null, returnUrl);
     }
     return returnUrl;
   } catch (error) {
@@ -82,8 +82,8 @@ function changeURLArg(key, value, url, hrefFlag) {
     return "";
   }
 }
-console.log(changeURLArg("c", 123, "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"))
-console.log(changeURLArg("b", 123, "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"))
+console.log(changeURLArg("c", 123, "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"));
+console.log(changeURLArg("b", 123, "http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1"));
 
 /**
  * 操作url的方法
@@ -100,7 +100,7 @@ function urlMethod(data = {}) {
   let {url, type, key, value, hrefFlag} = data;
   let href = url || (window ? window.location.href : "");
   if (!href) {
-    return "url不能为空"
+    return "url不能为空";
   }
   let URLObject = new URL(url);
   let params = URLObject.searchParams;
@@ -125,34 +125,34 @@ console.log(urlMethod({
   url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ-tT_mEucGZsnvmkhA",
   type: "get",
   key: "openId"
-}))
+}));
 console.log(urlMethod({
   url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ-tT_mEucGZsnvmkhA",
   type: "has",
   key: "openId"
-}))
+}));
 let urlMethodObj = urlMethod({
   url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ-tT_mEucGZsnvmkhA",
   type: "delete",
   key: "openId"
 });
-console.log(urlMethodObj)
-console.log(urlMethodObj.href)
+console.log(urlMethodObj);
+console.log(urlMethodObj.href);
 let urlMethodObj1 = urlMethod({
   url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ-tT_mEucGZsnvmkhA",
   type: "set",
   key: "openId",
   value: "123123"
 });
-console.log(urlMethodObj1)
-console.log(urlMethodObj1.href)
+console.log(urlMethodObj1);
+console.log(urlMethodObj1.href);
 console.log(urlMethod({
   url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ-tT_mEucGZsnvmkhA",
   type: "set",
   key: "openId",
   value: "123123",
   hrefFlag: true
-}))
+}));
 
 /**
  * 设置期限Storage
@@ -211,7 +211,7 @@ for(let i = 0; i < localStorage.length; i++) {
  */
 function getCookie(name) {
   let matches = document.cookie.match(new RegExp(
-    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    "(?:^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + "=([^;]*)"
   ));
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
@@ -254,7 +254,7 @@ function deleteCookie(name) {
   // 设置到期时间 max-age(秒数) expires(时间)
   setCookie(name, "", {
     'max-age': -1
-  })
+  });
 }
 
 /**
@@ -263,7 +263,7 @@ function deleteCookie(name) {
  * @returns {Object} 包含终端类型的对象
  */
 function os() {
-  var u = window.navigator.userAgent,
+  let u = window.navigator.userAgent,
     trident = u.indexOf("Trident") > -1, //IE内核
     presto = u.indexOf("Presto") > -1, //opera内核
     webKit = u.indexOf("AppleWebKit") > -1, //苹果、谷歌内核
@@ -329,7 +329,7 @@ function getBrowser() {
  */
 function getPayBrowser() {
   //判断什么浏览器
-  var ua = window.navigator.userAgent.toLowerCase();
+  let ua = window.navigator.userAgent.toLowerCase();
   //判断是不是微信
   if (ua.match(/MicroMessenger/i) == 'micromessenger') {
     return "weixin";
@@ -346,7 +346,7 @@ function getPayBrowser() {
  */
 function closeWindow() {
   // window
-  var userAgent = navigator.userAgent;
+  let userAgent = navigator.userAgent;
   if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") != -1) {
     window.location.href = "about:blank";
     window.location.replace("about:blank");
@@ -397,7 +397,7 @@ function getDownloadUri(data, type) {
       });
     }
     default:
-      console.log("下载文件类型不合规")
+      console.log("下载文件类型不合规");
       return false;
   }
 }
@@ -418,7 +418,7 @@ function download(data, fileName) {
     }
     blob = getDownloadUri(data, type); //new Blob([data]);
     if (blob === false) {
-      console.log("下载失败,内容不合规")
+      console.log("下载失败,内容不合规");
       return false;
     }
     if (!bw["edge"] && !bw["ie"]) {
@@ -433,7 +433,7 @@ function download(data, fileName) {
       window.navigator.msSaveBlob(blob, fileName);
     }
   } catch (error) {
-    console.log(error, "下载失败")
+    console.log(error, "下载失败");
     return false;
   }
 }
@@ -453,12 +453,12 @@ function debounce(func, ms) {
     timeout = setTimeout(() => func.apply(this, arguments), ms);
   };
 }
-var demo = debounce(function () {
+let demo = debounce(function () {
   console.log("debounce");
-}, 1000)
+}, 1000);
 // 只会执行一次
 for (let index = 0; index < 10000; index++) {
-  demo()
+  demo();
 }
 
 /**
@@ -491,10 +491,10 @@ function throttle(func, ms) {
   }
   return wrapper;
 }
-var demo = throttle(function (x) {
+demo = throttle(function (x) {
   console.log("throttle"+x);
-}, 2000)
-demo(1) // throttle1
-demo(2) // 节流 
-demo(3) // 节流
+}, 2000);
+demo(1); // throttle1
+demo(2); // 节流 
+demo(3); // 节流
 // 2000ms后 输出throttle3 2被3替换

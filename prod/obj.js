@@ -1,5 +1,5 @@
-; (function (undefined) {
-  "use strict"
+!(function () {
+  "use strict";
 
   /**
    * 判断对象是否相等
@@ -17,7 +17,7 @@
       if (Object.keys(x).length != Object.keys(y).length) {
         return false;
       }
-      for (var prop in x) {
+      for (let prop in x) {
         if (Object.prototype.hasOwnProperty.call(y, prop)) {
           if (!compareObject(x[prop], y[prop])) {
             return false;
@@ -54,7 +54,7 @@
     } else {
       return target;
     }
-  };
+  }
 
   /**
    * 判断数据类型
@@ -64,16 +64,16 @@
    * @returns {String} 详细类型
    */
   function getType(o) {
-    var s = Object.prototype.toString.call(o);
+    let s = Object.prototype.toString.call(o);
     return s.match(/\[object (.*?)\]/)[1].toLowerCase();
-  };
+  }
 
   let global = (function () { return this || (0, eval)('this'); }());
   let JAFOObjMethod = {
     compareObject,
     clone,
     getType
-  }
+  };
 
   // 最后将插件对象暴露给全局对象
   if (typeof module !== "undefined" && module.exports) {

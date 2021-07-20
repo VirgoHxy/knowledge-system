@@ -1,5 +1,5 @@
-; (function (undefined) {
-  "use strict"
+!(function () {
+  "use strict";
 
   /**
    * 字符串去重
@@ -11,7 +11,7 @@
   function removeRepeat(val) {
     let res = [],
       arr = val.split("");
-    for (var i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
       if (res.indexOf(arr[i]) == -1) {
         res.push(arr[i]);
       }
@@ -48,11 +48,11 @@
       arr = str1.match(/(\w)\1*/g),
       arrLen = arr.length;
     arr.sort((a, b) => {
-      return b.length - a.length
-    })
+      return b.length - a.length;
+    });
     let lengthArr = arr.map((val) => {
       return val.length;
-    })
+    });
     if (!minFlag) {
       let lastLen = arr[arrLen - 1].length,
         firstIndex = lengthArr.indexOf(lastLen);
@@ -60,14 +60,14 @@
         return {
           str: arr[arrLen - 1][0],
           num: lastLen
-        }
+        };
       }
       return {
         str: arr.slice(firstIndex, arrLen).map((val) => {
-          return val[0]
+          return val[0];
         }),
         num: lastLen
-      }
+      };
     }
     let firstLen = arr[0].length,
       lastIndex = lengthArr.lastIndexOf(firstLen);
@@ -75,14 +75,14 @@
       return {
         str: arr[0][0],
         num: firstLen
-      }
+      };
     }
     return {
       str: arr.slice(0, lastIndex + 1).map((val) => {
-        return val[0]
+        return val[0];
       }),
       num: firstLen
-    }
+    };
   }
 
   /**
@@ -93,12 +93,12 @@
    * @returns {String}
    */
   function randomStr(length) {
-    var ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     ALPHABET += 'abcdefghijklmnopqrstuvwxyz';
     ALPHABET += '0123456789-_';
-    var str = '';
-    for (var i = 0; i < length; ++i) {
-      var rand = Math.floor(Math.random() * ALPHABET.length);
+    let str = '';
+    for (let i = 0; i < length; ++i) {
+      let rand = Math.floor(Math.random() * ALPHABET.length);
       str += ALPHABET.substring(rand, rand + 1);
     }
     return str;
@@ -110,8 +110,8 @@
    * @returns {Array}
    */
   function upperLetter() {
-    var arr = [];
-    for (var i = 65; i < 91; i++) {
+    let arr = [];
+    for (let i = 65; i < 91; i++) {
       arr.push(String.fromCharCode(i));
     }
     return arr;
@@ -123,8 +123,8 @@
    * @returns {Array}
    */
   function lowerLetter() {
-    var arr = [];
-    for (var i = 97; i < 123; i++) {
+    let arr = [];
+    for (let i = 97; i < 123; i++) {
       arr.push(String.fromCharCode(i));
     }
     return arr;
@@ -153,7 +153,7 @@
    * @returns {String}
    */
   function deleteByIndex(str, index) {
-    return str.split("").reduce((start, ele, i) => (index instanceof Array ? index.indexOf(i) == -1 ? start + ele : start : i != index ? start + ele : start), "")
+    return str.split("").reduce((start, ele, i) => (index instanceof Array ? index.indexOf(i) == -1 ? start + ele : start : i != index ? start + ele : start), "");
   }
 
   /**
@@ -187,13 +187,13 @@
     for (let i = 0; i < str.length; i++) {
       // 提取字符串每个字符的ascll码
       let charCode = str.charCodeAt(i);
-      console.log(charCode)
+      console.log(charCode);
       // 进行异或加密
       charCode = (charCode * 1) ^ xor;
-      console.log(charCode)
+      console.log(charCode);
       // 异或加密后的字符转成 hex 位数的字符串
       charCode = charCode.toString(hex);
-      console.log(charCode)
+      console.log(charCode);
       resultList.push(charCode);
     }
     let splitStr = String.fromCharCode(hex + 97);
@@ -246,7 +246,7 @@
     deleteLastStr,
     encrypto,
     decrypto
-  }
+  };
 
   // 最后将插件对象暴露给全局对象
   if (typeof module !== "undefined" && module.exports) {
