@@ -94,7 +94,7 @@
     if (!href) {
       return "url不能为空";
     }
-    let URLObject = new URL(url);
+    let URLObject = new URL(href);
     let params = URLObject.searchParams;
     // set get has delete
     switch (type) {
