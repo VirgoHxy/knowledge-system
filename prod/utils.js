@@ -84,12 +84,18 @@
    * @param {String} data.type 操作类型
    * @param {String} data.key 参数的名称
    * @param {*} data.value 参数的值 非字符串转换为字符串
-   * @param {Boolean} [data.hrefFlag = false] 是否返回字符串地址 true 返回字符串地址
+   * @param {Boolean} [data.hrefFlag = true] 是否返回字符串地址 true 返回字符串地址
    * 
    * @returns {*} 返回值
    */
   function urlMethod(data = {}) {
-    let { url, type, key, value, hrefFlag } = data;
+    let {
+      url,
+      type,
+      key,
+      value,
+      hrefFlag = true
+    } = data;
     let href = url || (window ? window.location.href : "");
     if (!href) {
       return "url不能为空";
@@ -101,6 +107,14 @@
       case "set":
         params.set(key, value);
         return !hrefFlag ? URLObject : URLObject.href;
+      case "objectSet":
+        for (const key in value) {
+          if (Object.prototype.hasOwnProperty.call(value, key)) {
+            const element = value[key];
+            params.set(key, element);
+          }
+        }
+        return !hrefFlag ? URLObject : URLObject.href;
       case "get":
         return params.get(key);
       case "has":
@@ -110,7 +124,7 @@
         return !hrefFlag ? URLObject : URLObject.href;
 
       default:
-        return "type类型错误 set,get,has,delete";
+        return "type类型错误 set,objectSet,get,has,delete";
     }
   }
 
@@ -340,7 +354,9 @@
         for (let i = 0; i < rawLength; ++i) {
           uInt8Array[i] = raw.charCodeAt(i);
         }
-        return new Blob([uInt8Array], { type: contentType });
+        return new Blob([uInt8Array], {
+          type: contentType
+        });
       }
       case "txt": {
         const _utf = "\uFEFF"; // 为了使文件以utf-8的编码模式，同时也是解决中文乱码的问题
@@ -418,6 +434,7 @@
     let isThrottled = false,
       savedArgs,
       savedThis;
+
     function wrapper() {
       if (isThrottled) {
         savedArgs = arguments;
@@ -437,7 +454,9 @@
     return wrapper;
   }
 
-  let global = (function () { return this || (0, eval)('this'); }());
+  let global = (function () {
+    return this || (0, eval)('this');
+  }());
   let JAFOUtilsMethod = {
     isNull,
     getUrlParam,
@@ -461,7 +480,9 @@
   if (typeof module !== "undefined" && module.exports) {
     module.exports = JAFOUtilsMethod;
   } else if (typeof define === "function" && define.amd) {
-    define(function () { return JAFOUtilsMethod; });
+    define(function () {
+      return JAFOUtilsMethod;
+    });
   } else {
     !('JAFOUtilsMethod' in global) && (global.JAFOUtilsMethod = JAFOUtilsMethod);
   }

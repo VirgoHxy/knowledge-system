@@ -92,12 +92,12 @@ console.log(changeURLArg("b", 123, "http://wxy.ittiger.club:9999/In?p=2018071815
  * @param {String} data.type 操作类型
  * @param {String} data.key 参数的名称
  * @param {*} data.value 参数的值 非字符串转换为字符串
- * @param {Boolean} [data.hrefFlag = false] 是否返回字符串地址 true 返回字符串地址
+ * @param {Boolean} [data.hrefFlag = true] 是否返回字符串地址 true 返回字符串地址
  * 
  * @returns {*} 返回值
  */
 function urlMethod(data = {}) {
-  let {url, type, key, value, hrefFlag} = data;
+  let {url, type, key, value, hrefFlag = true} = data;
   let href = url || (window ? window.location.href : "");
   if (!href) {
     return "url不能为空";
@@ -109,6 +109,14 @@ function urlMethod(data = {}) {
     case "set":
       params.set(key, value);
       return !hrefFlag ? URLObject : URLObject.href;
+    case "objectSet":
+      for (const key in value) {
+        if (Object.prototype.hasOwnProperty.call(value,key)) {
+          const element = value[key];
+          params.set(key, element);
+        }
+      }
+      return !hrefFlag ? URLObject : URLObject.href;
     case "get":
       return params.get(key);
     case "has":
@@ -118,41 +126,45 @@ function urlMethod(data = {}) {
       return !hrefFlag ? URLObject : URLObject.href;
   
     default:
-      return "type类型错误 set,get,has,delete";
+      return "type类型错误 set,objectSet,get,has,delete";
   }
 }
 console.log(urlMethod({
-  url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ-tT_mEucGZsnvmkhA",
+  url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ",
   type: "get",
   key: "openId"
 }));
 console.log(urlMethod({
-  url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ-tT_mEucGZsnvmkhA",
+  url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ",
   type: "has",
   key: "openId"
 }));
-let urlMethodObj = urlMethod({
-  url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ-tT_mEucGZsnvmkhA",
+let href = urlMethod({
+  url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ",
   type: "delete",
   key: "openId"
 });
-console.log(urlMethodObj);
-console.log(urlMethodObj.href);
-let urlMethodObj1 = urlMethod({
-  url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ-tT_mEucGZsnvmkhA",
+console.log(href);
+let href1 = urlMethod({
+  url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ",
   type: "set",
   key: "openId",
   value: "123123"
 });
-console.log(urlMethodObj1);
-console.log(urlMethodObj1.href);
+console.log(href1);
 console.log(urlMethod({
-  url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ-tT_mEucGZsnvmkhA",
+  url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ",
   type: "set",
   key: "openId",
   value: "123123",
-  hrefFlag: true
+  hrefFlag: false
 }));
+let href2 = urlMethod({
+  url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ",
+  type: "objectSet",
+  value: {demo1: "123123",demo2: "456456"}
+});
+console.log(href2);
 
 /**
  * 设置期限Storage
