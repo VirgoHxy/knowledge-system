@@ -6,6 +6,7 @@
 | operators.js | 操作符示例 |
 | regexpTest.js | 正则操作示例 |
 | tips.js | 不常用基础提示 |
+| error.js error.md | 错误上报总结 |
 
 ## prod文件概括
 | 文件名称 | 类型 | 非导出的抛出对象 |
@@ -18,6 +19,7 @@
 | regexp.js | RegExp | JAFORegexpMethod |
 | str.js | String | JAFOStrMethod |
 | utils.js | * | JAFOUtilsMethod |
+| error.js | Error | JAFOErrorHandler |
 
 ### arr.js
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 | 执行环境 |
