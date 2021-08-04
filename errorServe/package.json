@@ -1,14 +1,13 @@
 {
-  "name": "centralcontrolroomnode",
+  "name": "error",
   "version": "1.0.0",
-  "description": "腾讯云对讲后台",
+  "description": "错误监控后台",
   "scripts": {
-    "main": "node main.js",
+    "index": "node index.js",
     "lint": "eslint ./ --fix"
   },
   "repository": {
-    "type": "git",
-    "url": "http://park.it-wy.cn/GitRepo/CentralControlRoomNode.git"
+    "type": "git"
   },
   "author": "hxy",
   "license": "ISC",
