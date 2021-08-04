@@ -6,16 +6,22 @@
  * @var {String} id 唯一标识 时间+随机字符
  * @var {String} key 错误类型标识 用于标记同一位置同一错误
  * @var {String} message 错误提示
+ * @var {String} detailKey 错误类型标识 用于标记同一错误
+ * @var {String} detailMessage 详细错误提示
+ * @var {String} location 出现的路由路径
  */
 let eventError = {
-  device: {
-    osName: 'Windows10',
-    type: 'desktop'
+  "device": {
+    "osName": "Windows10",
+    "type": "desktop"
   },
-  file: 'https://192.168.1.253:3000/demo.html_706行_19列',
-  id: '20210731111727pOLjEe',
-  key: 63420,
-  message: 'Uncaught TypeError: startDate is not a function'
+  "file": "https://192.168.1.253:3000/demo.html_706行_19列",
+  "id": "20210731111727pOLjEe",
+  "key": 3790,
+  "detailKey": 5086,
+  "message": "Cannot read property 'data' of undefined;",
+  "detailMessage": "Cannot read property 'data' of undefined;Citys/GetData;",
+  "location": "/demo.html"
 };
 /**
  * 自行上报http错误示例(window+node)(可接收其他参数)
@@ -23,30 +29,35 @@ let eventError = {
  * @var {Object} httpError.device 设备信息(window)(内置)
  * @var {String} httpError.id 唯一标识 时间+随机字符(内置)
  * @var {Number} httpError.key 错误类型标识 用于标记同一位置同一错误(内置)
+ * @var {Number} httpError.detailKey 错误类型标识 用于标记同一错误(内置)
  * @var {String} httpError.location 出现的路由路径(window)(内置)
  * @var {String} httpError.message 错误提示(必填)
+ * @var {String} httpError.detailMessage 详细错误提示(内置)
  * @var {*} httpError.param 接口参数
  * @var {String} httpError.url 接口地址(必填)
  * @var {String} httpError.useTime 请求耗时
  */
 let httpError = {
-  device: {
-    osName: 'Windows10',
-    type: 'desktop'
+  "device": {
+    "osName": "Windows10",
+    "type": "desktop"
   },
-  id: '20210731111727pkVyYQ',
-  key: 3769,
-  location: '/demo.html',
-  message: '404:error',
-  param: {
-    RoomId: '2021-07-23 16:27:32'
+  "id": "20210731111727pkVyYQ",
+  "key": 3790,
+  "detailKey": 5086,
+  "location": "/demo.html",
+  "message": "Cannot read property 'data' of undefined;",
+  "detailMessage": "Cannot read property 'data' of undefined;Citys/GetData;",
+  "param": {
+    "RoomId": "2021-07-23 16:27:32"
   },
-  url: 'https://192.168.1.253:3000/Room/GetRoomId',
-  useTime: '17ms'
+  "url": "Citys/GetData",
+  "useTime": "17ms"
 };
 
 /* 
 自行上报错误示例代码
+let startDate = (new Date()).getTime();
 let param = {
   url: window.location.origin + "/" + "Room/GetRoomId",
   type: "post",

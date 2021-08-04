@@ -30,25 +30,34 @@
       // 上报次数地址
       this.countUrl = data.countUrl;
       this._windowFlag = window ? true : false;
-      if (this._windowFlag) {
-        this._deviceType = this._getDeviceType();
-      }
       // web错误收集
       if (this._windowFlag) {
+        // window 分辨设备类型
+        this._deviceType = this._getDeviceType();
+
         window.addEventListener("error", (event) => {
           let {
             message,
-            source,
+            filename,
             lineno,
             colno,
             error
-          } = data;
+          } = event;
           let param = {
-            file: `${source}_${lineno}行_${colno}列`,
+            file: `${filename}_${lineno}行_${colno}列`,
             message
           };
           this.reportError(param, true);
         });
+
+        // vue错误 正式vue 本地运行需要自行添加该代码
+        if (window.Vue) {
+          window.Vue.config.errorHandler = function(err) {
+            setTimeout(() => {
+              throw err;
+            });
+          };
+        }
       }
     }
 
@@ -76,23 +85,30 @@
           return;
         }
       }
-      let str = this._getErrorKeyStr(data, eventFlag);
+      let messageStr = this._getErrorKeyMessageStr(data, eventFlag);
+      let detailStr = this._getErrorKeyDetailStr(data, eventFlag);
       let prarm = Object.assign(data, {
         id: this._getErrorID(),
         device: this._deviceType,
-        key: this._getErrorKey(str)
+        key: this._getErrorKey(messageStr),
+        detailKey: this._getErrorKey(detailStr),
+        message: messageStr,
+        detailMessage: detailStr
       });
       if (this._windowFlag) {
-        if (!eventFlag) {
-          prarm.location = window.location.pathname;
-        }
+        prarm.location = window.location.pathname;
         // 超上限 计数上报
         if (this.time != 0 && this.countUrl) {
           let num = this._getExpire(window.localStorage, `errorHandler${prarm.key}`) || 0;
           num++;
           this._setExpire(window.localStorage, `errorHandler${prarm.key}`, num, 24 * 60 * 60 * 1000);
           if (num >= 100) {
-            this.report(this.countUrl);
+            this.report(this.countUrl, {
+              key: prarm.key,
+              detailKey: prarm.detailKey,
+              message: messageStr,
+              detailMessage: detailStr
+            });
             return;
           }
         }
@@ -107,7 +123,7 @@
       if (this.type == "GET") {
         let href = url;
         if (prarm) {
-          this._urlMethod({
+          href = this._urlMethod({
             url: url,
             type: "objectSet",
             value: prarm
@@ -137,20 +153,31 @@
     }
 
     // 获取错误标识的拼接字符串
-    _getErrorKeyStr(data, eventFlag) {
+    _getErrorKeyStr(data, eventFlag, arr) {
       let str = "";
       for (const key in data) {
         if (Object.hasOwnProperty.call(data, key)) {
           let element = data[key];
           (typeof element == "object") && (element = JSON.stringify(element));
           // 错误标识生成
-          if ((eventFlag && ["file", "message"].indexOf(key) != -1) || (!eventFlag && ["url", "message"]
+          if ((eventFlag && arr.indexOf(key) != -1) || (!eventFlag && arr
               .indexOf(key) != -1)) {
-            str += element;
+            str += element + ";";
           }
         }
       }
       return str;
+    }
+
+    // 获取错误标识的拼接字符串
+    _getErrorKeyMessageStr(data, eventFlag) {
+      return this._getErrorKeyStr(data, eventFlag, ["message"]);
+    }
+
+    // 获取错误标识的拼接字符串
+    _getErrorKeyDetailStr(data, eventFlag) {
+      let array = eventFlag ? ["file", "message"] : ["url", "message"];
+      return this._getErrorKeyStr(data, eventFlag, array);
     }
 
     _checkParam(

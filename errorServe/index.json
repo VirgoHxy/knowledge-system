@@ -1,0 +1,15 @@
+{
+  "name": "error",
+  "script": "./index.js",
+  "cwd": "./",
+  "autorestart": true,
+  "instances": 1,
+  "exec_mode": "cluster",
+  "watch": [
+    "index.js"
+  ],
+  "max_memory_restart": "1G",
+  "out_file": "error-logs/log.log",
+  "error_file": "error-logs/error.log",
+  "log_date_format": "YYYY-MM-DD HH:mm Z"
+}

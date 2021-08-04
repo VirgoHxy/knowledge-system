@@ -31,7 +31,10 @@ device 设备信息;
 file 出现位置;格式为文件地址 + 行号 + 列号;
 id 唯一标识;时间+随机字符,可在日志文件快速查到详细信息;
 key 错误类型标识;用于标记同一位置同一错误;
+detailKey 错误类型标识;用于标记同一错误;
 message 错误提示;
+detailMessage 详细错误提示;
+location 出现的路由路径;
 
 // 文件内报错
 {
@@ -41,16 +44,21 @@ message 错误提示;
   },
   "file": "https://192.168.1.253:3000/demo.html_706行_19列",
   "id": "20210731111727pOLjEe",
-  "key": 63420,
-  "message": "Uncaught TypeError: startDate is not a function"
+  "key": 3790,
+  "detailKey": 5086,
+  "message": "Cannot read property 'data' of undefined;",
+  "detailMessage": "Cannot read property 'data' of undefined;Citys/GetData;",
+  "location": "/demo.html"
 }
 
 自行上报示例
 device 设备信息(window)(内置);
 id 唯一标识(内置);时间+随机字符,可在日志文件快速查到详细信息;
 key 错误类型标识(内置);用于标记同一位置同一错误;
+detailKey 错误类型标识(内置);用于标记同一错误;
 location 出现的路由路径(window)(内置);
 message 错误提示(必填);
+detailMessage 详细错误提示(内置);
 url 接口地址(必填);
 param 接口参数;
 useTime 请求耗时;
@@ -62,13 +70,15 @@ useTime 请求耗时;
     "type": "desktop"
   },
   "id": "20210731111727pkVyYQ",
-  "key": 3769,
+  "key": 3790,
+  "detailKey": 5086,
   "location": "/demo.html",
-  "message": "404:error",
+  "message": "Cannot read property 'data' of undefined;",
+  "detailMessage": "Cannot read property 'data' of undefined;Citys/GetData;",
   "param": {
     "RoomId": "2021-07-23 16:27:32"
   },
-  "url": "https://192.168.1.253:3000/Room/GetRoomId",
+  "url": "Citys/GetData",
   "useTime": "17ms"
 }
 ```
@@ -78,9 +88,16 @@ useTime 请求耗时;
 ```
 trycatch 语法错误不能捕获❌ Promise错误不能捕获❌ 异步错误不能捕获❌ Promise + reject,Promise + await和window.addEventListener('unhandledrejection',fn)能捕获✅
 
-window.onerror = fn(message, source, lineno, colno, error) 语法错误不能捕获❌ Promise错误不能捕获❌ 异步错误能捕获✅
+window.onerror = fn(message, filename, lineno, colno, error) 语法错误不能捕获❌ Promise错误不能捕获❌ 异步错误能捕获✅
 
 window.addEventListener('error', fn(errorEvent)) 语法错误不能捕获❌ Promise错误不能捕获❌ 异步错误能捕获✅ 资源错误能捕获✅
+
+Vue.config.errorHandler = function (err) {
+  setTimeout(() => {
+    <!-- vue需要单独抛出错误 -->
+    throw err
+  })
+}
 ```
 
 ### 错误类型
