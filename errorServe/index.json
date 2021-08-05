@@ -4,7 +4,6 @@
   "cwd": "./",
   "autorestart": true,
   "instances": 1,
-  "exec_mode": "cluster",
   "watch": [
     "index.js"
   ],
