@@ -4,6 +4,7 @@
   "cwd": "./",
   "autorestart": true,
   "instances": 1,
+  "exec_mode": "fork",
   "watch": [
     "index.js"
   ],
