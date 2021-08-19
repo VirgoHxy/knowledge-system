@@ -6,6 +6,7 @@
 | operators.js | 操作符示例 |
 | regexpTest.js | 正则操作示例 |
 | tips.js | 不常用基础提示 |
+| es6.js | es6总结 |
 | error.js error.md | 错误上报总结 |
 
 ## prod文件概括

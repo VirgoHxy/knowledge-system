@@ -25,8 +25,8 @@
       this.url = data.url;
       // POST或GET
       this.type = data.type || "GET";
-      // 上报次数上限(0为无限) 一天内同一个错误超过上限只计数 不上报具体原因
-      this.time = data.time || 100;
+      // 上报次数上限(0为无限) 一天内同一个错误(不是详细错误)超过上限只计数 不上报具体原因
+      this.time = data.time || 20;
       // 上报次数地址
       this.countUrl = data.countUrl;
       this._windowFlag = window ? true : false;
@@ -45,7 +45,8 @@
           } = event;
           let param = {
             file: `${filename}_${lineno}行_${colno}列`,
-            message
+            message,
+            error
           };
           this.reportError(param, true);
         });
@@ -87,7 +88,7 @@
       }
       let messageStr = this._getErrorKeyMessageStr(data, eventFlag);
       let detailStr = this._getErrorKeyDetailStr(data, eventFlag);
-      let prarm = Object.assign(data, {
+      let param = Object.assign(data, {
         id: this._getErrorID(),
         device: this._deviceType,
         key: this._getErrorKey(messageStr),
@@ -95,17 +96,26 @@
         message: messageStr,
         detailMessage: detailStr
       });
+      if (data.error && data.error.stack) {
+        // 这种正则 在iphone app编译后会导致语法错误 invalid regular expression invalid group specifier name
+        // errorStack = data.error.stack.match(/(?<=at\s)(.+)(?=\s\()/g);
+        let regExp = new RegExp("(?<=at\\s)(.+)(?=\\s\\()", "g");
+        let errorStack = data.error.stack.match(regExp);
+        Object.assign(param, {
+          errorStack
+        });
+      }
       if (this._windowFlag) {
-        prarm.location = window.location.pathname;
+        param.location = window.location.pathname;
         // 超上限 计数上报
         if (this.time != 0 && this.countUrl) {
-          let num = this._getExpire(window.localStorage, `errorHandler${prarm.key}`) || 0;
+          let num = this._getExpire(window.localStorage, `errorHandler${param.key}`) || 0;
           num++;
-          this._setExpire(window.localStorage, `errorHandler${prarm.key}`, num, 24 * 60 * 60 * 1000);
+          this._setExpire(window.localStorage, `errorHandler${param.key}`, num, 24 * 60 * 60 * 1000);
           if (num >= 100) {
             this.report(this.countUrl, {
-              key: prarm.key,
-              detailKey: prarm.detailKey,
+              key: param.key,
+              detailKey: param.detailKey,
               message: messageStr,
               detailMessage: detailStr
             });
@@ -116,17 +126,17 @@
         // nodejs 超上限 计数上报
       }
       // 上报详细信息 后台接收并计数
-      this._report(this.url, prarm);
+      this._report(this.url, param);
     }
 
-    _report(url, prarm) {
+    _report(url, param) {
       if (this.type == "GET") {
         let href = url;
-        if (prarm) {
+        if (param) {
           href = this._urlMethod({
             url: url,
             type: "objectSet",
-            value: prarm
+            value: param
           });
         }
         (new Image).src = href;
@@ -134,7 +144,7 @@
         let xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-type", "application/json");
-        xhr.send(prarm ? JSON.stringify(prarm) : "");
+        xhr.send(param ? JSON.stringify(param) : "");
       }
     }
 

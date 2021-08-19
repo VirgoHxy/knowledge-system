@@ -323,9 +323,9 @@
       window.opener = null;
       window.open("about:blank", "_self", "").close();
     } else {
+      window.close();
       window.pener = null;
       window.open("about:blank", "_self");
-      window.close();
     }
 
     if (window.WeixinJSBridge) {
