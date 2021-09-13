@@ -179,7 +179,11 @@
     let matches = document.cookie.match(new RegExp(
       "(?:^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + "=([^;]*)"
     ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
+    return matches
+    ? matches[1]
+      ? JSON.parse(decodeURIComponent(matches[1]))
+      : undefined
+    : undefined;
   }
 
   /**
@@ -199,7 +203,12 @@
     if (options.expires instanceof Date) {
       options.expires = options.expires.toUTCString();
     }
-    let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+    let updatedCookie =
+    encodeURIComponent(name) +
+    "=" +
+    encodeURIComponent(
+      typeof value == "object" ? JSON.stringify(value) : value
+    );
     for (let optionKey in options) {
       updatedCookie += "; " + optionKey;
       let optionValue = options[optionKey];
@@ -407,6 +416,25 @@
   }
 
   /**
+   * 通过元素下载文件(必须在浏览器环境下运行)
+   *
+   * @param {String} url 文件地址
+   * @param {String} fileName 文件名称
+   */
+  function downloadByAElement(url, fileName) {
+    try {
+      const element = document.createElement("a");
+      element.href = url;
+      element.download = fileName;
+      const a = document.body.appendChild(element);
+      a.click();
+      document.body.removeChild(element);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /**
    * 防抖装饰器
    * 
    * @param {Function} func 函数
@@ -472,6 +500,7 @@
     getPayBrowser,
     closeWindow,
     download,
+    downloadByAElement,
     debounce,
     throttle
   };

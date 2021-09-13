@@ -38,6 +38,7 @@
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 | 执行环境 |
 | - | - | - | - | - | - |
 | getRegularTime | 获取合规时间 | - | value: Date/String/Number | Date | window + node |
+| getDate2XLSX | 获取xlsx合规时间 | - | value: Number | Date | window + node |
 | format | 格式化时间 | getRegularTime | value: Date/String/Number, [formatStr = "YYYY-MM-DD hh:mm:ss"]: String | String | window + node |
 | convertJson | json时间(/Date(*)/)转换成时间 | [format] | value: String, [formatStr: String] | Date/String | window + node |
 | convertToStamp | 时间转换成时间戳 | getRegularTime | value: String, [sFlag = false]: Boolean | Number | window + node |
@@ -129,5 +130,6 @@
 | getPayBrowser | 获取支付浏览器类型 | - | - | String/Boolean | window |
 | closeWindow | 关闭浏览器 | - | - | - | window |
 | download | 下载文件 | getBrowser, getDownloadUri | data: String, type: String | - | window |
+| downloadByAElement | 通过元素下载文件 | - | url: String, fileName: String | - | window |
 | debounce | 去抖装饰器 | - | func: Function, ms: Number | Function | window + node |
 | throttle | 节流装饰器 | - | func: Function, ms: Number | Function | window + node |

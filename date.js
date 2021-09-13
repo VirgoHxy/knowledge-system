@@ -10,57 +10,57 @@ console.log(+new Date());
 console.log(new Date() - new Date("1998/09/09"));
 // 当地时区date日期方法 设置方法将get改为set
 let arr = [
-  myDate.getFullYear(),         // 获取完整的年份(4位,1970-????)
-  myDate.getMonth(),            // 获取当前月份(0-11,0代表1月)
-  myDate.getDate(),             // 获取当前日(1-31)
-  myDate.getDay(),              // 获取当前星期X(0-6,0代表星期天)
-  myDate.getHours(),            // 获取当前小时数(0-23)
-  myDate.getMinutes(),          // 获取当前分钟数(0-59)
-  myDate.getSeconds(),          // 获取当前秒数(0-59)
-  myDate.getMilliseconds(),     // 获取当前毫秒数(0-999)
-  myDate.getTime(),             // 获取当前时间(从1970.1.1开始的毫秒数)
+  myDate.getFullYear(), // 获取完整的年份(4位,1970-????)
+  myDate.getMonth(), // 获取当前月份(0-11,0代表1月)
+  myDate.getDate(), // 获取当前日(1-31)
+  myDate.getDay(), // 获取当前星期X(0-6,0代表星期天)
+  myDate.getHours(), // 获取当前小时数(0-23)
+  myDate.getMinutes(), // 获取当前分钟数(0-59)
+  myDate.getSeconds(), // 获取当前秒数(0-59)
+  myDate.getMilliseconds(), // 获取当前毫秒数(0-999)
+  myDate.getTime(), // 获取当前时间(从1970.1.1开始的毫秒数)
 ];
 console.log(arr);
 // UTC+0时区
 let utcArr = [
-  myDate.getUTCFullYear(),      // 获取完整的年份(4位,1970-????)
-  myDate.getUTCMonth(),         // 获取当前月份(0-11,0代表1月)
-  myDate.getUTCDate(),          // 获取当前日(1-31)
-  myDate.getUTCDay(),           // 获取当前星期X(0-6,0代表星期天)
-  myDate.getUTCHours(),         // 获取当前小时数(0-23)
-  myDate.getUTCMinutes(),       // 获取当前分钟数(0-59)
-  myDate.getUTCSeconds(),       // 获取当前秒数(0-59)
-  myDate.getUTCMilliseconds(),  // 获取当前毫秒数(0-999)
-  myDate.getTime(),             // 获取当前时间(从1970.1.1开始的毫秒数)
+  myDate.getUTCFullYear(), // 获取完整的年份(4位,1970-????)
+  myDate.getUTCMonth(), // 获取当前月份(0-11,0代表1月)
+  myDate.getUTCDate(), // 获取当前日(1-31)
+  myDate.getUTCDay(), // 获取当前星期X(0-6,0代表星期天)
+  myDate.getUTCHours(), // 获取当前小时数(0-23)
+  myDate.getUTCMinutes(), // 获取当前分钟数(0-59)
+  myDate.getUTCSeconds(), // 获取当前秒数(0-59)
+  myDate.getUTCMilliseconds(), // 获取当前毫秒数(0-999)
+  myDate.getTime(), // 获取当前时间(从1970.1.1开始的毫秒数)
 ];
 console.log(utcArr);
 
 // 对象方法
 console.log(Date.parse("1998/09/09")); // 解析一个日期时间字符串,返回UTC(协调世界时)到该时间毫秒数 905270400000
-console.log(Date.now());               // 返回UTC(协调世界时)至今的毫秒数 1596619591585
+console.log(Date.now()); // 返回UTC(协调世界时)至今的毫秒数 1596619591585
 
 // 实例方法
-console.log(myDate.toJSON());              // 将Date对象转化字符串,并返回格式化为JSON数据 2020-12-02T06:35:50.087Z
-console.log(myDate.getTimezoneOffset());   // 返回时区偏移的分钟 -480分钟
-console.log(myDate.valueOf());             // 返回UTC(协调世界时)到该时间毫秒数 1596619591585
-console.log(myDate.toISOString());         // 返回ISO 8601时间字符串 2020-12-02T06:35:50.087Z
-console.log(myDate.toUTCString());         // 返回UTC时区时间字符串 Wed, 02 Dec 2020 03:44:19 GMT
-console.log(myDate.toString());            // 返回日期对象的字符串 Wed Dec 02 2020 11:41:09 GMT+0800 (GMT+08:00)
-console.log(myDate.toDateString());        // 返回人类易读日期 Wed Dec 02 2020
-console.log(myDate.toTimeString());        // 返回人类易读时间 11:41:09 GMT+0800 (GMT+08:00)
-console.log(myDate.toLocaleDateString());  // 返回当前地区日期 2020/12/2
-console.log(myDate.toLocaleTimeString());  // 返回当前地区时间(am/pm) 上午11:08:23
-console.log(myDate.toLocaleString());      // 返回当前地区日期与时间(am/pm) 2020/12/2 上午11:08:23
+console.log(myDate.toJSON()); // 将Date对象转化字符串,并返回格式化为JSON数据 2020-12-02T06:35:50.087Z
+console.log(myDate.getTimezoneOffset()); // 返回时区偏移的分钟 -480分钟
+console.log(myDate.valueOf()); // 返回UTC(协调世界时)到该时间毫秒数 1596619591585
+console.log(myDate.toISOString()); // 返回ISO 8601时间字符串 2020-12-02T06:35:50.087Z
+console.log(myDate.toUTCString()); // 返回UTC时区时间字符串 Wed, 02 Dec 2020 03:44:19 GMT
+console.log(myDate.toString()); // 返回日期对象的字符串 Wed Dec 02 2020 11:41:09 GMT+0800 (GMT+08:00)
+console.log(myDate.toDateString()); // 返回人类易读日期 Wed Dec 02 2020
+console.log(myDate.toTimeString()); // 返回人类易读时间 11:41:09 GMT+0800 (GMT+08:00)
+console.log(myDate.toLocaleDateString()); // 返回当前地区日期 2020/12/2
+console.log(myDate.toLocaleTimeString()); // 返回当前地区时间(am/pm) 上午11:08:23
+console.log(myDate.toLocaleString()); // 返回当前地区日期与时间(am/pm) 2020/12/2 上午11:08:23
 
 /**
  * 获取合规时间
  * 
- * @param {Date | String | Number} value 时间字符串
+ * @param {Date | String | Number | Object} value 时间类型 当为对象时 会根据对象的type字段执行
  * 
  * @returns {Date} 返回时间对象
  */
 function getRegularTime(value) {
-  let getType = function(o) {
+  let getType = function (o) {
     let s = Object.prototype.toString.call(o);
     return s.match(/\[object (.*?)\]/)[1].toLowerCase();
   };
@@ -79,10 +79,19 @@ function getRegularTime(value) {
     let date = new Date(value);
     date.setMilliseconds(ms);
     return date;
-  } else if(getType(value) == "number") {
+  } else if (getType(value) == "number") {
     return new Date(value);
-  } else if(getType(value) == "date") {
+  } else if (getType(value) == "date") {
     return value;
+  } else if (getType(value) == "object") {
+    let { type, data} = value;
+    switch (type) {
+      case "xlsx":
+        return getDate2XLSX(data);
+    
+      default:
+        return false;
+    }
   } else {
     return false;
   }
@@ -90,6 +99,29 @@ function getRegularTime(value) {
 console.log(getRegularTime("2020-12-12 11:22:33"));
 console.log(getRegularTime(1278930470649));
 console.log(getRegularTime(new Date()));
+
+/**
+ * 获取xlsx合规时间
+ * 
+ * @param {Number} value 时间数字
+ * 
+ * @returns {Date} 返回时间对象
+ */
+function getDate2XLSX(serial) {
+  let utc_days = Math.floor(serial - 25569);
+  let utc_value = utc_days * 86400;
+  let date_info = new Date(utc_value * 1000);
+  let fractional_day = serial - Math.floor(serial) + 0.0000001;
+  let total_seconds = Math.floor(86400 * fractional_day);
+  let seconds = total_seconds % 60;
+  total_seconds -= seconds;
+  let hours = Math.floor(total_seconds / (60 * 60));
+  let minutes = Math.floor(total_seconds / 60) % 60;
+  let date = new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
+  return date;
+}
+console.log(getDate2XLSX(44352.2919791667));
+console.log(getDate2XLSX(44352.2919791667).toLocaleString());
 
 /**
  * 格式化时间(依赖getRegularTime方法)
@@ -101,8 +133,12 @@ console.log(getRegularTime(new Date()));
  */
 function format(value, formatStr) {
   let myDate = getRegularTime(value);
-  if (typeof myDate == "boolean") { return "请输入正确的日期"; }
-  if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
+  if (typeof myDate == "boolean") {
+    return "请输入正确的日期";
+  }
+  if (isNaN(myDate.getTime())) {
+    return "请输入正确的日期";
+  }
   let str = formatStr || "YYYY-MM-DD hh:mm:ss",
     week = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
     fullYear = myDate.getFullYear(),
@@ -158,11 +194,17 @@ console.log(format("2012/12/25 20:17:11.111", "YYYY-MM-DD hh:mm:ss.MS W"));
  * @returns {Date | String} 当value为空返回字符串提示 当formatStr为空返回date 不为空返回字符串时间
  */
 function convertJson(value, formatStr) {
-  if (!value) { return "请输入json日期"; }
+  if (!value) {
+    return "请输入json日期";
+  }
   let myDate = new Date();
   myDate.setTime(String(value).replace(/\/Date\((\d+)\)\//gi, "$1")); //value通过截取字符串只取数字。
-  if (isNaN(myDate.getTime())) { return "请输入正确的json日期"; }
-  if (formatStr) { return format(myDate, formatStr); }
+  if (isNaN(myDate.getTime())) {
+    return "请输入正确的json日期";
+  }
+  if (formatStr) {
+    return format(myDate, formatStr);
+  }
   return myDate;
 }
 console.log(convertJson(/Date(1278930470649)/));
@@ -178,9 +220,15 @@ console.log(convertJson(/Date(1278930470649)/));
 function convertToStamp(value, sFlag = false) {
   let myDate = getRegularTime(value),
     time = myDate.getTime();
-  if (typeof myDate == "boolean") { return "请输入正确的日期"; }
-  if (isNaN(time)) { return "请输入正确的日期"; }
-  if (sFlag) { return Math.round(time / 1000); }
+  if (typeof myDate == "boolean") {
+    return "请输入正确的日期";
+  }
+  if (isNaN(time)) {
+    return "请输入正确的日期";
+  }
+  if (sFlag) {
+    return Math.round(time / 1000);
+  }
   return time;
 }
 console.log(convertToStamp(new Date()));
@@ -196,8 +244,12 @@ console.log(convertToStamp(new Date()));
  */
 function convertStamp(value, sFlag = false, formatStr) {
   let myDate = new Date(!sFlag ? value : value * 1000);
-  if (isNaN(myDate.getTime())) { return "请输入正确的时间戳"; }
-  if (formatStr) { return format(myDate, formatStr); }
+  if (isNaN(myDate.getTime())) {
+    return "请输入正确的时间戳";
+  }
+  if (formatStr) {
+    return format(myDate, formatStr);
+  }
   return myDate;
 }
 console.log(convertStamp(Date.now()));
@@ -227,19 +279,19 @@ function sortDate(array, isAsc = false, key) {
     let left = a,
       right = b;
     switch (flag) {
-      case 1:// 无key普通 001
+      case 1: // 无key普通 001
         left = new Date(/-/.test(a) ? a.replace(/-/g, "/") : a).getTime();
         right = new Date(/-/.test(b) ? b.replace(/-/g, "/") : b).getTime();
         break;
-      case 3:// 有key普通 011
+      case 3: // 有key普通 011
         left = new Date(/-/.test(a[key]) ? a[key].replace(/-/g, "/") : a[key]).getTime();
         right = new Date(/-/.test(b[key]) ? b[key].replace(/-/g, "/") : b[key]).getTime();
         break;
-      case 4:// 无keyjson 100
+      case 4: // 无keyjson 100
         left = Number(String(a).replace(/\/Date\((\d+)\)\//gi, "$1"));
         right = Number(String(b).replace(/\/Date\((\d+)\)\//gi, "$1"));
         break;
-      case 6:// 有keyjson 110
+      case 6: // 有keyjson 110
         left = Number(String(a[key]).replace(/\/Date\((\d+)\)\//gi, "$1"));
         right = Number(String(b[key]).replace(/\/Date\((\d+)\)\//gi, "$1"));
         break;
@@ -283,11 +335,20 @@ console.log(sortDate([
  */
 function getCalcDate(value, opt, formatStr) {
   let myDate = getRegularTime(value);
-  if (typeof myDate == "boolean") { return "请输入正确的日期"; }
-  if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
-  if (opt == null || typeof opt !== "object") { return "参数错误"; }
+  if (typeof myDate == "boolean") {
+    return "请输入正确的日期";
+  }
+  if (isNaN(myDate.getTime())) {
+    return "请输入正确的日期";
+  }
+  if (opt == null || typeof opt !== "object") {
+    return "参数错误";
+  }
   let set = function (data) {
-    let { value, type } = data;
+    let {
+      value,
+      type
+    } = data;
     switch (type) {
       case "ms":
         myDate.setMilliseconds(myDate.getMilliseconds() + value);
@@ -322,7 +383,9 @@ function getCalcDate(value, opt, formatStr) {
       set(element);
     });
   }
-  if (formatStr) { return format(myDate, formatStr); }
+  if (formatStr) {
+    return format(myDate, formatStr);
+  }
   return myDate;
 }
 console.log(getCalcDate(new Date(), {
@@ -385,10 +448,10 @@ function getDateDiff(array, type) {
 }
 console.log(getDateDiff(["2020-06-02 14:24:23.000Z", "2020-08-08 15:23:24.000Z"]));
 console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"]));
-console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"date"));
-console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"hour"));
-console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"minute"));
-console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"],"minute"));
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"], "date"));
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"], "hour"));
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"], "minute"));
+console.log(getDateDiff(["2020-06-02 14:24:23", "2020-06-04 15:25:24"], "minute"));
 
 /**
  * 判断是否为闰年
@@ -413,8 +476,12 @@ console.log(isLeapYear(2000));
  */
 function getDays(value) {
   let myDate = getRegularTime(value);
-  if (typeof myDate == "boolean") { return "请输入正确的日期"; }
-  if (isNaN(myDate.getTime())) { return "请输入正确的日期"; }
+  if (typeof myDate == "boolean") {
+    return "请输入正确的日期";
+  }
+  if (isNaN(myDate.getTime())) {
+    return "请输入正确的日期";
+  }
   let year = myDate.getFullYear(),
     mouth = myDate.getMonth() + 1,
     days;
@@ -444,7 +511,7 @@ console.log(getDays("2020-4"));
 function getDesignDate(index, type = "d", formatStr) {
   let date = new Date(); //当前日期
   let newDate = new Date();
-  switch(type) {
+  switch (type) {
     case "mm":
       newDate.setMonth(date.getMonth() + (index != null ? index : 0));
       break;
@@ -457,8 +524,8 @@ function getDesignDate(index, type = "d", formatStr) {
   }
   return (formatStr === undefined || typeof formatStr == "string") ? format(newDate, formatStr) : newDate;
 }
-console.log(getDesignDate(1,"d",false));
-console.log(getDesignDate(-1,"mm",false));
+console.log(getDesignDate(1, "d", false));
+console.log(getDesignDate(-1, "mm", false));
 
 /**
  * 时间数值转换字符串时间长度
@@ -469,8 +536,10 @@ console.log(getDesignDate(-1,"mm",false));
  * @returns {String} 字符串时间长度 val为空返回空字符串
  */
 function getDateStr(val, type) {
-  if (val==null || val==="") { return ""; }
-  let value = Number(val), 
+  if (val == null || val === "") {
+    return "";
+  }
+  let value = Number(val),
     str = "",
     minuteNumber = 60,
     hourNumber = 60 * 60,
@@ -480,49 +549,56 @@ function getDateStr(val, type) {
   switch (type) {
     case "ms":
       time = value / 1000;
-      if (time == 0) { return "0毫秒"; }
+      if (time == 0) {
+        return "0毫秒";
+      }
       break;
     case "s":
       time = value;
-      if (time == 0) { return "0秒"; }
+      if (time == 0) {
+        return "0秒";
+      }
       break;
     case "m":
       time = value * minuteNumber;
-      if (time == 0) { return "0分钟"; }
+      if (time == 0) {
+        return "0分钟";
+      }
       break;
     case "h":
       time = value * hourNumber;
-      if (time == 0) { return "0小时"; }
+      if (time == 0) {
+        return "0小时";
+      }
       break;
     default:
       time = value;
   }
-  let array = [
-    {
-      text: "个月",
-      value: time / monthNumber,
-      number: monthNumber
-    },
-    {
-      text: "天",
-      value: time / dayNumber,
-      number: dayNumber
-    },
-    {
-      text: "小时",
-      value: time / hourNumber,
-      number: hourNumber
-    },
-    {
-      text: "分钟",
-      value: time / minuteNumber,
-      number: minuteNumber
-    },
-    {
-      text: "秒",
-      value: time,
-      number: 1
-    }
+  let array = [{
+    text: "个月",
+    value: time / monthNumber,
+    number: monthNumber
+  },
+  {
+    text: "天",
+    value: time / dayNumber,
+    number: dayNumber
+  },
+  {
+    text: "小时",
+    value: time / hourNumber,
+    number: hourNumber
+  },
+  {
+    text: "分钟",
+    value: time / minuteNumber,
+    number: minuteNumber
+  },
+  {
+    text: "秒",
+    value: time,
+    number: 1
+  }
   ];
   for (let index = 0; index < array.length; index++) {
     if (index === array.length - 1) {

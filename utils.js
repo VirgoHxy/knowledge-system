@@ -97,7 +97,13 @@ console.log(changeURLArg("b", 123, "http://wxy.ittiger.club:9999/In?p=2018071815
  * @returns {*} 返回值
  */
 function urlMethod(data = {}) {
-  let {url, type, key, value, hrefFlag = true} = data;
+  let {
+    url,
+    type,
+    key,
+    value,
+    hrefFlag = true
+  } = data;
   let href = url || (window ? window.location.href : "");
   if (!href) {
     return "url不能为空";
@@ -111,7 +117,7 @@ function urlMethod(data = {}) {
       return !hrefFlag ? URLObject : URLObject.href;
     case "objectSet":
       for (const key in value) {
-        if (Object.prototype.hasOwnProperty.call(value,key)) {
+        if (Object.prototype.hasOwnProperty.call(value, key)) {
           const element = value[key];
           params.set(key, element);
         }
@@ -124,7 +130,7 @@ function urlMethod(data = {}) {
     case "delete":
       params.delete(key);
       return !hrefFlag ? URLObject : URLObject.href;
-  
+
     default:
       return "type类型错误 set,objectSet,get,has,delete";
   }
@@ -162,7 +168,10 @@ console.log(urlMethod({
 let href2 = urlMethod({
   url: "http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ",
   type: "objectSet",
-  value: {demo1: "123123",demo2: "456456"}
+  value: {
+    demo1: "123123",
+    demo2: "456456"
+  }
 });
 console.log(href2);
 
@@ -225,7 +234,11 @@ function getCookie(name) {
   let matches = document.cookie.match(new RegExp(
     "(?:^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + "=([^;]*)"
   ));
-  return matches ? decodeURIComponent(matches[1]) : undefined;
+  return matches ?
+    matches[1] ?
+    JSON.parse(decodeURIComponent(matches[1])) :
+    undefined :
+    undefined;
 }
 
 /**
@@ -245,7 +258,12 @@ function setCookie(name, value, options = {}) {
   if (options.expires instanceof Date) {
     options.expires = options.expires.toUTCString();
   }
-  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+  let updatedCookie =
+    encodeURIComponent(name) +
+    "=" +
+    encodeURIComponent(
+      typeof value == "object" ? JSON.stringify(value) : value
+    );
   for (let optionKey in options) {
     updatedCookie += "; " + optionKey;
     let optionValue = options[optionKey];
@@ -400,7 +418,9 @@ function getDownloadUri(data, type) {
       for (let i = 0; i < rawLength; ++i) {
         uInt8Array[i] = raw.charCodeAt(i);
       }
-      return new Blob([uInt8Array], { type: contentType });
+      return new Blob([uInt8Array], {
+        type: contentType
+      });
     }
     case "txt": {
       const _utf = "\uFEFF"; // 为了使文件以utf-8的编码模式，同时也是解决中文乱码的问题
@@ -451,6 +471,25 @@ function download(data, fileName) {
 }
 
 /**
+ * 通过元素下载文件(必须在浏览器环境下运行)
+ *
+ * @param {String} url 文件地址
+ * @param {String} fileName 文件名称
+ */
+function downloadByAElement(url, fileName) {
+  try {
+    const element = document.createElement("a");
+    element.href = url;
+    element.download = fileName;
+    const a = document.body.appendChild(element);
+    a.click();
+    document.body.removeChild(element);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+/**
  * 防抖装饰器
  * 
  * @param {Function} func 函数
@@ -485,6 +524,7 @@ function throttle(func, ms) {
   let isThrottled = false,
     savedArgs,
     savedThis;
+
   function wrapper() {
     if (isThrottled) {
       savedArgs = arguments;
@@ -504,7 +544,7 @@ function throttle(func, ms) {
   return wrapper;
 }
 demo = throttle(function (x) {
-  console.log("throttle"+x);
+  console.log("throttle" + x);
 }, 2000);
 demo(1); // throttle1
 demo(2); // 节流 

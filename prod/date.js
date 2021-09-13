@@ -32,9 +32,39 @@
       return new Date(value);
     } else if(getType(value) == "date") {
       return value;
+    } else if (getType(value) == "object") {
+      let { type, data} = value;
+      switch (type) {
+        case "xlsx":
+          return getDate2XLSX(data);
+      
+        default:
+          return false;
+      }
     } else {
       return false;
     }
+  }
+
+  /**
+   * 获取xlsx合规时间
+   * 
+   * @param {Number} value 时间数字
+   * 
+   * @returns {Date} 返回时间对象
+   */
+  function getDate2XLSX(serial) {
+    let utc_days = Math.floor(serial - 25569);
+    let utc_value = utc_days * 86400;
+    let date_info = new Date(utc_value * 1000);
+    let fractional_day = serial - Math.floor(serial) + 0.0000001;
+    let total_seconds = Math.floor(86400 * fractional_day);
+    let seconds = total_seconds % 60;
+    total_seconds -= seconds;
+    let hours = Math.floor(total_seconds / (60 * 60));
+    let minutes = Math.floor(total_seconds / 60) % 60;
+    let date = new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
+    return date;
   }
 
   /**
@@ -450,6 +480,7 @@
   let global = (function () { return this || (0, eval)('this'); }());
   let JAFODateMethod = {
     getRegularTime,
+    getDate2XLSX,
     format,
     convertJson,
     convertToStamp,

@@ -112,8 +112,8 @@
           let num = this._getExpire(window.localStorage, `errorHandler${param.key}`) || 0;
           num++;
           this._setExpire(window.localStorage, `errorHandler${param.key}`, num, 24 * 60 * 60 * 1000);
-          if (num >= 100) {
-            this.report(this.countUrl, {
+          if (num >= this.time) {
+            this._report(this.countUrl, {
               key: param.key,
               detailKey: param.detailKey,
               message: messageStr,
@@ -639,6 +639,8 @@
       }
     }
   }
+
+  let global = (function () { return this || (0, eval)('this'); }());
 
   if (typeof module !== "undefined" && module.exports) {
     module.exports = JAFOErrorHandler;
