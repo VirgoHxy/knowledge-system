@@ -69,7 +69,7 @@
 | guid | 生成唯一guid | S4 | - | String | window + node |
 | id16 | 生成唯一16长度id | S4 | - | String | window + node |
 | isOdd | 判断数字是否为奇数 | - | num: Number | Boolean | window + node |
-| padNumber | 数字补零 | - | num: Number,fill: Number | String | window + node |
+| padNumber | 数字左补零 | - | num: Number,fill: Number | String | window + node |
 
 ### obj.js
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 | 执行环境 |

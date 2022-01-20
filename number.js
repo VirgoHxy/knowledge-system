@@ -227,7 +227,7 @@ function isOdd(num) {
 console.log(isOdd(1)); // true
 
 /**
- * 数字补零
+ * 数字左补零
  * 
  * @param {Number} num 数字
  * @param {Number} fill 补零后总长度
@@ -241,3 +241,10 @@ function padNumber(num, fill) {
   ).join(0) + num);
 }
 console.log(padNumber(1234, 4));
+console.log(padNumber(1, 4));
+// 也可以使用string.prototype.padStart
+console.log('1234'.padStart(4, '0'));
+console.log('1'.padStart(4, '0'));
+// 数字右补零
+console.log('1234'.padEnd(4, '0'));
+console.log('1'.padEnd(4, '0'));

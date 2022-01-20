@@ -88,7 +88,7 @@
   }
 
   /**
-   * 数字补零
+   * 数字左补零
    * 
    * @param {Number} num 数字
    * @param {Number} fill 补零后总长度
