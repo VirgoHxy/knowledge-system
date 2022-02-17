@@ -1,10 +1,12 @@
 
+// es5
 // 对象方法
-Array.from("hxy", ele => { return ele + 1; }, this); // 返回["h1","x1","y1"] 对拥有length属性的对象或可迭代的对象来返回一个数组 浅拷贝
+Array.from("hxy", ele => { return ele + 1; }, this); // 返回["h1","x1","y1"] 将类数组转换为真数组 对拥有length属性的对象或可迭代的对象来返回一个数组 浅拷贝
+Array.from({length: 2}, () => '98'); // 返回["98","98"];
+Array.from({0: "00",1: "01",length: 3}); // 返回[ '00', '01', undefined ];
 Array.isArray([]); // true 判断一个对象是否为数组
 
 // 实例方法
-// es5
 [1, 2, 3].concat([1], [2]); // [1,2,3,1,2] 不改变原数组 连接多个数组 浅拷贝 数组元素是对象则会指向同一对象
 [1, 2, 3].indexOf(1, 2); // -1 从2索引ltr开始判断一个数组是否包含1 包含返回索引 不包含返回-1
 [1, 2, 3].lastIndexOf(1, 2); // 0 从2索引rtl开始判断一个数组是否包含1 包含返回索引 不包含返回-1
@@ -28,8 +30,53 @@ Array.isArray([]); // true 判断一个对象是否为数组
 [1, 2, 3].splice(0, 1, 1, 2); // 返回1 原数组改为[1,2,2,3] 从0索引开始删除1个元素并插入1,2两个元素 返回删除元素
 
 // es6
-let newArr = [];
-[1, 2, 3].copyWithin(1, 0, 2); // [1,1,2] 从数组的第0位后2位获取元素(1,2)复制到第1位后
+// 解构,...用例
+let [a, b, c] = [1, 2, 3]; // a = 1;b = 2;c = 3; 解构数组
+let [head, ...tail] = [1, 2, 3, 4]; // head = 1;tail = [2,3,4] rest剩余参数
+let [foo = true] = []; // foo = true; 数组元素值为空的默认值
+let [x = 1, y = x] = []; // x = 1;y = 1; 变量默认值
+[a = 3, b = 4] = [b, a]; //a = 4;b = 3; 交换值
+function arrayDemo([x = 0, y = 0] = []) { console.log(x, y); } // 解构函数数组参数 并给数组元素默认值(防止无参数报错)
+arrayDemo(); // x为0 y为0
+arrayDemo([1, 2]); // x为1 y为2
+arrayDemo([1]); // x为1 y为0
+function arrayDemo1([x, y] = [0, 0]) { console.log(x, y); } // 解构函数数组参数 并给数组默认值(防止无参数报错)
+arrayDemo1(); // x为0 y为0
+arrayDemo1([1, 2]); // x为1 y为2
+arrayDemo1([1]); // x为1 y为undefined
+function restDemo(first, ...other) { console.log(first);console.log(other); } // rest参数
+restDemo("one", "two", "three"); // one [ 'two', 'three' ]
+console.log(...[1, 2, 3]); // 1 2 3 等同于console.log(1, 2, 3)
+let newArr = [], newArr1 = [];
+newArr1 = newArr.concat([4,5,6]); // newArr1为[4,5,6] concat方法
+newArr1 = [...newArr, ...[4,5,6]]; // newArr1为[4,5,6] rest剩余参数 可以替换concat方法
+Math.max.apply(null, [14, 3, 77]); // 77 apply方法取最大数
+Math.max(...[14, 3, 77]); // 77 rest剩余参数模拟一个一个的传参 可替代apply
+newArr = [];Array.prototype.push.apply(newArr, [1,{a: 1},3]); // newArr为[1,{a: 1},3] apply方法push
+newArr = [];newArr.push(...[1,{a: 1},3]); // newArr为[1,{a: 1},3] spread扩展运算 可以替换for循环push以及apply方法push
+newArr1 = [...newArr];newArr[0] = 3;newArr[1].a = 2; // newArr[3,{a: 2},3] newArr1为[1,{a: 2},3] 数组元素为简单类型元素 则为深克隆 复杂类型元素则为地址复制
+Object.values({one: 1,two: 2,three: 3}); // 对象值转数组 [ 1, 2, 3 ]
+Object.entries({one: 1,two: 2,three: 3}); // 对象参数和值转数组 [ [ 'one', 1 ], [ 'two', 2 ], [ 'three', 3 ] ]
+Object.fromEntries([{id: '1998090901', text: '一'},{id: '1998090902', text: '二'},{id: '1998090903', text: '三'}].map(item => [item.id, item]));
+let newArr2 = {...[4,5,6]}; // { '0': 4, '1': 5, '2': 6 } spread扩展运算
+console.log('newArr2', newArr2);
+/* 数组转对象
+{
+  '1998090901': { id: '1998090901', text: '一' },
+  '1998090902': { id: '1998090902', text: '二' },
+  '1998090903': { id: '1998090903', text: '三' }
+}
+*/
+//对象方法
+Array(); // []
+Array(3); // Array第一个参数可以设置带长度的空值数组 [ <3 empty items> ]
+Array(3, 11, 8); // [3,11,8]
+Array.of(); // Array.of() 将一组参数值转换成数组 []
+Array.of(1); // [1]
+Array.of(1, 2); // [1,2]
+Array.of(undefined); // [undefined]
+// 实例方法
+[1, 2, 3, 4, 5].copyWithin(0, 3, 4); // [ 4, 2, 3, 4, 5 ] -- 将指定位置的元素复制/覆盖到其他位置 从index为3位置 复制1(4-3)个元素到 index为0位置
 newArr = [1, 2, 3].entries(); // 返回一个新的Array Iterator对象 该对象包含数组中每个索引的键/值对
 newArr.next(); // { value: [ 0, 1 ], done: false }
 newArr.next(); // { value: [ 1, 1 ], done: false }
@@ -41,9 +88,15 @@ newArr.next(); // { value: 1, done: false }
 newArr.next(); // { value: 2, done: false }
 newArr.next(); // { value: undefined, done: true }
 new Array(5).fill(0); // [0,0,0,0,0] 将数组元素都填充0 改变原数组
+[1,2,3].fill(0); // [0,0,0] 将数组元素都填充0 改变原数组
+['a', 'b', 'c'].fill(7, 1, 2); // ['a', 7, 'c'] -- 从index为1位置 填充1(2-1)个元素7 改变原数组
 [1, 2, 3].find(ele => { return ele > 1; }); // 2 返回第一个符合条件的元素 返回元素
 [1, 2, 3].findIndex(ele => { return ele > 0; }); // 0 返回第一个符合条件的元素的索引 返回索引
 [1, 2, 3].includes(1, 2); // false 从2索引开始判断一个数组是否包含1 包含返回true 不包含返回false
+[1, 2, NaN].includes(NaN); // true
+[1, 2, [3, 4]].flat(); // [1,2,3,4] -- 默认"拉平"1层
+[1, 2, [3, [4, 5]]].flat(2); // [1,2,3,4,5] -- "拉平"2层
+[1, 2, [3, [4, 5]]].flat(Infinity); // [1,2,3,4,5] -- "拉平"所有
 
 /**
  * 数组随机排序

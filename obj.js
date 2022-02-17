@@ -70,6 +70,32 @@ console.log(Object.values(obj));
 console.log(Object.entries(obj));
 console.log(Object.fromEntries(Object.entries(obj)));
 
+// es6
+let { bar, baz} = {baz: 'aaa',bar: 'bbb'}; // bar = 'bbb';baz = 'aaa'; 解构对象
+let { 前面的: 后面的 } = {foo: 'aaa',bar: 'bbb'}; // 后面的 = 'aaa'; 匹配{前面的}值赋给{后面的}变量名达到重命名解构
+let { bad = 123 } = {}; // bad = 123; 对象属性值为空的默认值
+let { foo: {num} } = { foo: {num: 123} }; // num = 123; 解构嵌套
+let { foo: {num: num1 = 1} = {} } = {}; // num1 = 1; 解构嵌套+重命名+默认值
+let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 }; // x = 1;y = 2;z={a: 3, b: 4} rest剩余参数
+let obj5 = { a: { b: 1 } };let { ...c } = obj5; // c.a.b = 1;obj.a.b = 1; spread扩展运算 可遍历属性的浅拷贝 仅拷贝值的引用,而不是值的副本
+let obj6 = {...1},obj7 = {...true},obj8 = {...null},obj9 = {...undefined},obj10 = {...'hxy'};// 除了字符串{ '0': 'h', '1': 'x', '2': 'y' } 其他都为空对象 spread扩展运算
+let obj11 = { ...{0: '零'}, ...{1: '一'} }; // { '0': '零', '1': '一' } 合并对象 可替代Object.assgin({},a,b)
+function objectDemo({x = 0,y = 0} = {}) {console.log(x, y);}// 解构函数对象参数 并给属性默认值(防止无参数报错)
+objectDemo(); // x为0 y为0
+objectDemo({x: 1,y: 2}); // x为1 y为2
+objectDemo({x: 1}); // x为1 y为0
+function objectDemo1({x,y} = {x : 0,y : 0}) {console.log(x, y);}// 解构函数对象参数 并给对象默认值(防止无参数报错)
+objectDemo1(); // x为0 y为0
+objectDemo1({x: 1,y: 2}); // x为1 y为2
+objectDemo1({x: 1}); // x为1 y为undefined
+function baseFunction({ a, b }) { console.log(a);console.log(b); }
+function wrapperFunction({ x, y, ...restConfig }) {
+  // 使用 x 和 y 参数进行操作
+  console.log(x);console.log(y);
+  // 其余参数传给原始函数
+  return baseFunction(restConfig);
+}
+wrapperFunction({x: '1', y: '2', a: '3', b: '4'}); // 分别打印1,2,3,4 rest剩余参数
 const target = {
   field1: 1,
   field2: undefined,
@@ -86,6 +112,36 @@ const target1 = {
   },
   field4: [2, 4, 8],
 };
+const cart = {
+  _wheels: 4,
+
+  get wheels () {
+    return this._wheels;
+  },
+
+  set wheels (value) {
+    if (value < this._wheels) {
+      throw new Error('数值太小了！');
+    }
+    this._wheels = value;
+  }
+};
+const proto = {
+  foo: 'hello'
+};
+const target2 = {
+  foo: 'world',
+  findByThis() {
+    return this.foo;
+  },
+  findBySuper() {
+    return super.foo;
+  }
+};
+
+Object.setPrototypeOf(target2, proto);
+target2.findBySuper(); // "hello"
+target2.findByThis(); // "world"
 
 /**
  * 判断对象是否相等
