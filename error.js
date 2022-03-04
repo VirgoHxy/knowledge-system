@@ -1,6 +1,6 @@
 /**
  * event捕获错误示例(window)(不接收其他参数)
- * 
+ *
  * @var {Object} device 设备信息
  * @var {String} file 出现位置
  * @var {String} id 唯一标识 时间+随机字符
@@ -11,21 +11,21 @@
  * @var {String} location 出现的路由路径
  */
 let eventError = {
-  "device": {
-    "osName": "Windows10",
-    "type": "desktop"
+  device: {
+    osName: 'Windows10',
+    type: 'desktop',
   },
-  "file": "https://192.168.1.253:3000/demo.html_706行_19列",
-  "id": "20210731111727pOLjEe",
-  "key": 3790,
-  "detailKey": 5086,
-  "message": "Cannot read property 'data' of undefined;",
-  "detailMessage": "Cannot read property 'data' of undefined;Citys/GetData;",
-  "location": "/demo.html"
+  file: 'https://192.168.1.253:3000/demo.html_706行_19列',
+  id: '20210731111727pOLjEe',
+  key: 3790,
+  detailKey: 5086,
+  message: 'Cannot read property \'data\' of undefined;',
+  detailMessage: 'Cannot read property \'data\' of undefined;Citys/GetData;',
+  location: '/demo.html',
 };
 /**
  * 自行上报http错误示例(window+node)(可接收其他参数)
- * 
+ *
  * @var {Object} httpError.device 设备信息(window)(内置)
  * @var {String} httpError.id 唯一标识 时间+随机字符(内置)
  * @var {Number} httpError.key 错误类型标识 用于标记同一位置同一错误(内置)
@@ -38,21 +38,21 @@ let eventError = {
  * @var {String} httpError.useTime 请求耗时
  */
 let httpError = {
-  "device": {
-    "osName": "Windows10",
-    "type": "desktop"
+  device: {
+    osName: 'Windows10',
+    type: 'desktop',
   },
-  "id": "20210731111727pkVyYQ",
-  "key": 3790,
-  "detailKey": 5086,
-  "location": "/demo.html",
-  "message": "Cannot read property 'data' of undefined;",
-  "detailMessage": "Cannot read property 'data' of undefined;Citys/GetData;",
-  "param": {
-    "RoomId": "2021-07-23 16:27:32"
+  id: '20210731111727pkVyYQ',
+  key: 3790,
+  detailKey: 5086,
+  location: '/demo.html',
+  message: 'Cannot read property \'data\' of undefined;',
+  detailMessage: 'Cannot read property \'data\' of undefined;Citys/GetData;',
+  param: {
+    RoomId: '2021-07-23 16:27:32',
   },
-  "url": "Citys/GetData",
-  "useTime": "17ms"
+  url: 'Citys/GetData',
+  useTime: '17ms',
 };
 
 /* 
@@ -101,7 +101,7 @@ try {
   console.log(y);
 } catch (error) {
   // ReferenceError: y is not defined
-  console.log("error:", error);
+  console.log('error:', error);
 }
 
 // TypeError 类型错误 值的类型或参数不是预期类型
@@ -110,21 +110,21 @@ try {
   console.log(data.number);
 } catch (error) {
   // TypeError: Cannot read property number of null
-  console.log("error:", error);
+  console.log('error:', error);
 }
 try {
   let data = undefined;
   console.log(data.number);
 } catch (error) {
   // TypeError: Cannot read property number of undefined
-  console.log("error:", error);
+  console.log('error:', error);
 }
 try {
   let data = 1;
   console.log(data());
 } catch (error) {
   // TypeError: data is not a function
-  console.log("error:", error);
+  console.log('error:', error);
 }
 
 // RangeError number超出规定的范围
@@ -132,7 +132,7 @@ try {
   new Array(1.2);
 } catch (error) {
   // RangeError: Invalid array length
-  console.log("error:", error);
+  console.log('error:', error);
 }
 try {
   const foo = () => foo();
@@ -153,11 +153,11 @@ try {
   console.log(encodeURIComponent('\uDFFF'));
 } catch (error) {
   // URIError: URI malformed
-  console.log("error:", error);
+  console.log('error:', error);
 }
 try {
-  console.log(decodeURIComponent("%"));
+  console.log(decodeURIComponent('%'));
 } catch (error) {
   // URIError: URI malformed
-  console.log("error:", error);
+  console.log('error:', error);
 }

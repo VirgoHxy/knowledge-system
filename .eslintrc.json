@@ -16,6 +16,7 @@
   "rules": {
     "no-var": "warn",
     "semi": "warn",
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "quotes": ["warn", "single"]
   }
 }
