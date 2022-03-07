@@ -122,3 +122,129 @@ let sumFn3 = flexCurrySum(3,5,6)(14,30);
 let sumFn2_3 = sumFn2(3,5,6)(14,30);
 sumFn1() + sumFn2() + sumFn3(); // 177
 sumFn1() + sumFn2_3(); // 177
+
+// 粗略实现promise
+class Prom {
+  static resolve(value) {
+    if (value && value.then) {
+      return value;
+    }
+    return new Prom(resolve => resolve(value));
+  }
+
+  constructor(fn) {
+    this.value = undefined;
+    this.reason = undefined;
+    this.status = 'PENDING';
+
+    // 维护一个 resolve/pending 的函数队列
+    this.resolveFns = [];
+    this.rejectFns = [];
+
+    const resolve = value => {
+      // 注意此处的 setTimeout
+      setTimeout(() => {
+        this.status = 'RESOLVED';
+        this.value = value;
+        this.resolveFns.forEach(({ fn, resolve: res, reject: rej }) =>
+          res(fn(value))
+        );
+      });
+    };
+
+    const reject = e => {
+      setTimeout(() => {
+        this.status = 'REJECTED';
+        this.reason = e;
+        this.rejectFns.forEach(({ fn, resolve: res, reject: rej }) =>
+          rej(fn(e))
+        );
+      });
+    };
+
+    fn(resolve, reject);
+  }
+
+  then(fn) {
+    if (this.status === 'RESOLVED') {
+      const result = fn(this.value);
+      // 需要返回一个 Promise
+      // 如果状态为 resolved，直接执行
+      return Prom.resolve(result);
+    }
+    if (this.status === 'PENDING') {
+      // 也是返回一个 Promise
+      return new Prom((resolve, reject) => {
+        // 推进队列中，resolved 后统一执行
+        this.resolveFns.push({ fn, resolve, reject });
+      });
+    }
+  }
+
+  catch(fn) {
+    if (this.status === 'REJECTED') {
+      const result = fn(this.value);
+      return Prom.resolve(result);
+    }
+    if (this.status === 'PENDING') {
+      return new Prom((resolve, reject) => {
+        this.rejectFns.push({ fn, resolve, reject });
+      });
+    }
+  }
+}
+
+Prom.resolve(10)
+  .then(o => o * 10)
+  .then(o => o + 10)
+  .then(o => {
+    console.log(o);
+  });
+
+new Prom((resolve, reject) => reject('Error')).catch(e => {
+  console.log('Error', e);
+});
+
+// 实现promise.map 限制并发
+function pMap(list, mapper, concurrency = Infinity) {
+  // list 为 Iterator，先转化为 Array
+  list = Array.from(list);
+  return new Promise((resolve, reject) => {
+    let currentIndex = 0;
+    let result = [];
+    let resolveCount = 0;
+    let len = list.length;
+    function next() {
+      const index = currentIndex;
+      currentIndex++;
+      Promise.resolve(list[index])
+        .then((o) => mapper(o, index))
+        .then((o) => {
+          result[index] = o;
+          resolveCount++;
+          if (resolveCount === len) {
+            resolve(result);
+          }
+          if (currentIndex < len) {
+            next();
+          }
+        });
+    }
+    for (let i = 0; i < concurrency && i < len; i++) {
+      next();
+    }
+  });
+}
+
+// 实现bind
+Function.prototype.fakeBind = function (obj, ...args) {
+  return (...rest) => this.call(obj, ...args, ...rest);
+};
+
+// 实现softBind
+Function.prototype.softBind = function (obj, ...args) {
+  let that = this;
+  return function (...rest) {
+    that.call(!this || this === globalThis ? obj : this, ...args, ...rest);
+  };
+};

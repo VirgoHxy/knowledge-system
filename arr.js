@@ -4,7 +4,7 @@ new Array(); // [] 空数组
 Array('3'); // [ '3' ]
 Array(...'abc'); // [ 'a', 'b', 'c' ] 等同于 [..."abc"]
 Array(3); // [ <3 empty items> ] Array只有一个参数可以设置带长度的空值数组
-Array(1000); // [ <1000 empty items> ] Array(1000)[0]为undefined 不能说明是长度为1000的元素为undefined的数组
+Array(1000); // [ <1000 empty items> ] Array(1000)[0]为undefined 不能说明是元素为undefined的长度为1000的数组 这种数组为稀疏数组(包含empty值)
 Array(3, 11, 8); // [3,11,8] 多个参数会作为元素作为一个数组
 Array(3, 3, 3); // [3,3,3] 可以使用Array(3).fill(3), Array.from({length: 3}, ele => 3)
 
@@ -145,9 +145,11 @@ Array.of(); // Array.of() 将一组参数值转换成数组 []
 Array.of(1); // [1]
 Array.of(1, 2); // [1,2]
 Array.of(undefined); // [undefined]
-Array.from( 'hxy', ele => { return ele + 1; }, this ); // 返回["h1","x1","y1"] 将类数组转换为真数组 对拥有length属性的对象或可迭代的对象来返回一个数组 浅拷贝
-Array.from({ length: 2 }, () => '98'); // 返回["98","98"];
-Array.from({ 0: '00', 1: '01', length: 3 }); // 返回[ '00', '01', undefined ];
+Array.from( 'hxy', ele => { return ele + 1; }, this ); // ["h1","x1","y1"] 将类数组转换为真数组 对拥有length属性的对象或可迭代的对象来返回一个数组 浅拷贝
+Array.from({ length: 2 }, () => '98'); // ["98","98"];
+Array.from({ 0: '00', 1: '01', length: 3 }); // [ '00', '01', undefined ];
+Array.apply(null, { 0: '00', 1: '01', length: 3 }); // [ '00', '01', undefined ] es5方法转换类数组 利用arguments
+Array.prototype.concat.apply([], { 0: '00', 1: '01', length: 3 }); // [ '00', '01', undefined ] es5方法转换类数组 利用this
 
 // 原型方法
 newArr = [1, 2, 3].entries(); // 返回一个新的Array Iterator对象 该对象包含数组中每个索引的键/值对
@@ -165,15 +167,23 @@ newArr.next(); // { value: 1, done: false }
 newArr.next(); // { value: 2, done: false }
 newArr.next(); // { value: 3, done: false }
 newArr.next(); // { value: undefined, done: true }
+
 [1, 2, 3, 4, 5].copyWithin(0, 3, 4); // [ 4, 2, 3, 4, 5 ] 将指定位置的元素复制/覆盖到其他位置 从index为3位置 复制1(4-3)个元素到 index为0位置
+
 new Array(5).fill(0); // [0,0,0,0,0] 将数组元素都填充0 改变原数组
 [1, 2, 3].fill(0); // [0,0,0] 将数组元素都填充0 改变原数组
 ['a', 'b', 'c'].fill(7, 1, 2); // ['a', 7, 'c'] 从index为1位置 填充1(2-1)个元素7 改变原数组
+Array.apply(null, Array(5)).map((x) => 0); // [0,0,0,0,0] es5填充数组 注意不能直接使用 Array(5).map((x) => 0) 因为值为empty会被忽略掉
+Array.from(Array(5), (x) => 0); // [0,0,0,0,0] es5填充数组
+
 ['a', 'b', 'c'].reverse(); // ["c","b","a"] 将数组中元素的位置颠倒 并返回该数组 改变原数组
+
 [1, 2, 3].find(ele => { return ele > 1; }); // 2 返回第一个符合条件的元素 返回元素
 [1, 2, 3].findIndex(ele => { return ele > 0; }); // 0 返回第一个符合条件的元素的索引 返回索引
+
 [1, 2, 3].includes(1, 2); // false 从2索引开始判断一个数组是否包含1 包含返回true 不包含返回false
 [1, 2, NaN].includes(NaN); // true
+
 [1, 2, [3, 4]].flat(); // [1,2,3,4] 默认"拉平"1层 也可以使用 Array.prototype.concat.apply([],[1, 2, [3, 4]])
 [1, 2, [3, [4, 5]]].flat(2); // [1,2,3,4,5] "拉平"2层
 [1, 2, [3, [4, 5]]].flat(Infinity); // [1,2,3,4,5] "拉平"所有
