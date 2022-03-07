@@ -277,7 +277,6 @@ function clone(target, map = new WeakMap()) {
   }
 }
 
-
 /**
  * 判断数据类型
  *
@@ -289,6 +288,7 @@ function getType(o) {
   let s = Object.prototype.toString.call(o);
   return s.match(/\[object (.*?)\]/)[1].toLowerCase();
 }
+
 let user = {
   [Symbol.toStringTag]: 'User',
 };

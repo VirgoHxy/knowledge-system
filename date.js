@@ -52,8 +52,6 @@ myDate.toLocaleDateString(); // 2022/2/18                             返回当�
 myDate.toLocaleTimeString(); // 下午3:23:40                           返回当前地区时间(am/pm)
 myDate.toLocaleString(); // 2022/2/18 下午3:23:40                     返回当前地区日期与时间(am/pm)
 
-/* es6+ */
-
 /**
  * 获取合规时间
  *
@@ -93,10 +91,6 @@ function getRegularTime(value) {
       return false;
   }
 }
-console.log(getRegularTime('2022-02-08T06:51:31.000Z').toLocaleString());
-console.log(getRegularTime('2020-12-12 11:22:33').toLocaleString());
-console.log(getRegularTime(1278930470649).toLocaleString());
-console.log(getRegularTime(new Date()).toLocaleString());
 
 /**
  * 获取xlsx合规时间
@@ -125,8 +119,6 @@ function getDate2XLSX(serial) {
   );
   return date;
 }
-console.log(getDate2XLSX(44352.2919791667));
-console.log(getDate2XLSX(44352.2919791667).toLocaleString());
 
 /**
  * 格式化时间(依赖getRegularTime方法)
@@ -198,8 +190,6 @@ function format(value, formatStr) {
   str = str.replace(/ms/, mSecond);
   return str;
 }
-console.log(format(new Date(), 'YYYY-MM-DD hh:mm:ss.MS W'));
-console.log(format('2012/12/25 20:17:11.111', 'YYYY-MM-DD hh:mm:ss.MS W'));
 
 /**
  * json时间转换成时间
@@ -223,7 +213,6 @@ function convertJson(value, formatStr) {
   }
   return myDate;
 }
-console.log(convertJson(/Date(1278930470649)/));
 
 /**
  * 时间转换成时间戳(依赖getRegularTime方法)
@@ -247,7 +236,6 @@ function convertToStamp(value, sFlag = false) {
   }
   return time;
 }
-console.log(convertToStamp(new Date()));
 
 /**
  * 时间戳转换成时间
@@ -268,7 +256,6 @@ function convertStamp(value, sFlag = false, formatStr) {
   }
   return myDate;
 }
-console.log(convertStamp(Date.now()));
 
 /**
  * 按时间顺序排序数组
@@ -327,21 +314,6 @@ function sortDate(array, isAsc = false, key) {
   });
   return arr;
 }
-console.log(
-  sortDate([
-    /Date(1594361486000)/,
-    /Date(1594363486000)/,
-    /Date(1594362486000)/,
-  ])
-);
-console.log(sortDate([1594361486000, 1594363486000, 1594362486000]));
-console.log(
-  sortDate([
-    '3999-01-01 00:00:00',
-    '3020-08-04 14:56:46',
-    '3970-01-19 19:28:43',
-  ])
-);
 
 /**
  * 给定时间增加/减去多长时间(依赖getRegularTime方法)
@@ -406,24 +378,6 @@ function getCalcDate(value, opt, formatStr) {
   }
   return myDate;
 }
-console.log(
-  getCalcDate(new Date(), {
-    type: 'ms',
-    value: 10000,
-  })
-);
-console.log(
-  getCalcDate(new Date(), [
-    {
-      type: 'ms',
-      value: 10000,
-    },
-    {
-      type: 'h',
-      value: 24,
-    },
-  ])
-);
 
 /**
  * 求两个/多个时间的最大最小之间的差(多个时间依赖sortDate排序方法)
@@ -479,22 +433,6 @@ function getDateDiff(array, type) {
       return difference;
   }
 }
-console.log(
-  getDateDiff(['2020-06-02 14:24:23.000Z', '2020-08-08 15:23:24.000Z'])
-);
-console.log(getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24']));
-console.log(
-  getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'date')
-);
-console.log(
-  getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'hour')
-);
-console.log(
-  getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'minute')
-);
-console.log(
-  getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'minute')
-);
 
 /**
  * 判断是否为闰年
@@ -508,7 +446,6 @@ function isLeapYear(val) {
   // 普通闰年 4的倍数不是100的倍数 世纪闰年 400的倍数
   return (0 == year % 4 && year % 100 != 0) || year % 400 == 0;
 }
-console.log(isLeapYear(2000));
 
 /**
  * 获取当前月份天数(依赖isLeapYear,getRegularTime方法)
@@ -540,7 +477,6 @@ function getDays(value) {
   }
   return days;
 }
-console.log(getDays('2020-4'));
 
 /**
  * 获取从当前日期指定数字时间的日期 也可以使用getCalcDate方法
@@ -569,8 +505,6 @@ function getDesignDate(index, type = 'd', formatStr) {
     ? format(newDate, formatStr)
     : newDate;
 }
-console.log(getDesignDate(1, 'd', false));
-console.log(getDesignDate(-1, 'mm', false));
 
 /**
  * 时间数值转换字符串时间长度
@@ -666,6 +600,83 @@ function getDateStr(val, type) {
   }
   return str;
 }
+
+console.log(getRegularTime('2022-02-08T06:51:31.000Z').toLocaleString());
+console.log(getRegularTime('2020-12-12 11:22:33').toLocaleString());
+console.log(getRegularTime(1278930470649).toLocaleString());
+console.log(getRegularTime(new Date()).toLocaleString());
+
+console.log(getDate2XLSX(44352.2919791667));
+console.log(getDate2XLSX(44352.2919791667).toLocaleString());
+
+console.log(format(new Date(), 'YYYY-MM-DD hh:mm:ss.MS W'));
+console.log(format('2012/12/25 20:17:11.111', 'YYYY-MM-DD hh:mm:ss.MS W'));
+
+console.log(convertJson(/Date(1278930470649)/));
+
+console.log(convertToStamp(new Date()));
+
+console.log(convertStamp(Date.now()));
+
+console.log(
+  sortDate([
+    /Date(1594361486000)/,
+    /Date(1594363486000)/,
+    /Date(1594362486000)/,
+  ])
+);
+console.log(sortDate([1594361486000, 1594363486000, 1594362486000]));
+console.log(
+  sortDate([
+    '3999-01-01 00:00:00',
+    '3020-08-04 14:56:46',
+    '3970-01-19 19:28:43',
+  ])
+);
+
+console.log(
+  getCalcDate(new Date(), {
+    type: 'ms',
+    value: 10000,
+  })
+);
+console.log(
+  getCalcDate(new Date(), [
+    {
+      type: 'ms',
+      value: 10000,
+    },
+    {
+      type: 'h',
+      value: 24,
+    },
+  ])
+);
+
+console.log(
+  getDateDiff(['2020-06-02 14:24:23.000Z', '2020-08-08 15:23:24.000Z'])
+);
+console.log(getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24']));
+console.log(
+  getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'date')
+);
+console.log(
+  getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'hour')
+);
+console.log(
+  getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'minute')
+);
+console.log(
+  getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'minute')
+);
+
+console.log(isLeapYear(2000));
+
+console.log(getDays('2020-4'));
+
+console.log(getDesignDate(1, 'd', false));
+console.log(getDesignDate(-1, 'mm', false));
+
 console.log(getDateStr(0, 'm'));
 console.log(getDateStr(124, 'm'));
 console.log(getDateStr(124));

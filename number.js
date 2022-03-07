@@ -60,7 +60,6 @@ Math.PI; // π约等于3.14159 表示一个圆的周长与直径的比例
 new Number('123').valueOf(); // 123 返回Number对象包装的原始值
 
 // Math静态方法
-// 计算
 Math.abs(-1); // 1 返回绝对值
 Math.abs('-1'); // 1
 Math.abs('-1abc'); // NaN
@@ -76,7 +75,6 @@ Math.sqrt(undefined); // NaN
 
 Math.pow(2, 4); // 16 返回基数(base)的指数(exponent)次幂 即base^exponent 返回2的4次幂 也可以使用2**4
 
-// 取值
 Math.ceil(1.2); // 2 返回大于或等于一个给定数字的最小整数
 Math.ceil(-1.2); // -1
 Math.ceil(0.9); // 1
@@ -143,7 +141,6 @@ Number.parseFloat(123); // 123
 Number.parseFloat('123.45#'); // 123.45
 
 // Math静态方法
-// 计算
 Math.cbrt(8); // 2 计算一个数的立方根 polyfill用的是Math.pow(Math.abs(x), 1/3) 正负号最后在加上去
 Math.cbrt('-8'); // -2
 Math.cbrt('-1abc'); // NaN
@@ -152,17 +149,14 @@ Math.cbrt(undefined); // NaN
 
 Math.hypot(3, 4); // 5 返回所有参数的平方和的平方根 直角三角形勾股定理1
 
-// 取值
 Math.trunc(-0.12); // -0 去除一个数的小数部分包括点,返回整数部分,空值和无法截取整数的值返回NaN
 Math.trunc(0.9999999999); // 0
 
-// 二进制
 Math.clz32(1); // 31 返回一个数字在转换成32位无符号整形数字的二进制形式后 开头的0的个数
 Math.clz32(8); // 28 00000000000000000000000000001000
 Math.clz32(~8); // 0 可以计算开头1的个数
 Math.clz32(~-9); // 28 11111111111111111111111111110111
 
-// 判断
 Math.sign(-0); // -0 判断一个数到底是正数、负数、还是零
 Math.sign(0); // 0
 Math.sign(123); // 1
@@ -340,14 +334,6 @@ function fixed(x, y, type, fixedLength) {
       return '类型错误';
   }
 }
-console.log(0.1 + 0.2);
-console.log(0.354 - 0.0003);
-console.log(fixed(0.1, 0.2, '+'));
-console.log(fixed(0.354, 0.0003, '-'));
-console.log(35.41 * 100);
-console.log(35.41 / 10);
-console.log(fixed(35.41, 100, '*'));
-console.log(fixed(35.41, 10, '/'));
 
 /**
  * 是否相等(解决精度问题)
@@ -360,14 +346,6 @@ console.log(fixed(35.41, 10, '/'));
 function isEqual(left, right) {
   return Math.abs(left - right) < Number.EPSILON;
 }
-console.log(0.1 + 0.2);
-console.log(0.354 - 0.0003);
-console.log(isEqual(0.1 + 0.2, 0.3));
-console.log(isEqual(0.354 - 0.0003, 0.3537));
-console.log(35.41 * 100);
-console.log(35.41 / 10);
-console.log(isEqual(35.41 * 100, 3541));
-console.log(isEqual(35.41, 10, 3.541));
 
 /**
  * 返回n到m的随机小数 [n,m)
@@ -380,7 +358,6 @@ console.log(isEqual(35.41, 10, 3.541));
 function random(n, m) {
   return (Math.random() * (m - n) + n).toFixed(2);
 }
-console.log(random(0.9, 2.1));
 
 /**
  * 返回n到m的随机整数 [n,m)
@@ -393,7 +370,6 @@ console.log(random(0.9, 2.1));
 function randomInt(n, m) {
   return parseInt(Math.random() * (m - n) + n);
 }
-console.log(randomInt(1, 100));
 
 /**
  * 返回n位随机整数
@@ -408,10 +384,6 @@ function randomOfDigit(n) {
   }
   return Math.random().toString().slice(-n);
 }
-console.log(randomOfDigit(0)); // 随机小数
-console.log(randomOfDigit(6)); // 6位随机数
-console.log(randomOfDigit(16)); // 16位随机数
-console.log(randomOfDigit(20)); // 20位随机数 因为超过最大安全整数 所以为null
 
 /**
  * 生成4位16进制数字
@@ -421,6 +393,7 @@ console.log(randomOfDigit(20)); // 20位随机数 因为超过最大安全整数
 function S4() {
   return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
+
 /**
  * 生成唯一guid
  *
@@ -442,7 +415,6 @@ function guid() {
     S4()
   );
 }
-console.log(guid());
 
 /**
  * 生成唯一16长度id
@@ -452,7 +424,6 @@ console.log(guid());
 function id16() {
   return S4() + S4() + S4() + S4();
 }
-console.log(id16());
 
 /**
  * 判断数字是否为奇数
@@ -464,7 +435,6 @@ console.log(id16());
 function isOdd(num) {
   return Math.abs(num % 2) === 1;
 }
-console.log(isOdd(1)); // true
 
 /**
  * 数字左补零
@@ -478,6 +448,40 @@ function padNumber(num, fill) {
   let len = ('' + num).length;
   return Array(fill > len ? fill - len + 1 || 0 : 0).join(0) + num;
 }
+
+console.log(0.1 + 0.2);
+console.log(0.354 - 0.0003);
+console.log(fixed(0.1, 0.2, '+'));
+console.log(fixed(0.354, 0.0003, '-'));
+console.log(35.41 * 100);
+console.log(35.41 / 10);
+console.log(fixed(35.41, 100, '*'));
+console.log(fixed(35.41, 10, '/'));
+
+console.log(0.1 + 0.2);
+console.log(0.354 - 0.0003);
+console.log(isEqual(0.1 + 0.2, 0.3));
+console.log(isEqual(0.354 - 0.0003, 0.3537));
+console.log(35.41 * 100);
+console.log(35.41 / 10);
+console.log(isEqual(35.41 * 100, 3541));
+console.log(isEqual(35.41, 10, 3.541));
+
+console.log(random(0.9, 2.1));
+
+console.log(randomInt(1, 100));
+
+console.log(randomOfDigit(0)); // 随机小数
+console.log(randomOfDigit(6)); // 6位随机数
+console.log(randomOfDigit(16)); // 16位随机数
+console.log(randomOfDigit(20)); // 20位随机数 因为超过最大安全整数 所以为null
+
+console.log(guid());
+
+console.log(id16());
+
+console.log(isOdd(1)); // true
+
 console.log(padNumber(1234, 4));
 console.log(padNumber(1, 4));
 // 也可以使用string.prototype.padStart

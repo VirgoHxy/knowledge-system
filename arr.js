@@ -217,20 +217,6 @@ function shuffle(arr) {
   return array;
 }
 
-let count = {
-  123: 0,
-  132: 0,
-  213: 0,
-  231: 0,
-  321: 0,
-  312: 0,
-};
-for (let index = 0; index < 10000; index++) {
-  let arr = shuffle([1, 2, 3]);
-  count[arr.join('')]++;
-}
-console.log(count);
-
 /**
  * 数组去重(不会破坏已有排序 利用对象属性不重复)
  *
@@ -249,7 +235,6 @@ function distinctOfObj(arr) {
   }
   return result;
 }
-console.log(distinctOfObj([1, 2, 3, 1, 2]));
 
 /**
  * 数组去重(不会破坏已有排序 set数据结构 类似于数组但是成员的值都是唯一的)
@@ -261,9 +246,6 @@ console.log(distinctOfObj([1, 2, 3, 1, 2]));
 function distinctOfSet(arr) {
   return Array.from(new Set(arr));
 }
-console.log(distinctOfSet([1, 2, 3, 1, 2]));
-console.log(distinctOfSet([1, 2, 3, 1, [1, 4]]));
-console.log(distinctOfSet([1, 2, 3, 1, { a: 1 }]));
 
 /**
  * 去除数组指定元素
@@ -280,26 +262,6 @@ function removeItem(arr, removeArr, key) {
   }
   return arr.filter(item => removeArr.indexOf(item[key]) == -1);
 }
-console.log(removeItem([3, 7, 11, 0, 0, 0, 3, 0, 55], [0, 55]));
-console.log(
-  JSON.stringify(
-    removeItem(
-      [
-        {
-          id: '1',
-        },
-        {
-          id: '2',
-        },
-        {
-          id: '3',
-        },
-      ],
-      ['1', '3'],
-      'id'
-    )
-  )
-);
 
 /**
  * 判断简单数组是否相等(元素类型必须完全相同)
@@ -327,11 +289,6 @@ function compareArray(x, y, positionFlag = true) {
   }
 }
 
-console.log(
-  compareArray(['3', '11', '21', '1'], ['1', '11', '21', '3'], false)
-);
-console.log(compareArray(['3', '11', '21', '1'], ['1', '11', '21', '3']));
-
 /**
  * 按数组长度分割数组成二维数组(分割长度不足够则会增加)
  *
@@ -355,19 +312,6 @@ function splitOfArrayLength(array, length, number) {
   }
   return newArray;
 }
-let array = [];
-for (let index = 0; index < 100; index++) {
-  array.push(index);
-}
-// 原本生成5位数组 分割长度为10
-// 这里为了达到生成5位数组 分割长度增加到20
-console.log(splitOfArrayLength(array, 5, 10));
-let array1 = [];
-for (let index = 0; index < 95; index++) {
-  array1.push(index);
-}
-// 生成5位数组 每组长度(接近)平均分配(15)
-console.log(splitOfArrayLength(array1, 5));
 
 /**
  * 按元素长度分割数组成二维数组
@@ -388,5 +332,66 @@ function splitOfElementLength(array, number) {
   }
   return newArray;
 }
+
+let count = {
+  123: 0,
+  132: 0,
+  213: 0,
+  231: 0,
+  321: 0,
+  312: 0,
+};
+for (let index = 0; index < 10000; index++) {
+  let arr = shuffle([1, 2, 3]);
+  count[arr.join('')]++;
+}
+console.log(count);
+
+console.log(distinctOfObj([1, 2, 3, 1, 2]));
+
+console.log(distinctOfSet([1, 2, 3, 1, 2]));
+console.log(distinctOfSet([1, 2, 3, 1, [1, 4]]));
+console.log(distinctOfSet([1, 2, 3, 1, { a: 1 }]));
+
+console.log(removeItem([3, 7, 11, 0, 0, 0, 3, 0, 55], [0, 55]));
+console.log(
+  JSON.stringify(
+    removeItem(
+      [
+        {
+          id: '1',
+        },
+        {
+          id: '2',
+        },
+        {
+          id: '3',
+        },
+      ],
+      ['1', '3'],
+      'id'
+    )
+  )
+);
+
+console.log(
+  compareArray(['3', '11', '21', '1'], ['1', '11', '21', '3'], false)
+);
+console.log(compareArray(['3', '11', '21', '1'], ['1', '11', '21', '3']));
+
+let array = [];
+for (let index = 0; index < 100; index++) {
+  array.push(index);
+}
+// 原本生成5位数组 分割长度为10
+// 这里为了达到生成5位数组 分割长度增加到20
+console.log(splitOfArrayLength(array, 5, 10));
+let array1 = [];
+for (let index = 0; index < 95; index++) {
+  array1.push(index);
+}
+// 生成5位数组 每组长度(接近)平均分配(15)
+console.log(splitOfArrayLength(array1, 5));
+
 // 这里生成7位数组 分割长度为16
 console.log(splitOfElementLength(array, 16));

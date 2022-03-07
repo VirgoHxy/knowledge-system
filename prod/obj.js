@@ -1,5 +1,5 @@
 !(function () {
-  "use strict";
+  'use strict';
 
   /**
    * 判断对象是否相等
@@ -13,7 +13,7 @@
     // 指向同一内存时
     if (x === y) {
       return true;
-    } else if ((typeof x == "object" && x != null) && (typeof y == "object" && y != null)) {
+    } else if ((typeof x == 'object' && x != null) && (typeof y == 'object' && y != null)) {
       if (Object.keys(x).length != Object.keys(y).length) {
         return false;
       }
@@ -76,9 +76,9 @@
   };
 
   // 最后将插件对象暴露给全局对象
-  if (typeof module !== "undefined" && module.exports) {
+  if (typeof module !== 'undefined' && module.exports) {
     module.exports = JAFOObjMethod;
-  } else if (typeof define === "function" && define.amd) {
+  } else if (typeof define === 'function' && define.amd) {
     define(function () { return JAFOObjMethod; });
   } else {
     !('JAFOObjMethod' in global) && (global.JAFOObjMethod = JAFOObjMethod);

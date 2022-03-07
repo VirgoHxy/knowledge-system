@@ -1,5 +1,5 @@
 !(function () {
-  "use strict";
+  'use strict';
 
   class JAFOErrorHandler {
     constructor(data) {
@@ -7,8 +7,8 @@
     }
 
     init(data) {
-      if (typeof data != "object") {
-        console.log("init: 初始化参数不是一个Object");
+      if (typeof data != 'object') {
+        console.log('init: 初始化参数不是一个Object');
         return;
       }
       let requiredObj = {
@@ -18,13 +18,13 @@
       };
       let requiredStr = this._checkParam(requiredObj, data);
       if (!this._isNull(requiredStr)) {
-        console.log("init: " + requiredStr);
+        console.log('init: ' + requiredStr);
         return;
       }
       // 上报地址
       this.url = data.url;
       // POST或GET
-      this.type = data.type || "GET";
+      this.type = data.type || 'GET';
       // 上报次数上限(0为无限) 一天内同一个错误(不是详细错误)超过上限只计数 不上报具体原因
       this.time = data.time || 20;
       // 上报次数地址
@@ -35,7 +35,7 @@
         // window 分辨设备类型
         this._deviceType = this._getDeviceType();
 
-        window.addEventListener("error", (event) => {
+        window.addEventListener('error', (event) => {
           let {
             message,
             filename,
@@ -63,12 +63,12 @@
     }
 
     reportError(data, eventFlag) {
-      if (typeof data != "object") {
-        console.log("reportError: 上报信息不是一个Object");
+      if (typeof data != 'object') {
+        console.log('reportError: 上报信息不是一个Object');
         return;
       }
       if (eventFlag && !data.file) {
-        console.log("reportError: 跨域 Script error 不上报");
+        console.log('reportError: 跨域 Script error 不上报');
         return;
       }
       if (!eventFlag) {
@@ -82,7 +82,7 @@
         };
         let requiredStr = this._checkParam(requiredObj, data);
         if (!this._isNull(requiredStr)) {
-          console.log("reportError: 自行上报" + requiredStr);
+          console.log('reportError: 自行上报' + requiredStr);
           return;
         }
       }
@@ -99,7 +99,7 @@
       if (data.error && data.error.stack) {
         // 这种正则 在iphone app编译后会导致语法错误 invalid regular expression invalid group specifier name
         // errorStack = data.error.stack.match(/(?<=at\s)(.+)(?=\s\()/g);
-        let regExp = new RegExp("(?<=at\\s)(.+)(?=\\s\\()", "g");
+        let regExp = new RegExp('(?<=at\\s)(.+)(?=\\s\\()', 'g');
         let errorStack = data.error.stack.match(regExp);
         Object.assign(param, {
           errorStack
@@ -130,27 +130,27 @@
     }
 
     _report(url, param) {
-      if (this.type == "GET") {
+      if (this.type == 'GET') {
         let href = url;
         if (param) {
           href = this._urlMethod({
             url: url,
-            type: "objectSet",
+            type: 'objectSet',
             value: param
           });
         }
         (new Image).src = href;
-      } else if (this.type == "POST") {
+      } else if (this.type == 'POST') {
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.send(param ? JSON.stringify(param) : "");
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send(param ? JSON.stringify(param) : '');
       }
     }
 
     // 获取错误唯一标识
     _getErrorID() {
-      return `${this._format(new Date(), "YYYYMMDDhhmmss")}${this._randomStr()}`;
+      return `${this._format(new Date(), 'YYYYMMDDhhmmss')}${this._randomStr()}`;
     }
 
     // 获取错误标识(统计)
@@ -164,15 +164,15 @@
 
     // 获取错误标识的拼接字符串
     _getErrorKeyStr(data, eventFlag, arr) {
-      let str = "";
+      let str = '';
       for (const key in data) {
         if (Object.hasOwnProperty.call(data, key)) {
           let element = data[key];
-          (typeof element == "object") && (element = JSON.stringify(element));
+          (typeof element == 'object') && (element = JSON.stringify(element));
           // 错误标识生成
           if ((eventFlag && arr.indexOf(key) != -1) || (!eventFlag && arr
               .indexOf(key) != -1)) {
-            str += element + ";";
+            str += element + ';';
           }
         }
       }
@@ -181,12 +181,12 @@
 
     // 获取错误标识的拼接字符串
     _getErrorKeyMessageStr(data, eventFlag) {
-      return this._getErrorKeyStr(data, eventFlag, ["message"]);
+      return this._getErrorKeyStr(data, eventFlag, ['message']);
     }
 
     // 获取错误标识的拼接字符串
     _getErrorKeyDetailStr(data, eventFlag) {
-      let array = eventFlag ? ["file", "message"] : ["url", "message"];
+      let array = eventFlag ? ['file', 'message'] : ['url', 'message'];
       return this._getErrorKeyStr(data, eventFlag, array);
     }
 
@@ -195,9 +195,9 @@
       data
     ) {
       if (this._isNull(condition) || this._isNull(data)) {
-        return "_checkParam: 缺少参数";
+        return '_checkParam: 缺少参数';
       }
-      let msg = "";
+      let msg = '';
       for (const key in condition) {
         if (Object.hasOwnProperty.call(condition, key)) {
           const element = condition[key];
@@ -210,7 +210,7 @@
     }
 
     _isNull(val) {
-      return (val == null || val === "");
+      return (val == null || val === '');
     }
 
     /**
@@ -232,38 +232,38 @@
         value,
         hrefFlag = true
       } = data;
-      let href = url || (window ? window.location.href : "");
+      let href = url || (window ? window.location.href : '');
       if (!href) {
-        return "url不能为空";
+        return 'url不能为空';
       }
       let URLObject = new URL(href);
       let params = URLObject.searchParams;
       // set get has delete
       switch (type) {
-        case "set":
+        case 'set':
           params.set(key, value);
           return !hrefFlag ? URLObject : URLObject.href;
-        case "objectSet":
+        case 'objectSet':
           for (const key in value) {
             if (Object.prototype.hasOwnProperty.call(value, key)) {
               let element = value[key];
-              if (typeof element == "object") {
+              if (typeof element == 'object') {
                 element = JSON.stringify(element);
               }
               params.set(key, element);
             }
           }
           return !hrefFlag ? URLObject : URLObject.href;
-        case "get":
+        case 'get':
           return params.get(key);
-        case "has":
+        case 'has':
           return params.has(key);
-        case "delete":
+        case 'delete':
           params.delete(key);
           return !hrefFlag ? URLObject : URLObject.href;
 
         default:
-          return "type类型错误 set,objectSet,get,has,delete";
+          return 'type类型错误 set,objectSet,get,has,delete';
       }
     }
 
@@ -320,23 +320,23 @@
         return s.match(/\[object (.*?)\]/)[1].toLowerCase();
       };
 
-      if (getType(value) == "string") {
+      if (getType(value) == 'string') {
         let ms = value.match(/\.([\d]{1,})[Z]*/) ? value.match(/\.([\d]{1,})[Z]*/)[1] : 0;
         if (/T/g.test(value)) { // 去T
-          value = value.replace(/T/g, " ");
+          value = value.replace(/T/g, ' ');
         }
         if (/\./g.test(value)) { // 去毫秒 兼容ios ie firefox
-          value = value.replace(/\.[\d]{1,}[Z]*/, "");
+          value = value.replace(/\.[\d]{1,}[Z]*/, '');
         }
         if (/-/g.test(value)) { // new Date兼容ios ie firefox
-          value = value.replace(/-/g, "/");
+          value = value.replace(/-/g, '/');
         }
         let date = new Date(value);
         date.setMilliseconds(ms);
         return date;
-      } else if (getType(value) == "number") {
+      } else if (getType(value) == 'number') {
         return new Date(value);
-      } else if (getType(value) == "date") {
+      } else if (getType(value) == 'date') {
         return value;
       } else {
         return false;
@@ -353,14 +353,14 @@
      */
     _format(value, formatStr) {
       let myDate = this._getRegularTime(value);
-      if (typeof myDate == "boolean") {
-        return "请输入正确的日期";
+      if (typeof myDate == 'boolean') {
+        return '请输入正确的日期';
       }
       if (isNaN(myDate.getTime())) {
-        return "请输入正确的日期";
+        return '请输入正确的日期';
       }
-      let str = formatStr || "YYYY-MM-DD hh:mm:ss",
-        week = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+      let str = formatStr || 'YYYY-MM-DD hh:mm:ss',
+        week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
         fullYear = myDate.getFullYear(),
         year = Number(String(fullYear).substring(2)),
         month = myDate.getMonth(),
@@ -373,31 +373,31 @@
       //四位年份
       str = str.replace(/yyyy|YYYY/, fullYear);
       //两位年份，小于10补零
-      str = str.replace(/yy|YY/, year > 9 ? year : "0" + year);
+      str = str.replace(/yy|YY/, year > 9 ? year : '0' + year);
       //月份，小于10补零
-      str = str.replace(/MM/, (month + 1) > 9 ? month + 1 : "0" + (month + 1));
+      str = str.replace(/MM/, (month + 1) > 9 ? month + 1 : '0' + (month + 1));
       //月份，不补零
       str = str.replace(/\bM\b/, month + 1);
       //日期，小于10补零
-      str = str.replace(/dd|DD/, date > 9 ? date : "0" + date);
+      str = str.replace(/dd|DD/, date > 9 ? date : '0' + date);
       //日期，不补零
       str = str.replace(/d|D/, date);
       //小时，小于10补零
-      str = str.replace(/hh|HH/, hour > 9 ? hour : "0" + hour);
+      str = str.replace(/hh|HH/, hour > 9 ? hour : '0' + hour);
       //小时，不补零
       str = str.replace(/h|H/, hour);
       //分钟，小于10补零
-      str = str.replace(/mm/, minute > 9 ? minute : "0" + minute);
+      str = str.replace(/mm/, minute > 9 ? minute : '0' + minute);
       //分钟，不补零
       str = str.replace(/\bm\b/, minute);
       //秒钟，小于10补零
-      str = str.replace(/ss|SS/, second > 9 ? second : "0" + second);
+      str = str.replace(/ss|SS/, second > 9 ? second : '0' + second);
       //秒钟，不补零
       str = str.replace(/\bs\b|\bS\b/, second);
       //星期几
       str = str.replace(/w|W/g, week[day]);
       //毫秒，小于9或99补零
-      str = str.replace(/MS/, mSecond > 9 ? mSecond > 99 ? mSecond : "0" + mSecond : "00" + mSecond);
+      str = str.replace(/MS/, mSecond > 9 ? mSecond > 99 ? mSecond : '0' + mSecond : '00' + mSecond);
       //毫秒，不补零
       str = str.replace(/ms/, mSecond);
       return str;
@@ -642,9 +642,9 @@
 
   let global = (function () { return this || (0, eval)('this'); }());
 
-  if (typeof module !== "undefined" && module.exports) {
+  if (typeof module !== 'undefined' && module.exports) {
     module.exports = JAFOErrorHandler;
-  } else if (typeof define === "function" && define.amd) {
+  } else if (typeof define === 'function' && define.amd) {
     define(function () {
       return JAFOErrorHandler;
     });

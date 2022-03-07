@@ -1,5 +1,5 @@
 !(function () {
-  "use strict";
+  'use strict';
 
   /**
    * 字符串去重
@@ -10,13 +10,13 @@
    */
   function removeRepeat(val) {
     let res = [],
-      arr = val.split("");
+      arr = val.split('');
     for (let i = 0; i < arr.length; i++) {
       if (res.indexOf(arr[i]) == -1) {
         res.push(arr[i]);
       }
     }
-    return res.join("");
+    return res.join('');
   }
 
   /**
@@ -139,9 +139,9 @@
    * 
    * @returns {String} 长度-的字符串
    */
-  function truncate(str, maxlength = 10, character = ".") {
+  function truncate(str, maxlength = 10, character = '.') {
     return ((str ? str.length : 0) > maxlength) ?
-      str.slice(0, maxlength) + Array(3).fill(character).join("") : str;
+      str.slice(0, maxlength) + Array(3).fill(character).join('') : str;
   }
 
   /**
@@ -153,7 +153,7 @@
    * @returns {String}
    */
   function deleteByIndex(str, index) {
-    return str.split("").reduce((start, ele, i) => (index instanceof Array ? index.indexOf(i) == -1 ? start + ele : start : i != index ? start + ele : start), "");
+    return str.split('').reduce((start, ele, i) => (index instanceof Array ? index.indexOf(i) == -1 ? start + ele : start : i != index ? start + ele : start), '');
   }
 
   /**
@@ -249,9 +249,9 @@
   };
 
   // 最后将插件对象暴露给全局对象
-  if (typeof module !== "undefined" && module.exports) {
+  if (typeof module !== 'undefined' && module.exports) {
     module.exports = JAFOStrMethod;
-  } else if (typeof define === "function" && define.amd) {
+  } else if (typeof define === 'function' && define.amd) {
     define(function () { return JAFOStrMethod; });
   } else {
     !('JAFOStrMethod' in global) && (global.JAFOStrMethod = JAFOStrMethod);

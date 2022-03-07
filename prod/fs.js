@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require('fs');
 
 /**
  * 同步写入文件夹或文件
@@ -9,28 +9,28 @@ const fs = require("fs");
 function writeByPathSync(paramPath, contentStr) {
   try {
     let write = function (str, appendFlag) {
-      if (str.match(/[^\\/]*$/)[0].indexOf(".") != -1) {
-        !contentStr && (console.log("写入内容为空"));
+      if (str.match(/[^\\/]*$/)[0].indexOf('.') != -1) {
+        !contentStr && (console.log('写入内容为空'));
         if (!appendFlag) {
-          fs.writeFileSync(str, contentStr || "");
+          fs.writeFileSync(str, contentStr || '');
         } else {
-          fs.appendFileSync(str, contentStr || "");
+          fs.appendFileSync(str, contentStr || '');
         }
       } else {
         if (!appendFlag) {
           fs.mkdirSync(str);
         } else {
-          return "路径已存在";
+          return '路径已存在';
         }
       }
     };
     if (!fs.existsSync(paramPath)) {
-      paramPath = paramPath.replace(/\\\\|\\/g, "/");
-      let pathArr = paramPath.split("/");
+      paramPath = paramPath.replace(/\\\\|\\/g, '/');
+      let pathArr = paramPath.split('/');
       let pathStr = pathArr[0];
       pathArr.splice(0, 1);
       while (pathArr.length > 0) {
-        pathStr += "/" + pathArr[0];
+        pathStr += '/' + pathArr[0];
         if (!fs.existsSync(pathStr)) {
           write(pathStr);
         }
@@ -55,7 +55,7 @@ function delByPathSync(paramPath) {
       if (fs.statSync(paramPath).isDirectory()) {
         let files = fs.readdirSync(paramPath);
         files.forEach((file) => {
-          let curPath = paramPath + "/" + file;
+          let curPath = paramPath + '/' + file;
           if (fs.statSync(curPath).isDirectory()) {
             delByPathSync(curPath); //递归删除文件夹
           } else {
@@ -67,7 +67,7 @@ function delByPathSync(paramPath) {
         fs.unlinkSync(paramPath); //删除文件
       }
     } else {
-      return "路径不存在";
+      return '路径不存在';
     }
   } catch (error) {
     console.log(error);
@@ -85,11 +85,11 @@ function readByPathSync(paramPath) {
   try {
     if (fs.existsSync(paramPath)) {
       if (!fs.statSync(paramPath).isDirectory()) {
-        return fs.readFileSync(paramPath, "utf8");
+        return fs.readFileSync(paramPath, 'utf8');
       }
       return fs.readdirSync(paramPath);
     } else {
-      return "路径不存在";
+      return '路径不存在';
     }
   } catch (error) {
     console.log(error);
@@ -105,23 +105,23 @@ function readByPathSync(paramPath) {
 function copyByPathSync(sourcePath, copyPath) {
   try {
     let copy = function (sourcePath, copyPath) {
-      copyPath = copyPath.replace(/\\\\|\\/g, "/");
+      copyPath = copyPath.replace(/\\\\|\\/g, '/');
       let copyFn = function (str, lastFlag) {
-        if (str.match(/[^\\/]*$/)[0].indexOf(".") != -1) {
+        if (str.match(/[^\\/]*$/)[0].indexOf('.') != -1) {
           fs.copyFileSync(sourcePath, copyPath);
         } else {
           let fileName = sourcePath.match(/[^\\/]*$/)[0];
           fs.mkdirSync(str);
           if (lastFlag) {
-            fs.copyFileSync(sourcePath, str+"/"+fileName);
+            fs.copyFileSync(sourcePath, str+'/'+fileName);
           }
         }
       };
-      let pathArr = copyPath.split("/");
+      let pathArr = copyPath.split('/');
       let pathStr = pathArr[0];
       pathArr.splice(0, 1);
       while (pathArr.length > 0) {
-        pathStr += "/" + pathArr[0];
+        pathStr += '/' + pathArr[0];
         if (!fs.existsSync(pathStr)) {
           copyFn(pathStr, pathArr.length == 1);
         }
@@ -134,8 +134,8 @@ function copyByPathSync(sourcePath, copyPath) {
       } else {
         let files = fs.readdirSync(sourcePath);
         files.forEach((file) => {
-          let sPath = sourcePath + "/" + file;
-          let cPath = copyPath + "/" + file;
+          let sPath = sourcePath + '/' + file;
+          let cPath = copyPath + '/' + file;
           if (fs.statSync(sPath).isDirectory()) {
             copyByPathSync(sPath,cPath); //递归复制文件夹
           } else {
@@ -144,7 +144,7 @@ function copyByPathSync(sourcePath, copyPath) {
         });
       }
     } else {
-      return "路径不存在";
+      return '路径不存在';
     }
   } catch (error) {
     console.log(error);

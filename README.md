@@ -29,7 +29,6 @@
 | distinctOfObj | 通过对象数组去重 | - | arr: Array | Array | window + node |
 | distinctOfSet | 通过Set数组去重 | - | arr: Array | Array | window + node |
 | removeItem | 去除数组指定元素 | - | arr: Array, removeArr: Array, [key: String] | Array | window + node |
-| compareComplexArray | 判断复杂数组是否相等 | - | x: Array, y: Array | Boolean | window + node |
 | compareArray | 判断简单数组是否相等 | - | x: Array, y: Array, [positionFlag = Boolean]: true | Boolean | window + node |
 | splitOfArrayLength | 按数组长度分割数组成二维数组 | - | array: Array, length: Number, number: Number | Array | window + node |
 | splitOfElementLength | 按元素长度分割数组成二维数组 | - | array: Array, number: Number | Array | window + node |
@@ -63,6 +62,7 @@
 | 方法 | 说明 | 依赖方法 | 参数:参数类型 | 返回类型 | 执行环境 |
 | - | - | - | - | - | - |
 | fixed | 解决运算精度 | - | x: Number, y: Number, type: String, fixedLength: Number | Number | window + node |
+| isEqual | 判断是否相等,解决小数问题 | - | left: Number, right: Number | Number | window + node |
 | random | 返回n到m的随机数[n,m) | - | n: Number, m: Number | Number | window + node |
 | randomOfDigit | 返回n位随机数 | - | n: Number | String | window + node |
 | S4 | 生成4位16进制数字 | - | - | String | window + node |

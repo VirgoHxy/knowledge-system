@@ -12,7 +12,6 @@ String('abc') instanceof String; // false
 String.fromCharCode(97, 98, 99); // 'abc' 方法返回UTF-16整数编码值(0-65535)对应的字符串(可以接受多个编码值) 无效返回"—"
 
 // 原型方法
-// 获取
 'abc'.charAt(2); // c 获取index位置上的字符 不存在返回空字符串 不支持负数
 'abc'.charAt(3); // ''
 'abc'.charAt(-1); // ''
@@ -37,7 +36,6 @@ String.fromCharCode(97, 98, 99); // 'abc' 方法返回UTF-16整数编码值(0-65
 
 new String('abc').valueOf(); // "abc" 返回String对象的原始值
 
-// 设置
 ''.concat('a', 'b', 'c'); // 'abc' 将一个或多个字符串与原字符串连接合并 返回新的字符串
 ''.concat(...['a', 'b', 'c']); // 'abc'
 ''.concat({ a: 'a' }); // '[object Object]'
@@ -64,7 +62,6 @@ Object.prototype.toString.call('abc'); // "[object String]" 返回指定对象�
 
 '  a  b  c  '.trim(); // a__b__c 去除字符串两端的空格 制表符 换行符 回车符
 
-// 判断
 'a'.localeCompare('c'); // -1/-2 比较两个字符串的排序位置 负数表示当前字符串在给定字符串前面 正数反之 0表示位置相同 浏览器只规定返回负数,正数,0 并没有要求返回-1,+1,0
 'c'.localeCompare('a'); // +1/+2
 'a'.localeCompare('a'); // 0
@@ -77,7 +74,6 @@ Object.prototype.toString.call('abc'); // "[object String]" 返回指定对象�
 String.fromCodePoint(97, 98, 99); // 'abc' 方法返回Unicode整数编码值对应的字符串(可以接受多个编码值) 无效返回RangeError
 
 // 原型方法
-// 获取
 // "abc".at(-1); // c 获取index位置上的字符 如果为负数表示为lastIndex 不存在返回undefined(目前为实验方法 不推荐使用)
 
 'abc'.codePointAt(0); // 97 方法返回字符串index位置上的Unicode整数编码值 没找到返回undefined
@@ -111,7 +107,6 @@ Array.from(regExpStringIterator); // [["<demo>", "demo"],["<demo1>", "demo1"]]
 'Abcabc'.search(/a/i); // 0 使用正则表达式和String对象之间的一个搜索匹配 返回字符串所在位置索引
 'Abcabc'.search('a'); // 3 如果参数不是正则 则会隐式转为正则
 
-// 设置
 'abc'.padStart(10, 'foo'); // "foofoofabc" 使用指定字符串在左侧填充到指定长度 没有指定字符串 默认为" "
 '100'.padStart(10, '0'); // "0000000100"
 'abc'.padEnd(10, 'foo'); // "abcfoofoof" 使用指定字符串在右侧填充到指定长度 没有指定字符串 默认为" "
@@ -122,7 +117,6 @@ Array.from(regExpStringIterator); // [["<demo>", "demo"],["<demo1>", "demo1"]]
 '  a  b  c  '.trimStart(); // a__b__c__ 去除字符串左端的空格 制表符 换行符 回车符
 '  a  b  c  '.trimEnd(); // __a__b__c 去除字符串右端的空格 制表符 换行符 回车符
 
-// 判断
 'abcabc'.startsWith('b'); // false 判断当前字符串是否以另外一个给定的子字符串结尾(区分大小写) 是返回true
 'abcabc'.startsWith('b', 1); // true 第二个参数为开始索引index 默认为0
 'abcabc'.endsWith('a'); // false 判断当前字符串是否以另外一个给定的子字符串结尾(区分大小写) 是返回true
@@ -130,6 +124,7 @@ Array.from(regExpStringIterator); // [["<demo>", "demo"],["<demo1>", "demo1"]]
 
 'abc'.includes('a'); // true 判断一个给定的字符串是否包含在当前字符串中(区分大小写) 是返回true
 'abc'.includes('a', 1); // false 第二个参数为开始索引index 默认为0
+
 /**
  * 字符串去重
  *
@@ -147,7 +142,6 @@ function removeRepeat(val) {
   }
   return res.join('');
 }
-console.log(removeRepeat('askdhg1231asdkjh123')); //askdhg123j
 
 /**
  * 字符串中子字符串的重复次数
@@ -162,7 +156,6 @@ function getRepeatNum(str, val) {
     ? 0
     : str.match(new RegExp(val, 'g')).length;
 }
-console.log(getRepeatNum('askdhg1231asdkjh123', 'as')); //2
 
 /**
  * 字符串中的子字符重复最多/少次数
@@ -217,10 +210,6 @@ function getMmRepeatNum(str, minFlag) {
     num: firstLen,
   };
 }
-console.log(getMmRepeatNum('aaabbbccdd')); //{str:["c","d"],num:2}
-console.log(getMmRepeatNum('aaabbbccdd', true)); //{str:["aaa","bbb"],num:3}
-console.log(getMmRepeatNum('aaaabbbccd')); //{str:d,num:1}
-console.log(getMmRepeatNum('aaaabbbccd', true)); //{str:a,num:4}
 
 /**
  * 返回随机字符串
@@ -240,7 +229,6 @@ function randomStr(length) {
   }
   return str;
 }
-console.log(randomStr(10));
 
 /**
  * 获取大写字母数组
@@ -254,7 +242,6 @@ function upperLetter() {
   }
   return arr;
 }
-console.log(upperLetter());
 
 /**
  * 获取小写字母数组
@@ -268,7 +255,6 @@ function lowerLetter() {
   }
   return arr;
 }
-console.log(lowerLetter());
 
 /**
  * 超过最大长度的将用三个字符代替
@@ -284,7 +270,6 @@ function truncate(str, maxlength = 10, character = '.') {
     ? str.slice(0, maxlength) + Array(3).fill(character).join('')
     : str;
 }
-console.log(truncate('abcdefghijklmnopqrstuvwxyz')); //abcdefghij...
 
 /**
  * 通过字符串索引删除字符串
@@ -309,7 +294,6 @@ function deleteByIndex(str, index) {
       ''
     );
 }
-console.log(deleteByIndex('12345', [1, 3])); //135
 
 /**
  * 删除最后一个指定字符
@@ -323,7 +307,6 @@ function deleteLastStr(str, delStr) {
   let index = str.lastIndexOf(delStr);
   return str.substring(0, index) + str.substring(index + 1, str.length);
 }
-console.log(deleteLastStr('1231415', '1')); //123145
 
 /**
  * encrypto 加密程序
@@ -357,7 +340,6 @@ function encrypto(str, xor = 1998, hex = 16) {
   let resultStr = resultList.join(splitStr);
   return resultStr;
 }
-console.log(encrypto('123', 123, 25)); //2oz2nz2m
 
 /**
  * decrypto 解密程序
@@ -394,4 +376,29 @@ function decrypto(str, xor = 1998, hex = 16) {
   let resultStr = resultList.join('');
   return resultStr;
 }
+
+
+console.log(removeRepeat('askdhg1231asdkjh123')); //askdhg123j
+
+console.log(getRepeatNum('askdhg1231asdkjh123', 'as')); //2
+
+console.log(getMmRepeatNum('aaabbbccdd')); //{str:["c","d"],num:2}
+console.log(getMmRepeatNum('aaabbbccdd', true)); //{str:["aaa","bbb"],num:3}
+console.log(getMmRepeatNum('aaaabbbccd')); //{str:d,num:1}
+console.log(getMmRepeatNum('aaaabbbccd', true)); //{str:a,num:4}
+
+console.log(randomStr(10));
+
+console.log(upperLetter());
+
+console.log(lowerLetter());
+
+console.log(truncate('abcdefghijklmnopqrstuvwxyz')); //abcdefghij...
+
+console.log(deleteByIndex('12345', [1, 3])); //135
+
+console.log(deleteLastStr('1231415', '1')); //123145
+
+console.log(encrypto('123', 123, 25)); //2oz2nz2m
+
 console.log(decrypto(encrypto('123', 123, 25), 123, 25)); //123

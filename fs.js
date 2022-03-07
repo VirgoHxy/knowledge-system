@@ -44,11 +44,6 @@ function writeByPathSync(paramPath, contentStr) {
   }
 }
 
-console.log(writeByPathSync(path.resolve(__dirname, './none1'))); // 创建文件夹
-console.log(writeByPathSync(path.resolve(__dirname, './none/.eslintrc.json'))); // 创建空文件
-console.log(writeByPathSync(path.resolve(__dirname, './none/.eslintrc.json'), '123')); // 追加123
-console.log(writeByPathSync(path.resolve(__dirname, './none/.eslintrc.json'), '456')); // 追加456
-
 /**
  * 同步删除文件夹或文件
  * 
@@ -79,11 +74,6 @@ function delByPathSync(paramPath) {
   }
 }
 
-// 2s后删除
-setTimeout(() => {
-  console.log(delByPathSync(path.resolve(__dirname, './none1')));
-}, 2000);
-
 /**
  * 同步读取文件夹或文件
  * 
@@ -105,10 +95,6 @@ function readByPathSync(paramPath) {
     console.log(error);
   }
 }
-
-console.log(readByPathSync(path.resolve(__dirname, './.eslintrc.json'))); // 读取文件
-console.log(readByPathSync(path.resolve(__dirname, './prod'))); // 读取文件夹
-console.log(readByPathSync(path.resolve(__dirname, './none0'))); // 路径不存在
 
 /**
  * 同步拷贝文件夹或文件
@@ -164,6 +150,21 @@ function copyByPathSync(sourcePath, copyPath) {
     console.log(error);
   }
 }
+
+console.log(writeByPathSync(path.resolve(__dirname, './none1'))); // 创建文件夹
+console.log(writeByPathSync(path.resolve(__dirname, './none/.eslintrc.json'))); // 创建空文件
+console.log(writeByPathSync(path.resolve(__dirname, './none/.eslintrc.json'), '123')); // 追加123
+console.log(writeByPathSync(path.resolve(__dirname, './none/.eslintrc.json'), '456')); // 追加456
+
+// 2s后删除
+setTimeout(() => {
+  console.log(delByPathSync(path.resolve(__dirname, './none1')));
+}, 2000);
+
+console.log(readByPathSync(path.resolve(__dirname, './.eslintrc.json'))); // 读取文件
+console.log(readByPathSync(path.resolve(__dirname, './prod'))); // 读取文件夹
+console.log(readByPathSync(path.resolve(__dirname, './none0'))); // 路径不存在
+
 console.log(copyByPathSync(path.resolve(__dirname, './.eslintrc.json'), path.resolve(__dirname, './none2'))); // 复制文件 复制路径不带文件名
 console.log(copyByPathSync(path.resolve(__dirname, './.eslintrc.json'), path.resolve(__dirname, './none2/.123.json'))); // 复制文件 复制路径更换文件名
 console.log(copyByPathSync(path.resolve(__dirname, './prod'), path.resolve(__dirname, './none3'))); // 复制文件夹

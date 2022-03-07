@@ -8,13 +8,6 @@
 function isNull(val) {
   return val == null || val === '';
 }
-console.log(isNull(1));
-console.log(isNull(0));
-console.log(isNull());
-console.log(isNull(null));
-console.log(isNull(''));
-console.log(isNull({}));
-console.log(isNull(false));
 
 /**
  * 获取url参数的值
@@ -45,10 +38,6 @@ function getUrlParam(key, url) {
     console.log(error);
   }
 }
-
-console.log(
-  getUrlParam('c', 'http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1')
-);
 
 /**
  * 修改url参数的值
@@ -87,20 +76,6 @@ function changeURLArg(key, value, url, hrefFlag) {
     return '';
   }
 }
-console.log(
-  changeURLArg(
-    'c',
-    123,
-    'http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1'
-  )
-);
-console.log(
-  changeURLArg(
-    'b',
-    123,
-    'http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1'
-  )
-);
 
 /**
  * 操作url的方法
@@ -146,51 +121,6 @@ function urlMethod(data = {}) {
       return 'type类型错误 set,objectSet,get,has,delete';
   }
 }
-console.log(
-  urlMethod({
-    url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-    type: 'get',
-    key: 'openId',
-  })
-);
-console.log(
-  urlMethod({
-    url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-    type: 'has',
-    key: 'openId',
-  })
-);
-let href = urlMethod({
-  url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-  type: 'delete',
-  key: 'openId',
-});
-console.log(href);
-let href1 = urlMethod({
-  url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-  type: 'set',
-  key: 'openId',
-  value: '123123',
-});
-console.log(href1);
-console.log(
-  urlMethod({
-    url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-    type: 'set',
-    key: 'openId',
-    value: '123123',
-    hrefFlag: false,
-  })
-);
-let href2 = urlMethod({
-  url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-  type: 'objectSet',
-  value: {
-    demo1: '123123',
-    demo2: '456456',
-  },
-});
-console.log(href2);
 
 /**
  * 设置期限Storage
@@ -523,13 +453,6 @@ function debounce(func, ms) {
     timeout = setTimeout(() => func.apply(this, arguments), ms);
   };
 }
-let demo = debounce(function () {
-  console.log('debounce');
-}, 1000);
-// 只会执行一次
-for (let index = 0; index < 10000; index++) {
-  demo();
-}
 
 /**
  * 节流装饰器
@@ -562,10 +485,92 @@ function throttle(func, ms) {
   }
   return wrapper;
 }
-demo = throttle(function (x) {
+
+console.log(isNull(1));
+console.log(isNull(0));
+console.log(isNull());
+console.log(isNull(null));
+console.log(isNull(''));
+console.log(isNull({}));
+console.log(isNull(false));
+
+console.log(
+  getUrlParam('c', 'http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1')
+);
+
+console.log(
+  changeURLArg(
+    'c',
+    123,
+    'http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1'
+  )
+);
+console.log(
+  changeURLArg(
+    'b',
+    123,
+    'http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1'
+  )
+);
+
+console.log(
+  urlMethod({
+    url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
+    type: 'get',
+    key: 'openId',
+  })
+);
+console.log(
+  urlMethod({
+    url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
+    type: 'has',
+    key: 'openId',
+  })
+);
+let href = urlMethod({
+  url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
+  type: 'delete',
+  key: 'openId',
+});
+console.log(href);
+let href1 = urlMethod({
+  url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
+  type: 'set',
+  key: 'openId',
+  value: '123123',
+});
+console.log(href1);
+console.log(
+  urlMethod({
+    url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
+    type: 'set',
+    key: 'openId',
+    value: '123123',
+    hrefFlag: false,
+  })
+);
+let href2 = urlMethod({
+  url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
+  type: 'objectSet',
+  value: {
+    demo1: '123123',
+    demo2: '456456',
+  },
+});
+console.log(href2);
+
+let demo = debounce(function () {
+  console.log('debounce');
+}, 1000);
+// 只会执行一次
+for (let index = 0; index < 10000; index++) {
+  demo();
+}
+
+let demo1 = throttle(function (x) {
   console.log('throttle' + x);
 }, 2000);
-demo(1); // throttle1
-demo(2); // 节流
-demo(3); // 节流
+demo1(1); // throttle1
+demo1(2); // 节流
+demo1(3); // 节流
 // 2000ms后 输出throttle3 2被3替换
