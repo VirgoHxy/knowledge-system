@@ -254,15 +254,15 @@ function compareObject(x, y) {
 }
 
 /**
- * 深克隆对象(JSON.parse(JSON.stringify(target)) 可深克隆一个对象.但有一定局限)
+ * 深克隆对象(JSON.parse(JSON.stringify(target)) 可深克隆一个对象 但有一定局限)
  *
- * @param {*} target 克隆对象
+ * @param {*} target 克隆对象 不支持日期对象,正则对象,map,set,promise等克隆
  *
  * @returns {*}
  *
  */
 function clone(target, map = new WeakMap()) {
-  if (typeof target === 'object') {
+  if (typeof target === 'object' && target !== null) {
     let cloneTarget = Array.isArray(target) ? [] : {};
     if (map.get(target)) {
       return map.get(target);
@@ -295,3 +295,24 @@ let user = {
 console.log(getType(1)); //number
 console.log(getType(new Date())); //date
 console.log(getType(user)); //user
+
+let sourceObj1 = {
+  a: 1,
+  c: null,
+  date: new Date(),
+  func: () => {
+    console.log(1);
+  },
+  regexp: new RegExp('1'),
+  map: new Map([[1, 1]]),
+};
+sourceObj1.b = sourceObj1;
+let cloneObj1 = clone(sourceObj1);
+sourceObj1.a = 2;
+sourceObj1.c = 3;
+sourceObj1.date.setFullYear(1998);
+sourceObj1.func.name = '1998';
+sourceObj1.regexp.lastIndex = 5;
+sourceObj1.map.set(1, 5);
+console.log(sourceObj1);
+console.log(cloneObj1);

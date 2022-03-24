@@ -8,7 +8,7 @@ Array(1000); // [ <1000 empty items> ] Array(1000)[0]为undefined 不能说明�
 Array(3, 11, 8); // [3,11,8] 多个参数会作为元素作为一个数组
 Array(3, 3, 3); // [3,3,3] 可以使用Array(3).fill(3), Array.from({length: 3}, ele => 3)
 
-// Set extends Function;Set extends Object;值集合类继承方法类和对象类
+// Set extends Function;Set extends Object;值集合类继承方法类和对象类 weakSet的值只能是对象引用 如果引用被垃圾回收 weakSet的值也会被清除 而且weakSet不能被枚举
 let set = new Set(), tempSetObj = {a: 1}, tempSetArr = [2];
 set.add(1); // 返回set集合
 set.add('2');
@@ -35,7 +35,7 @@ set.keys(); // [Set Iterator] { '2', true, { a: 1 }, [ 2 ], [ 2 ] } set允许存
 set.values(); // [Set Iterator] { '2', true, { a: 1 }, [ 2 ], [ 2 ] } 所以keys和values一致
 Array.from(set); // [ '2', true, { a: 1 }, [ 2 ], [ 2 ] ] set 可以做数组去重 仅使用基本类型
 
-// Map extends Function;Map extends Object;键值对集合类继承方法类和对象类
+// Map extends Function;Map extends Object;键值对集合类继承方法类和对象类 weakMap的键只能是对象引用 如果引用被垃圾回收 weakMap的值也会被清除 而且weakMap不能被枚举
 let map = new Map(), tempMapObj = {a: 1}, tempMapArr = [2];
 map.set(1, '值'); // 返回map集合
 map.set('2', '值');
