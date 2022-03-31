@@ -4,6 +4,36 @@ new Object(); // {} 空对象
 Object(3); // Number {3} 数字基本包装类型
 Object('3'); // String {"3"} 字符串基本包装类型
 Object(true); // Boolean {true} 布尔基本包装类型
+Object(3) instanceof Number; // true
+Object('3') instanceof String; // true
+Object(true) instanceof Boolean; // true
+// object以及其他引用类型 let obj = {a: 1}; 存储格式: 引用类型就是内存地址,引用名称(变量名称)和值(堆内存区域的引用地址) 这个`{a: 1}`堆内存区域的存储格式内存地址,引用名称(key)和值(value) 如果value还是引用类型就按上述继续存储 内存分为栈内存(操作系统会自动清理)和堆内存(回收机制清理) 栈内存存储局部变量(储存基础类型值,储存引用类型引用地址) 其他变量在堆内存存储
+/* // 例1
+let object = {a: 1, b: 'a', c: true};
+object.a = 2;
+// object.a变成了2 这里改变`{a: 1, b: 'a', c: true}`堆内存区域的引用名称'a'的内存地址 新的内存地址保存的值是2 但是引用名称'object'的引用地址不会改变
+*/
+
+/* // 例2
+let object = {a: 1, b: 'a', c: true};
+object = {c: 1};
+// object变成了{c: 1} 这里创建了一个新的堆内存区域`{c: 1}` 引用名称'object'的指向新的内存地址 新的内存地址保存的值是对堆内存区域`{c: 1}`的引用地址
+// `{a: 1, b: 'a', c: true}` 这个在堆内存中的存储会被回收机制回收
+*/
+
+/* // 例3
+let object = {a: 1, b: 'a', c: true, d: {}};
+object.a = object.b;
+// object.a变成了'a' 这里就是引用名称'a'和'b'都指向同一个内存地址 就是引用名称'b'的内存地址 
+object.a = 2;
+// object.a变成了2 但是object.b不会改变 因为引用名称'a'指向了新的内存地址 新的内存地址保存的值是2
+object.e = object.d;
+// object.d和object.e都是`{}` 引用名称'd'和'e'都指向同一个内存地址 这个内存地址的值就是object.d创建的堆内存区域`{}`的引用地址
+object.d.f = 3;
+// object.d和object.e都会有f这个属性 因为增加的是堆内存区域`{}`的key和value 引用名称'd'和'e'的内存地址值又是一个引用地址 所以都会有这个属性
+object.d = {};object.e.g = 4;
+// object.d为`{}`,object.e为{f: 3, g: 4} 两个变成了互不影响状态 因为引用名称'd'和'e'内存地址值变成了不同的引用地址 详情看例2
+*/
 
 /* es5 */
 // 静态方法
@@ -45,7 +75,7 @@ cloneObj.b.c = 2; // sourceObj,cloneObj都会改变
 
 // configurable writable enumerable value set           get
 // 是否修改删除  是否赋值  是否可枚举  值    设置函数setter 获取函数getter
-// 给对象添加一个属性并指定该属性的配置
+// 给对象添加一个属性并指定该属性的配置 不指定默认都为false
 let defineObj = {};
 Object.defineProperty(defineObj, 'globalConfig', {
   configurable: false,
@@ -94,7 +124,7 @@ Object.getOwnPropertyDescriptors(defineObj.globalConfig); // { value: 'a', writa
 }
 */
 
-Object.keys({a: 1, b: 2}); // ['a', 'b'] 返回自身的可枚举属性数组
+Object.keys({a: 1, b: 2}); // ['a', 'b'] 返回自身的可枚举属性数组 forin会遍历原型链上可枚举的属性
 Object.keys(['10', '2']); // ['0', '1']
 Object.keys({100: 1, 2: 2, 7: 3}); // ['2', '7', '100'] 数字key会按照数字的顺序排列
 Object.getOwnPropertyNames([1, 2]); // [ '0', '1', 'length' ] 返回自身属性(包括不可枚举但不包括Symbol)数组
@@ -134,8 +164,9 @@ console.log(sealObj); // { a: 2, b: { c: 3 }, c: 2 }
 Object.isSealed(sealObj); // true 判断对象是否密封
 
 // 原型方法
-Object.prototype.hasOwnProperty.call({a: 1}, 'a'); // 返回对象自身属性中是否具有指定的属性
+Object.prototype.hasOwnProperty.call({a: 1}, 'a'); // true 返回对象自身属性中是否具有指定的属性
 Object.prototype.hasOwnProperty.call({a: 1}, 'toString'); // false 原型链上的方法 并不是自身属性
+
 Object.prototype.propertyIsEnumerable.call([1], 'length'); // false 返回对象自身属性中指定的属性是否可枚举
 Object.prototype.propertyIsEnumerable.call([1], '0'); // true
 
@@ -161,7 +192,7 @@ Object.prototype.toString.call(10n); // [object BigInt]
 
 Object.prototype.valueOf.call({a: 1}); // {a: 1} 返回一个该对象的原始值
 Object.prototype.valueOf.call([1]); // [1]
-Object.prototype.valueOf.call(new Date()); // [object Date]
+Object.prototype.valueOf.call(new Date()); // 2022-03-29T08:14:44.845Z
 Object.prototype.valueOf.call(() => {}); // () => {}
 Object.prototype.valueOf.call(/.*/); // /.*/
 Object.prototype.valueOf.call(Math); // Math {}
@@ -185,13 +216,13 @@ let {foo: { num }} = { foo: { num: 123 } }; // num = 123; 解构嵌套
 let { foo: { num: num1 = 1 } = {} } = {}; // num1 = 1; 解构嵌套+重命名+默认值
 let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 }; // x = 1;y = 2;z={a: 3, b: 4} rest剩余参数
 let obj5 = { a: { b: 1 } };
-let { ...c } = obj5; // c.a.b = 1;obj5.a.b = 1; spread扩展运算 可枚举属性的浅克隆 如果值都为原始类型 则为深克隆 与Object.assign一致
+let { ...c } = obj5; // c.a.b = 1; spread扩展运算 可枚举属性的浅克隆 如果值都为原始类型 则为深克隆 与Object.assign一致
 let obj11 = { ...{ 0: '零' }, ...{ 1: '一' } }; // { '0': '零', '1': '一' } 合并对象 可替代Object.assgin({},a,b)
-function objectDemo({ x = 0, y = 0 } = {}) { console.log(x, y); } // 解构函数对象参数 并给属性默认值(防止无参数报错)
+function objectDemo({ x = 0, y = 0 } = {}) { console.log(x, y); } // 解构函数对象参数 并给参数属性默认值(防止无参数报错)
 objectDemo(); // x为0 y为0
 objectDemo({ x: 1, y: 2 }); // x为1 y为2
 objectDemo({ x: 1 }); // x为1 y为0
-function objectDemo1({ x, y } = { x: 0, y: 0 }) { console.log(x, y); } // 解构函数对象参数 并给对象默认值(防止无参数报错)
+function objectDemo1({ x, y } = { x: 0, y: 0 }) { console.log(x, y); } // 解构函数对象参数 并给参数对象默认值(防止无参数报错)
 objectDemo1(); // x为0 y为0
 objectDemo1({ x: 1, y: 2 }); // x为1 y为2
 objectDemo1({ x: 1 }); // x为1 y为undefined
@@ -209,13 +240,17 @@ Object.entries({a: 1, b: 2}); // [["a", 1], ["b", 2]] 返回给定对象自身�
 Object.fromEntries([['a', 1], ['b', 2]]); // {a: 1, b: 2} 方法把[key, value]数组转换为一个对象
 Object.fromEntries(Object.entries({a: 1, b: 2}).map(([ key, val ]) => [ key, val * 2 ])); // {a: 2, b: 4} 可以做对象转换
 
-Object.values({a: 1, b: 2}); // [1, 2] 返回对象上的可枚举属性的值数组
+Object.values({a: 1, b: 2}); // [1, 2] 返回对象自身可枚举属性的值数组
 Object.values(['10', '2']); // ["10", "2"]
-Object.values({100: 1, 2: 2, 7: 3}); // [2, 3, 1] 数字key会按照数字的顺序排列然后取值
+Object.values({100: 1, 2: 2, 7: 3}); // [2, 3, 1] 数字key会按照key的顺序排列然后取值
 
 Object.is(); // 比较两个值是否相同 基本类型比较值是否相同 复杂类型引用地址需要相同 除了下方两个结果不同 结果都于===相同
-Object.is(0, -0); // false 数字需要注意+0,-0    +0 === -0 && +0 === 0 为true
-Object.is(Number.NaN, Number.NaN); // true 数字需要注意NaN    Number.NaN === Number.NaN 为false
+Object.is(0, -0); // false 数字需要注意+0,-0
+Object.is(Number.NaN, Number.NaN); // true 数字需要注意NaN
+// eslint-disable-next-line
+(+0) === (-0) && +0 === 0; // true
+// eslint-disable-next-line
+Number.NaN === Number.NaN; // false
 
 /**
  * 判断对象是否相等

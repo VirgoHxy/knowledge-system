@@ -4,19 +4,40 @@ let str = 'abc'; str.name = 'abc'; /* 这里生效了 */ console.log(str.name); 
 String('abc'); // abc 返回字符串
 new String('abc') instanceof String; // true
 new String('abc') instanceof Object; // true
-String('abc') instanceof String; // false
+String('abc') instanceof String; // false 'abc'不是String的实例
+// null undefined string number boolean 这些原始类型值是不会被改变的 `let str = 'abc';` 这个原始值'abc'和变量名称'str'就存储在内存中 在内存中的值'abc'本身是不能改变的 只能改变变量内存地址指向 存储格式: 内存地址,引用名称(变量名称)和值(原始值) 内存分为栈内存(操作系统会自动清理)和堆内存(回收机制清理) 栈内存存储局部变量(储存基础类型值,储存引用类型引用地址) 其他变量在堆内存存储
+// let str = 'abc'; 'abc'这个值本身是不能改变的 其他原始类型值也是这样
+/* // 例1
+let str = 'abc';
+str = str + 'd';
+// str变成了'abcd' 这里改变变量内存地址 引用名称'str'指向新的内存地址 新的内存地址保存的值是'abcd'
+*/
+
+/* // 例2
+let str = 'abc';
+let str1 = 'abcd';
+str = str1;
+// str变成了'abcd' 这里就是引用名称'str'和'str1'都指向同一个内存地址 但是两个并不会互相影响
+str = 'efg'
+// str变成了'efg' 这里改变变量内存地址 引用名称'str'指向新的内存地址 新的内存地址保存的值是'efg'
+*/
 
 /* es5 */
 
 // 静态方法
 String.fromCharCode(97, 98, 99); // 'abc' 方法返回UTF-16整数编码值(0-65535)对应的字符串(可以接受多个编码值) 无效返回"—"
 
+// 原型属性
+'abc'.length; // 3 字符串的长度 使用UTF-16编码来表示字符 大部分常用字符 length和字符数表现一致 当一个字符需要用两个代码单元表示 length就会和字符数不一致 '𐀀'的length就是2
 // 原型方法
-'abc'.charAt(2); // c 获取index位置上的字符 不存在返回空字符串 不支持负数
+'abc'.charAt(2); // 'c' 获取index位置上的字符 不存在返回空字符串 不支持负数
 'abc'.charAt(3); // ''
 'abc'.charAt(-1); // ''
+'abc'[0]; // 'a' 一般字符串可以使用str[index]方法来获取字符 不存在返回undefined 不支持负数 length和索引都是可读 不可修改值
+'abc'[3]; // undefined
+'abc'[-1]; // undefined
 
-'abc'.charCodeAt(0); // 97 方法返回字符串index位置上的UTF-16整数编码值(0-65535) 超出返回NaN
+'abc'.charCodeAt(0); // 97 方法返回字符串index位置上的UTF-16整数编码值(0-65535) 超出index返回NaN
 'abc'.charCodeAt(3); // NaN
 'abc'.charCodeAt(-1); // NaN
 
@@ -45,18 +66,20 @@ new String('abc').valueOf(); // "abc" 返回String对象的原始值
 ''.concat(null); // 'null'
 ''.concat(undefined); // 'undefined'
 ''.concat(); // ''
+'a'+'b'+'c'; // 'abc' 一般字符串连接使用+运算
+'0'+'1'+'2'; // '012' 字符串数字连接 注意数字进行+运算时 要把字符串转为数字
 
-'<demo>'.slice(1, 5); // "demo" 方法提取某个字符串的一部分 并返回一个新的字符串(不改动原字符串)
+'<demo>'.slice(1, 5); // "demo" 方法提取某个字符串的一部分 并返回一个新的字符串(支持负数)
 '<demo>'.slice(-5, -1); // "demo" startIndex为-5 endIndex为-1 左闭右开[startIndex, endIndex)
 '<demo>'.slice(-5); // "demo>"" 省略endIndex 则到字符串末尾 
 '<demo>'.slice(); // "<demo>" 相当于返回一个副本
 
-'<demo>'.substring(1, 5); // "demo" 方法提取某个字符串的一部分 并返回一个新的字符串(不改动原字符串)(不支持负数)
+'<demo>'.substring(1, 5); // "demo" 方法提取某个字符串的一部分 并返回一个新的字符串(不支持负数)
 '<demo>'.substring(5, 1); // "demo" 如果startIndex大于endIndex 则互换index 等同于substring(1, 5) 左闭右开[startIndex, endIndex)
 '<demo>'.substring(); // "<demo>" 相当于返回一个副本
 
-'DEMO'.toLowerCase(); // "demo" 返回字符串值的小写形式(不改动原字符串)
-'demo'.toUpperCase(); // "DEMO" 返回字符串值的大写形式(不改动原字符串)
+'DEMO'.toLowerCase(); // "demo" 返回字符串值的小写形式 返回一个新的字符串
+'demo'.toUpperCase(); // "DEMO" 返回字符串值的大写形式 返回一个新的字符串
 
 Object.prototype.toString.call('abc'); // "[object String]" 返回指定对象的字符串形式 可以再用正则截取 获取对象类型
 
@@ -80,7 +103,7 @@ String.fromCodePoint(97, 98, 99); // 'abc' 方法返回Unicode整数编码值对
 '\uD800\uDC00'.codePointAt(0); // 65536 这个表示就是'𐀀'
 'abc'.codePointAt(-1); // undefined
 
-'abc'.split('b'); // ["a", "c"] 用指定的分隔符字符串将一个String对象分割成子字符串数组
+'abc'.split('b'); // ["a", "c"] 用指定的分隔符字符串将一个字符串分割成子字符串数组
 'abc'.split('b', 1); // ["a"] 第一个参数是分隔符 可以是字符串 第二个参数是限制数组的长度
 'abc'.split(''); // ["a", "b", "c"] 为空字符串 则将每个字符分隔
 'abc'.split(); // ["abc"] 为空 则返回包含整个字符串的数组
@@ -95,23 +118,24 @@ Array.from(regExpStringIterator); // [["<demo>", "demo"],["<demo1>", "demo1"]]
 'abcabc'.replace('abcabc'[0], 'abcabc'[0].toUpperCase()); // Abcabc 用新的字符串(第二个参数)替换当前字符串的某段字符串(第一个参数) 返回新字符串
 'abcabc'.replace(/a/, 'A'); // Abcabc 用新的字符串(第二个参数)替换当前字符串的正则(第一个参数)匹配到的第一个字符串 返回新字符串
 'borderTop'.replace(/[A-Z]/, (match) => '-' + match.toLowerCase()); // "border-top" 第二个参数也可以使用函数 返回新字符串
-'  s  t  r  '.replace(/^\s+|\s+$/g, ''); // s__t__r 类似于String.trim()
+'  s  t  r  '.replace(/^\s+|\s+$/g, ''); // s__t__r 类似于trim()
 '  s  t  r  '.replace(/\s+/g, ''); // str
-'  s  t  r  '.replace(/^(\s*)/g, ''); // s__t__r__ 类似于String.trimStart()
-'  s  t  r  '.replace(/(\s*)$/g, ''); // __s__t__r 类似于String.trimEnd()
+'  s  t  r  '.replace(/^(\s*)/g, ''); // s__t__r__ 类似于trimStart()
+'  s  t  r  '.replace(/(\s*)$/g, ''); // __s__t__r 类似于trimEnd()
 '  s  t  r  '.replace(/\b(\s*)\b/g, ''); // __str__
 
 'abcabc'.replaceAll('a', 'A'); // "AbcAbc" 用新的字符串(第二个参数)替换当前字符串的所有某段字符串(第一个参数) 返回新字符串
 'abcabc'.replaceAll(/a/g, 'A'); // "AbcAbc" 用新的字符串(第二个参数)替换当前字符串的正则(第一个参数)匹配到的所有字符串 返回新字符串(必须使用g)
 'borderTopColor'.replaceAll(/[A-Z]/g, (match) => '-' + match.toLowerCase()); // "border-top-color" 第二个参数也可以使用函数 返回新字符串
-'Abcabc'.search(/a/i); // 0 使用正则表达式和String对象之间的一个搜索匹配 返回字符串所在位置索引
+'Abcabc'.search(/a/i); // 0 使用正则表达式在字符串执行搜索匹配 返回字符串所在位置索引
 'Abcabc'.search('a'); // 3 如果参数不是正则 则会隐式转为正则
 
 'abc'.padStart(10, 'foo'); // "foofoofabc" 使用指定字符串在左侧填充到指定长度 没有指定字符串 默认为" "
-'100'.padStart(10, '0'); // "0000000100"
+'100'.padStart(10); // "       100" 默认用空格
 'abc'.padEnd(10, 'foo'); // "abcfoofoof" 使用指定字符串在右侧填充到指定长度 没有指定字符串 默认为" "
+'abc'.padEnd(10); // "abc       " 默认用空格
 
-'abc'.repeat(2); // "abcabc" 返回指定字符串连接在一起n(0到+INFINITY)次的新字符串
+'abc'.repeat(2); // "abcabc" 返回指定字符串连接在一起n次的新字符串
 'abc'.repeat(0); // ""
 
 '  a  b  c  '.trimStart(); // a__b__c__ 去除字符串左端的空格 制表符 换行符 回车符
@@ -120,7 +144,7 @@ Array.from(regExpStringIterator); // [["<demo>", "demo"],["<demo1>", "demo1"]]
 'abcabc'.startsWith('b'); // false 判断当前字符串是否以另外一个给定的子字符串结尾(区分大小写) 是返回true
 'abcabc'.startsWith('b', 1); // true 第二个参数为开始索引index 默认为0
 'abcabc'.endsWith('a'); // false 判断当前字符串是否以另外一个给定的子字符串结尾(区分大小写) 是返回true
-'abcabc'.endsWith('a', 1); // true 第二个参数为字符串长度 默认为断当前字符串的长度
+'abcabc'.endsWith('a', 1); // true 第二个参数为结束索引index 默认为当前字符串的长度
 
 'abc'.includes('a'); // true 判断一个给定的字符串是否包含在当前字符串中(区分大小写) 是返回true
 'abc'.includes('a', 1); // false 第二个参数为开始索引index 默认为0

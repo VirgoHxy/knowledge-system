@@ -3,18 +3,33 @@
 // 字符类
 // \d 0到9的字符
 // \s 空格 制表符 换行符 少数稀有字符
-// \w 拉丁字母、数字、"_"
+// \w 拉丁字母、数字、_
 
 // 反向类
 // \D 0到9以外的字符
 // \S 除了空格 制表符 换行符 少数稀有字符
-// \W 除了拉丁字母、数字、"_"
+// \W 除了拉丁字母、数字、_
 
-// "."表示除了换行符以外的任何字符
+// 常用含义
+// . 表示除了换行符以外的任何字符 [\s\S]
+// + 一个或多个{1,}
+// ? 零个或一个{0,1}
+// * 零个或多个{0,}
+// ^ 以开头
+// $ 以结尾
+// | 或者
+// \ 转义
+
+// 搜索模式 修饰符
+// g 搜索时会查找所有的匹配项
+// u unicode修饰符搜索
+// i 搜索时不区分大小写
+// m 多行搜索
+// y 粘性标志,精准搜索,必须从头部开始
 
 let str, regexp;
 
-// 动态正则 new RegExp(`/@import\\s+(\\S+)\\.js/`)
+/* 动态正则 new RegExp(`/@import\\s+(\\S+)\\.js/`) */
 let ext = 'js';
 console.log(
   '@import \'demo.js\';@import \'demo.css\';'.match(
@@ -28,9 +43,7 @@ console.log(
   )[0]
 );
 
-// 字符正则方法
-// 不带g的 第一个匹配 index input | 带g的返回所有匹配 不包含其他信息 | 没有匹配项返回null
-console.log('1,2,3'.match(/\d/g)); // 1,2,3
+/* 字符正则方法 */
 console.log('1,2,3'.match(/\d/)); // 1, index: 0, input: '1,2,3'
 console.log('abc'.match(/\d/)); // null
 // 返回[object RegExp String Iterator] 可迭代对象 返回所有匹配 index input | 没有匹配项返回空迭代对象
@@ -96,13 +109,11 @@ console.log(result1.groups); // undefined
 // 是否存在匹配项 等同于search的index!==-1
 console.log(/love/i.test('I love JavaScript')); // true
 
-// "."实际上匹配任何字符 等同于[\s\S]
+/* 搜索模式 */
+// g 返回所有匹配
+console.log('1,2,3'.match(/\d/g)); // 1,2,3
 
-// i 搜索时不区分大小写
-
-// g 搜索时会查找所有的匹配项
-
-// unicode修饰符 u
+// u unicode搜索
 // 16进制数字
 regexp = /x\p{Hex_Digit}\p{Hex_Digit}/u;
 console.log('number: xAF'.match(regexp)); // xAF
@@ -113,7 +124,11 @@ console.log('Hello Привет 你好 123_456'.match(regexp)); // 你,好
 regexp = /\p{Sc}\d/gu;
 console.log('Prices: $2, €1, ¥9'.match(regexp)); // $2,€1,¥9
 
-// 多行修饰符 m
+// i 大小写修饰符
+console.log(/love/i.test('I Love JavaScript')); // true
+console.log(/love/.test('I Love JavaScript')); // false
+
+// m 多行修饰符 
 str = `1st place: Winnie
 2nd place: Piglet
 33rd place: Eeyore
@@ -123,16 +138,16 @@ console.log(str.match(/^\d+/gm)); // 1,2,33
 // 每行最后一个单词
 console.log(str.match(/\w+$/gm)); // Winnie,Piglet,Eeyore
 
-// 粘性标志 "y" 精准搜索
+// y 粘性标志,精准搜索,必须从头部开始
 regexp = /\w+/y;
-// 第4个字符为空格 匹配失败
+// 下一次搜索位置为3 也就是第4个字符为空格 匹配失败
 regexp.lastIndex = 3;
 console.log('let varName = \'value\''.match(regexp)); // null
-// 第5个字符为空格 匹配成功
+// 下一次搜索位置为4 也就是第5个字符为v 匹配成功
 regexp.lastIndex = 4;
 console.log('let varName = \'value\''.match(regexp)); // varName
 
-// 完全匹配 ^以开头 $以结尾
+/* 完全匹配 ^以开头 $以结尾 */
 // 时间
 regexp = /^\d\d:\d\d$/;
 console.log(regexp.test('12:34')); // true
@@ -140,19 +155,27 @@ console.log(regexp.test('12:34')); // true
 regexp = /^$/;
 console.log(regexp.test('')); // true
 
-// 集合范围
-// tm集合
-console.log('Mop top'.match(/[tm]op/gi)); // Mop,top
-// 不用转义的字符集合(转义仍能工作)
-console.log('1 + 2 - 3'.match(/[-().^+]/g)); // +,-
-// 排除不用转义的字符集合
-console.log('1 + 2 - 3'.match(/[^-().^+\s]/g)); // 1,2,3
-// 范围
-console.log('number: xAF'.match(/x[A-F0-9][A-F0-9]/g)); // xAF
+/* or | */
+console.log('javascript typescript'.match(/type|javascript/gi)); // javascript,type
+console.log('javascript typescript'.match(/(type|java)script/gi)); // javascript,typescript
 // 时间
-console.log('Breakfast at 09:00. Dinner at 21-30'.match(/\d\d[:-]\d\d/g)); // 09:00,21-30
+console.log('12:12'.match(/\b([01]\d|2[0-3]):[0-5]\d\b/g)); // 12:12
+// 编程语言 无法匹配一个单独字母C
+console.log(
+  'Java JavaScript C++ PHP C C1'.match(/\bJava(Script)?\b|\bPHP\b|C(\+\+)?/g)
+); // Java,JavaScript,C++,PHP,C
+// 嵌套标签
+console.log(
+  `
+[b]hello![/b]
+[quote]
+[url]http://google.com[/url]
+[/quote]`.match(/\[(.+?)\][\s\S]*?\[\/\1\]/g)
+); // [b]hello![/b],[quote]\n[url]http://google.com[/url]\n[/quote]
+// 标签
+console.log('<style> <styler> <style test=\'...\'>'.match(/<style(>|\s.*?>)/g)); // <style>,<style test='...'>
 
-// 量词
+/* 量词 */
 // {2} 2个数字
 console.log('+7(903)-123-45-67'.match(/\b\d{2}\b/g)); // 45,67
 console.log('+7(903)-123-45-67'.match(/\d{2}/g)); // 90,12,45,67
@@ -188,7 +211,19 @@ console.log(str.match(/<!--[\s\S]*?-->/g)); // '<!-- My -- comment \n test -->',
 str = '<> <a href="/"> <input type="radio" checked> <b>';
 console.log(str.match(/<[^<>]+>/g)); // '<a href="/">', '<input type="radio" checked>', '<b>'
 
-// 捕获组
+/* 集合范围 */
+// tm集合
+console.log('Mop top'.match(/[tm]op/gi)); // Mop,top
+// 不用转义的字符集合(转义仍能工作)
+console.log('1 + 2 - 3'.match(/[-().^+]/g)); // +,-
+// 排除不用转义的字符集合
+console.log('1 + 2 - 3'.match(/[^-().^+\s]/g)); // 1,2,3
+// 范围
+console.log('number: xAF'.match(/x[A-F0-9][A-F0-9]/g)); // xAF
+// 时间
+console.log('Breakfast at 09:00. Dinner at 21-30'.match(/\d\d[:-]\d\d/g)); // 09:00,21-30
+
+/* 捕获组 */
 // go作为一个整体
 console.log('Gogogo now!'.match(/(go)+/i)); // "Gogogo"
 // 域名
@@ -232,7 +267,7 @@ console.log(a); // 1.2
 console.log(op); // *
 console.log(b); // 3.4
 
-// 词边界
+/* 词边界 */
 // \bJava\b
 console.log('Hello, Java!'.match(/\bJava\b/)); // Java
 // \bJava感叹号不是单词
@@ -248,7 +283,7 @@ console.log('Hello, JavaScript!'.match(/Java\b/)); // null
 // 时间
 console.log('Breakfast at 09:00 in the room 123:456'.match(/\b\d\d:\d\d\b/));
 
-// 反向引用
+/* 反向引用 */
 // 编号反向引用 \N
 console.log('He said: "She\'s the one!".'.match(/(['"])(.*?)\1/g)); // "She's the one!"
 // 按命名反向引用：\k<name>
@@ -256,27 +291,7 @@ console.log(
   'He said: "She\'s the one!".'.match(/(?<quote>['"])(.*?)\k<quote>/g)
 ); // "She's the one!"
 
-// or |
-console.log('javascript typescript'.match(/type|javascript/gi)); // javascript,type
-console.log('javascript typescript'.match(/(type|java)script/gi)); // javascript,typescript
-// 时间
-console.log('12:12'.match(/\b([01]\d|2[0-3]):[0-5]\d\b/g)); // 12:12
-// 编程语言 无法匹配一个单独字母C
-console.log(
-  'Java JavaScript C++ PHP C C1'.match(/\bJava(Script)?\b|\bPHP\b|C(\+\+)?/g)
-); // Java,JavaScript,C++,PHP,C
-// 嵌套标签
-console.log(
-  `
-[b]hello![/b]
-[quote]
-[url]http://google.com[/url]
-[/quote]`.match(/\[(.+?)\][\s\S]*?\[\/\1\]/g)
-); // [b]hello![/b],[quote]\n[url]http://google.com[/url]\n[/quote]
-// 标签
-console.log('<style> <styler> <style test=\'...\'>'.match(/<style(>|\s.*?>)/g)); // <style>,<style test='...'>
-
-// 断言
+/* 断言 */
 // 前瞻断言 匹配\d仅在后面是€
 console.log('1 turkey costs 30€'.match(/\d+(?=€)/)); // 30
 // 前瞻否定断言 匹配\d仅在后面不是€

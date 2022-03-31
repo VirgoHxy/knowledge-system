@@ -3,7 +3,7 @@
  *
  * @param {*} val
  *
- * @returns {Boolean} 是null返回true
+ * @returns {Boolean} 是null或者undefined或者空字符串返回true
  */
 function isNull(val) {
   return val == null || val === '';
