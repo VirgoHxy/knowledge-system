@@ -217,8 +217,8 @@ Array.from('hxy', ele => { return ele + 1; }); // ["h1","x1","y1"] 将类数组�
 Array.from({ length: 2 }, () => '98', this); // ["98","98"]; 第二个参数是map函数 第三个参数是map函数的this指向
 Array.from({ 0: '00', 1: '01', length: 3 }); // [ '00', '01', undefined ];
 // es6方法转换类数组
-[...{ 0: '00', 1: '01', length: 3 }]; // [ '00', '01', undefined ]
-Object.setPrototypeOf({ 0: '00', 1: '01', length: 3 }, Array.prototype); // [ '00', '01', empty ] 这个区别与其他方法是没有值的元素是empty不是undefined
+[...'abc']; // ['a', 'b', 'c'] 这个方法只适用可迭代的类数组
+Object.setPrototypeOf({ 0: '00', 1: '01', length: 3 }, Array.prototype); // [ '00', '01', empty ] 这个区别与其他方法是没有值的元素是empty 而不是undefined
 // es5方法转换类数组 利用apply将类数组当作arguments传入构造函数 利用源码中this.length进行for循环
 Array.apply(null, { 0: '00', 1: '01', length: 3 }); // [ '00', '01', undefined ]
 Array.prototype.concat.apply([], { 0: '00', 1: '01', length: 3 }); // [ '00', '01', undefined ] 
