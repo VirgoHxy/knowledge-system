@@ -439,6 +439,22 @@ function downloadByAElement(url, fileName) {
 }
 
 /**
+ * 读取文件内容(必须在浏览器环境下运行)
+ *
+ * @param {Blob} blob 文件
+ * @param {String} type mediatype
+ */
+function readBlob(blob, type) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      resolve(e.target.result);
+    };
+    type.indexOf('image') != -1 ? reader.readAsDataURL(blob) : reader.readAsText(blob);
+  });
+}
+
+/**
  * 防抖装饰器
  *
  * @param {Function} func 函数

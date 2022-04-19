@@ -12,7 +12,8 @@ try {
   // eslint-disable-next-line no-undef
   y?.a; // 报错 可选链左侧必须声明
 } catch (error) {
-  console.log(error); // y is not defined
+  // y is not defined
+  // console.log(error); 
 }
 y1.a?.b; // 不报错 undefined
 y1.admin?.(); // 不报错 调用可能不存在的admin
@@ -31,7 +32,7 @@ let arr = [0, 1, 2];
 let newObj, newArr;
 
 // spread深克隆 数组/对象元素是基本类型则为深克隆 反之为浅克隆
-newObj = {...obj}; // { a: 1 }
+newObj = { ...obj }; // { a: 1 }
 newArr = [...arr]; // [ 0, 1, 2 ]
 
 // spread可迭代对象
@@ -111,6 +112,7 @@ try {
   func();
 } catch (error) {
   /* func is not defined */
+  // console.log(error)
 }
 
 // 这是个通用函数
@@ -124,37 +126,34 @@ console.log(triple(4)); // 12
 console.log(triple(5)); // 15
 
 // 柯里化(只允许柯里化确定参数长度的函数) 目的:参数复用/延迟执行
-function curry(func) {
-  return function curried(...args) {
-    if (args.length >= func.length) {
-      return func.apply(this, args);
-    } else {
-      return function (...args1) {
-        return curried.apply(this, args.concat(args1));
-      };
-    }
-  };
+function curry(func, ...args) {
+  if (args.length >= func.length) {
+    return func(...args);
+  } else {
+    return curry.bind(null, func, ...args);
+  }
 }
 function sum(a, b, c) {
   return a + b + c;
 }
 let currySum = curry(sum);
-currySum(2); // [Function (anonymous)]
-currySum(2)(4); // [Function (anonymous)]
+currySum(2); // [Function: bound curry]
+currySum(2)(4); // [Function: bound curry]
 currySum(2)(4)(8); // 14
 currySum(2, 4)(8); // 14
 try {
   currySum(2)(4)(8)(16); /* 报错 */
 } catch (error) {
   /* currySum(...)(...)(...) is not a function */
+  // console.log(error);
 }
 
 // 不限制参数 但是对柯里化的方法有要求(能够处理不同参数长度的逻辑)
 function flexCurry(func) {
   return function curried(...args) {
-    return function (...args2) {
-      if (args2.length != 0) {
-        return curried.apply(this, args.concat(args2));
+    return function (...restArgs) {
+      if (restArgs.length != 0) {
+        return curried.apply(this, args.concat(restArgs));
       } else {
         return func.apply(undefined, args);
       }
@@ -315,15 +314,82 @@ function pMap(list, mapper, concurrency = Infinity) {
   });
 }
 
+// 实现apply
+Function.prototype.fakeApply = function (thisObj, args) {
+  if (typeof this !== 'function') {
+    throw new Error('must be a function!');
+  }
+  let context = thisObj || window || globalThis;
+  let result, key = Symbol('fn');
+  context[key] = this;
+  result = context[key](...args);
+  delete context[key];
+  return result;
+};
+
+// 实现call
+Function.prototype.fakeCall = function (thisObj, ...args) {
+  if (typeof this !== 'function') {
+    throw new Error('must be a function!');
+  }
+  let context = thisObj || window || globalThis;
+  let result, key = Symbol('fn');
+  context[key] = this;
+  result = context[key](...args);
+  delete context[key];
+  return result;
+};
+
 // 实现bind
-Function.prototype.fakeBind = function (obj, ...args) {
-  return (...rest) => this.call(obj, ...args, ...rest);
+Function.prototype.fakeBind = function (thisObj, ...args) {
+  return (...rest) => this.call(thisObj, ...args, ...rest);
 };
 
 // 实现softBind
-Function.prototype.softBind = function (obj, ...args) {
+Function.prototype.softBind = function (thisObj, ...args) {
   let that = this;
   return function (...rest) {
-    that.call(!this || this === globalThis ? obj : this, ...args, ...rest);
+    that.call(!this || this === globalThis ? thisObj : this, ...args, ...rest);
   };
 };
+
+// 实现new
+function myNew(constructor, ...args) {
+  if (typeof constructor !== 'function') {
+    throw new Error('constructor must be a function!');
+  }
+  // 通过构造函数的原型创建一个对象
+  const obj = Object.create(constructor.prototype);
+  // 得到构造函数执行的结果
+  const res = constructor.apply(obj, args);
+  const isObject = typeof res === 'object' && res !== null;
+  const isFunction = typeof res === 'function';
+  // 判断是否为一个对象,是对象返回结果,不是对象返回这个创建的对象
+  return isObject || isFunction ? res : obj;
+}
+
+function Father(name) {
+  this.name = name;
+}
+Father.prototype.tell = function () {
+  console.log('my name is', this.name);
+};
+function Child(name) {
+  return {
+    type: 'son',
+    name
+  };
+}
+Child.prototype.say = function () {
+  console.log('say');
+};
+myNew(Father, 'hxy').tell();
+let child = myNew(Child, 'hxy');
+console.log(child.name, child.type);
+try {
+  // 因为构造函数返回的是个对象 这个对象并不是根据原型创建的对象 所以没有该方法
+  child.say();
+} catch (error) {
+  // child.say is not a function
+  // console.log(error);
+}

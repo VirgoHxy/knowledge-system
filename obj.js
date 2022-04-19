@@ -38,23 +38,25 @@ object.d = {};object.e.g = 4;
 /* es5 */
 // 静态方法
 function Father() {
-  this.advantage = 1;
-  this.shortcoming = 1;
-  this.do = () => {
-    console.log('do it');
-  };
+  this.advantageF = 1;
+  this.shortcomingF = 1;
 }
+Father.prototype.do = () => {
+  console.log('do it');
+};
 function Mother() {
-  this.love = () => {
-    console.log('love you');
-  };
+  this.advantageM = 2;
+  this.shortcomingM = 2;
 }
+Father.prototype.love = () => {
+  console.log('love you');
+};
 function Child() {
-  this.my = () => {
-    console.log(this.advantage, this.shortcoming);
-  };
   Father.call(this); // call super constructor.
   Mother.call(this); // call super constructor.
+  this.my = () => {
+    console.log(this.advantageF+this.advantageM, this.shortcomingF+this.shortcomingM);
+  };
 }
 // 继承父类
 Child.prototype = Object.create(Father.prototype); // 使用指定的原型对象和属性创建一个新对象。
