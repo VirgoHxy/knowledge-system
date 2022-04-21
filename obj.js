@@ -55,7 +55,10 @@ function Child() {
   Father.call(this); // call super constructor.
   Mother.call(this); // call super constructor.
   this.my = () => {
-    console.log(this.advantageF+this.advantageM, this.shortcomingF+this.shortcomingM);
+    console.log(
+      this.advantageF + this.advantageM,
+      this.shortcomingF + this.shortcomingM
+    );
   };
 }
 // 继承父类
@@ -71,7 +74,7 @@ child.do(); // do it
 child.my(); // 1 1
 child.love(); // love you
 
-let sourceObj = {a: 1, b: {}};
+let sourceObj = { a: 1, b: {} };
 let cloneObj = Object.create({}, Object.getOwnPropertyDescriptors(sourceObj)); // 第二个参数为属性描述符
 cloneObj.b.c = 2; // sourceObj,cloneObj都会改变
 
@@ -126,16 +129,18 @@ Object.getOwnPropertyDescriptors(defineObj.globalConfig); // { value: 'a', writa
 }
 */
 
-Object.keys({a: 1, b: 2}); // ['a', 'b'] 返回自身的可枚举属性数组 forin会遍历原型链上可枚举的属性
+Object.keys({ a: 1, b: 2 }); // ['a', 'b'] 返回自身的可枚举属性数组 forin会遍历原型链上可枚举的属性
 Object.keys(['10', '2']); // ['0', '1']
-Object.keys({100: 1, 2: 2, 7: 3}); // ['2', '7', '100'] 数字key会按照数字的顺序排列
+Object.keys({ 100: 1, 2: 2, 7: 3 }); // ['2', '7', '100'] 数字key会按照数字的顺序排列
 Object.getOwnPropertyNames([1, 2]); // [ '0', '1', 'length' ] 返回自身属性(包括不可枚举但不包括Symbol)数组
-Object.getOwnPropertySymbols({a: 1, b: 2, [Symbol('c')]: 3}); // [ Symbol(c) ] 返回自身属性(只包括Symbol)数组
+Object.getOwnPropertySymbols({ a: 1, b: 2, [Symbol('c')]: 3 }); // [ Symbol(c) ] 返回自身属性(只包括Symbol)数组
 Object.getPrototypeOf({}) === Object.prototype; // true 返回指定对象的原型对象
 Object.getPrototypeOf(Object) === Function.prototype; // true Object是构造函数 所以为true
-Object.setPrototypeOf({0: 1, 1: 2, length: 2}, Array.prototype).map(ele => ele * 2); // [2, 4] 设置一个对象的原型为指定的原型
+Object.setPrototypeOf({ 0: 1, 1: 2, length: 2 }, Array.prototype).map(
+  (ele) => ele * 2
+); // [2, 4] 设置一个对象的原型为指定的原型
 
-let freezeObj = {a: 1, b: {}, c: 2};
+let freezeObj = { a: 1, b: {}, c: 2 };
 Object.freeze(freezeObj); // {a: 1, b: {}, c: 2} 冻结对象 其他代码不能删除、更改、添加任何属性 冻结 == 只能读取
 freezeObj.a = 2; // 不生效 严格模式还会报错
 freezeObj.b.c = 3; // 生效 因为冻结也是浅冻结
@@ -147,7 +152,7 @@ Object.freeze(freezeArr);
 freezeArr[0] = 4; // 不生效 push pop等方法也不生效
 Object.isFrozen(freezeObj); // true 判断对象是否冻结
 
-let extenseObj = {a: 1, b: {}, c: 2};
+let extenseObj = { a: 1, b: {}, c: 2 };
 Object.preventExtensions(extenseObj); // {a: 1, b: {}, c: 2} 阻止对象的任何扩展 扩展 == 不能添加任何属性
 extenseObj.a = 2; // 生效
 extenseObj.b.c = 3; // 生效 因为阻止扩展也是浅阻止扩展
@@ -156,7 +161,7 @@ extenseObj.d = 4; // 不生效
 console.log(extenseObj); // { a: 2, b: { c: 3 } }
 Object.isExtensible(extenseObj); // false 判断对象是否可扩展 新对象都是默认可扩展的
 
-let sealObj = {a: 1, b: {}, c: 2};
+let sealObj = { a: 1, b: {}, c: 2 };
 Object.seal(sealObj); // {a: 1, b: {}, c: 2} 密封对象 其他代码不能删除、添加任何属性 密封 == 只能读取和更改
 sealObj.a = 2; // 生效
 sealObj.b.c = 3; // 生效 因密封也是浅密封
@@ -166,8 +171,8 @@ console.log(sealObj); // { a: 2, b: { c: 3 }, c: 2 }
 Object.isSealed(sealObj); // true 判断对象是否密封
 
 // 原型方法
-Object.prototype.hasOwnProperty.call({a: 1}, 'a'); // true 返回对象自身属性中是否具有指定的属性
-Object.prototype.hasOwnProperty.call({a: 1}, 'toString'); // false 原型链上的方法 并不是自身属性
+Object.prototype.hasOwnProperty.call({ a: 1 }, 'a'); // true 返回对象自身属性中是否具有指定的属性
+Object.prototype.hasOwnProperty.call({ a: 1 }, 'toString'); // false 原型链上的方法 并不是自身属性
 
 Object.prototype.propertyIsEnumerable.call([1], 'length'); // false 返回对象自身属性中指定的属性是否可枚举
 Object.prototype.propertyIsEnumerable.call([1], '0'); // true
@@ -192,7 +197,7 @@ Object.prototype.toString.call(undefined); // [object Undefined]
 Object.prototype.toString.call(Symbol('1')); // [object Symbol]
 Object.prototype.toString.call(10n); // [object BigInt]
 
-Object.prototype.valueOf.call({a: 1}); // {a: 1} 返回一个该对象的原始值
+Object.prototype.valueOf.call({ a: 1 }); // {a: 1} 返回一个该对象的原始值
 Object.prototype.valueOf.call([1]); // [1]
 Object.prototype.valueOf.call(new Date()); // 2022-03-29T08:14:44.845Z
 Object.prototype.valueOf.call(() => {}); // () => {}
@@ -212,45 +217,59 @@ Object.prototype.valueOf.call(10n); // BigInt {10n}
 /* es6+ */
 // 解构
 let { bar, baz } = { baz: 'aaa', bar: 'bbb' }; // bar = 'bbb';baz = 'aaa'; 解构对象
-let { 前面的为旧变量名: 后面的为新变量名 } = { 前面的为旧变量名: 'aaa', bar: 'bbb' }; // {后面的为新变量名}为'aaa'; 匹配{前面的}值赋给{后面的}变量名达到重命名解构
+let { 前面的为旧变量名: 后面的为新变量名 } = {
+  前面的为旧变量名: 'aaa',
+  bar: 'bbb',
+}; // {后面的为新变量名}为'aaa'; 匹配{前面的}值赋给{后面的}变量名达到重命名解构
 let { bad = 123 } = {}; // bad = 123; 对象属性值为空的默认值
-let {foo: { num }} = { foo: { num: 123 } }; // num = 123; 解构嵌套
+let {
+  foo: { num },
+} = { foo: { num: 123 } }; // num = 123; 解构嵌套
 let { foo: { num: num1 = 1 } = {} } = {}; // num1 = 1; 解构嵌套+重命名+默认值
 let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 }; // x = 1;y = 2;z={a: 3, b: 4} rest剩余参数
 let obj5 = { a: { b: 1 } };
 let { ...c } = obj5; // c.a.b = 1; spread扩展运算 可枚举属性的浅克隆 如果值都为原始类型 则为深克隆 与Object.assign一致
 let obj11 = { ...{ 0: '零' }, ...{ 1: '一' } }; // { '0': '零', '1': '一' } 合并对象 可替代Object.assgin({},a,b)
-function objectDemo({ x = 0, y = 0 } = {}) { console.log(x, y); } // 解构函数对象参数 并给参数属性默认值(防止无参数报错)
+function objectDemo({ x = 0, y = 0 } = {}) {
+  console.log(x, y);
+} // 解构函数对象参数 并给参数属性默认值(防止无参数报错)
 objectDemo(); // x为0 y为0
 objectDemo({ x: 1, y: 2 }); // x为1 y为2
 objectDemo({ x: 1 }); // x为1 y为0
-function objectDemo1({ x, y } = { x: 0, y: 0 }) { console.log(x, y); } // 解构函数对象参数 并给参数对象默认值(防止无参数报错)
+function objectDemo1({ x, y } = { x: 0, y: 0 }) {
+  console.log(x, y);
+} // 解构函数对象参数 并给参数对象默认值(防止无参数报错)
 objectDemo1(); // x为0 y为0
 objectDemo1({ x: 1, y: 2 }); // x为1 y为2
 objectDemo1({ x: 1 }); // x为1 y为undefined
 
 // 静态方法
-let source = {a: 1};
-let complexSource = {a: {b: 1}, c: undefined, d: () => {}, e: Symbol('e')};
-Object.assign({}, source); // {a: 1} 将一个或多个源对象可枚举属性分配到目标对象并返回这个目标对象 如果目标对象已声明为变量则会改变这个变量(源对象会覆盖目标对象属性) 
+let source = { a: 1 };
+let complexSource = { a: { b: 1 }, c: undefined, d: () => {}, e: Symbol('e') };
+Object.assign({}, source); // {a: 1} 将一个或多个源对象可枚举属性分配到目标对象并返回这个目标对象 如果目标对象已声明为变量则会改变这个变量(源对象会覆盖目标对象属性)
 Object.assign({}, complexSource); // { a: { b: 1 }, c: undefined, d: [Function: d], e: Symbol(e) } 这里改变complexSource中b的属性也会改变目标对象中b的属性 浅克隆
 Object.assign({}, JSON.parse(JSON.stringify(complexSource))); // {a: {b: 1}} 如果对象值为复杂类型 并且不需要值为undefined、任意的函数、symbol值 那可以使用JSON.parse(JSON.stringify(soure))来达到深克隆
-Object.assign([], [1,2,3]); // [1,2,3] 元素为基本类型的数组 就是深克隆
+Object.assign([], [1, 2, 3]); // [1,2,3] 元素为基本类型的数组 就是深克隆
 Object.assign({}, 'abc'); // {0: 'a', 1: 'b', 2: 'c'} 只有字符串的包装对象才会有可枚举属性 其他基本类型没有
 
-Object.entries({a: 1, b: 2}); // [["a", 1], ["b", 2]] 返回给定对象自身可枚举属性的[key, value]数组
-Object.fromEntries([['a', 1], ['b', 2]]); // {a: 1, b: 2} 方法把[key, value]数组转换为一个对象
-Object.fromEntries(Object.entries({a: 1, b: 2}).map(([ key, val ]) => [ key, val * 2 ])); // {a: 2, b: 4} 可以做对象转换
+Object.entries({ a: 1, b: 2 }); // [["a", 1], ["b", 2]] 返回给定对象自身可枚举属性的[key, value]数组
+Object.fromEntries([
+  ['a', 1],
+  ['b', 2],
+]); // {a: 1, b: 2} 方法把[key, value]数组转换为一个对象
+Object.fromEntries(
+  Object.entries({ a: 1, b: 2 }).map(([key, val]) => [key, val * 2])
+); // {a: 2, b: 4} 可以做对象转换
 
-Object.values({a: 1, b: 2}); // [1, 2] 返回对象自身可枚举属性的值数组
+Object.values({ a: 1, b: 2 }); // [1, 2] 返回对象自身可枚举属性的值数组
 Object.values(['10', '2']); // ["10", "2"]
-Object.values({100: 1, 2: 2, 7: 3}); // [2, 3, 1] 数字key会按照key的顺序排列然后取值
+Object.values({ 100: 1, 2: 2, 7: 3 }); // [2, 3, 1] 数字key会按照key的顺序排列然后取值
 
 Object.is(); // 比较两个值是否相同 基本类型比较值是否相同 复杂类型引用地址需要相同 除了下方两个结果不同 结果都于===相同
 Object.is(0, -0); // false 数字需要注意+0,-0
 Object.is(Number.NaN, Number.NaN); // true 数字需要注意NaN
 // eslint-disable-next-line
-(+0) === (-0) && +0 === 0; // true
++0 === -0 && +0 === 0; // true
 // eslint-disable-next-line
 Number.NaN === Number.NaN; // false
 

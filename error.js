@@ -19,8 +19,8 @@ let eventError = {
   id: '20210731111727pOLjEe',
   key: 3790,
   detailKey: 5086,
-  message: 'Cannot read property \'data\' of undefined;',
-  detailMessage: 'Cannot read property \'data\' of undefined;Citys/GetData;',
+  message: "Cannot read property 'data' of undefined;",
+  detailMessage: "Cannot read property 'data' of undefined;Citys/GetData;",
   location: '/demo.html',
 };
 /**
@@ -46,8 +46,8 @@ let httpError = {
   key: 3790,
   detailKey: 5086,
   location: '/demo.html',
-  message: 'Cannot read property \'data\' of undefined;',
-  detailMessage: 'Cannot read property \'data\' of undefined;Citys/GetData;',
+  message: "Cannot read property 'data' of undefined;",
+  detailMessage: "Cannot read property 'data' of undefined;Citys/GetData;",
   param: {
     RoomId: '2021-07-23 16:27:32',
   },

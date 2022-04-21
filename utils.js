@@ -450,7 +450,9 @@ function readBlob(blob, type) {
     reader.onload = function (e) {
       resolve(e.target.result);
     };
-    type.indexOf('image') != -1 ? reader.readAsDataURL(blob) : reader.readAsText(blob);
+    type.indexOf('image') != -1
+      ? reader.readAsDataURL(blob)
+      : reader.readAsText(blob);
   });
 }
 

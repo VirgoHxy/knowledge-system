@@ -134,7 +134,11 @@
         //毫秒，小于9或99补零
         [
           /MS/,
-          mSecond > 9 ? (mSecond > 99 ? mSecond : '0' + mSecond) : '00' + mSecond,
+          mSecond > 9
+            ? mSecond > 99
+              ? mSecond
+              : '0' + mSecond
+            : '00' + mSecond,
         ],
         //毫秒，不补零
         [/ms/, mSecond],
@@ -324,7 +328,7 @@
     if (!(opt instanceof Array)) {
       set(opt);
     } else {
-      opt.forEach(element => {
+      opt.forEach((element) => {
         set(element);
       });
     }

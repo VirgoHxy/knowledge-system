@@ -58,9 +58,9 @@
    */
   function removeItem(arr, removeArr, key) {
     if (!key) {
-      return arr.filter(item => removeArr.indexOf(item) == -1);
+      return arr.filter((item) => removeArr.indexOf(item) == -1);
     }
-    return arr.filter(item => removeArr.indexOf(item[key]) == -1);
+    return arr.filter((item) => removeArr.indexOf(item[key]) == -1);
   }
 
   /**

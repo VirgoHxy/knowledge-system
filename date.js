@@ -375,7 +375,7 @@ function getCalcDate(value, opt, formatStr) {
   if (!(opt instanceof Array)) {
     set(opt);
   } else {
-    opt.forEach(element => {
+    opt.forEach((element) => {
       set(element);
     });
   }

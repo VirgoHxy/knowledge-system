@@ -1,6 +1,6 @@
 // Number extends Function;Number extends Object;数字类继承方法类和对象类  Math extends Object; Math不是构造函数 直接调用静态方法即可
 new Number('123'); // Number {123} Number基本包装类型 可以调用Number类原型中的方法 当我们使用数字的原型方法、属性时 其实默认会转成基本包装类型然后再销毁
-Number('123'); // 123 将参数返回数字 不是一个数字的返回NaN 
+Number('123'); // 123 将参数返回数字 不是一个数字的返回NaN
 Number('123a'); // NaN 与parseInt逻辑不同 parseInt返回123
 new Number('123') instanceof Number; // true
 new Number('123') instanceof Object; // true
@@ -40,7 +40,7 @@ str = 'efg'
 
 // 全局属性
 Infinity; // 无穷大
-NaN; // not a number  
+NaN; // not a number
 
 // 常量
 Number.MAX_VALUE; // 1.79*10**308 约为1.79e+308  1.79 x 10的308次幂 JS中最大的数字
@@ -283,9 +283,11 @@ getDecimal2FloatValue(0.111); // 0.875 二进制转十进制
 parseInt(-100, 2); // -4 二进制转十进制
 getDecimal2FloatValue(1011.01); // 11.25 二进制转十进制
 getDecimal2FloatValue(-1011.01); // -11.25 二进制转十进制
-getDecimal2FloatValue('0.010011001100110011001100110011001100110011001100110100'); // 0.30000000000000004 二进制转十进制
+getDecimal2FloatValue(
+  '0.010011001100110011001100110011001100110011001100110100'
+); // 0.30000000000000004 二进制转十进制
 
-// 位运算 
+// 位运算
 
 /*
 位运算都是操作的整数 小数会被忽略

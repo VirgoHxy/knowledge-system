@@ -32,13 +32,13 @@ let str, regexp;
 /* 动态正则 new RegExp(`/@import\\s+(\\S+)\\.js/`) */
 let ext = 'js';
 console.log(
-  '@import \'demo.js\';@import \'demo.css\';'.match(
+  "@import 'demo.js';@import 'demo.css';".match(
     new RegExp(`@import\\s+'\\S+\\.${ext}'`, 'g')
   )[0]
 );
 ext = 'css';
 console.log(
-  '@import \'demo.js\';@import \'demo.css\';'.match(
+  "@import 'demo.js';@import 'demo.css';".match(
     new RegExp(`@import\\s+'\\S+\\.${ext}'`, 'g')
   )[0]
 );
@@ -60,7 +60,7 @@ console.log('12-34-56'.replace(/-/g, '测试$&测试')); // 12--34--56
 // 匹配项替换成匹配项之前字符 12前面没有字符就为空
 console.log('124'.replace(/12/g, '$`')); // 4
 // 匹配项替换成匹配项之后字符
-console.log('124'.replace(/12/g, '$\'')); // 44
+console.log('124'.replace(/12/g, "$'")); // 44
 // 捕获组number
 console.log('12-34-56'.replace(/(\d+)-(\d+)-(\d+)/g, '$2-$3-$1')); // 34-56-12
 // 捕获组name
@@ -71,7 +71,9 @@ console.log(
   )
 ); // 34-56-12
 // replace函数 没有捕获组 match匹配项 index位置 input源字符串
-console.log('html and css'.replace(/html|css/gi, match => match.toUpperCase())); // HTML and CSS
+console.log(
+  'html and css'.replace(/html|css/gi, (match) => match.toUpperCase())
+); // HTML and CSS
 // replace函数 没有捕获组 match匹配项 p1,p2,...,pn分组内容 index位置 input源字符串 groups分组对象
 console.log(
   'html and css'.replace(
@@ -80,13 +82,13 @@ console.log(
   )
 ); // css and html
 // 将下划线命名转换为大驼峰
-let line2upper = str =>
+let line2upper = (str) =>
   str
     .replace(/\s/g, '')
     .replace(/_{0,1}([^_])([^_]*)/g, (_, $1, $2) => $1.toUpperCase() + $2);
 console.log(line2upper('line__a_to_upper'));
 // 大小写互换
-let lowerSwapUpper = str =>
+let lowerSwapUpper = (str) =>
   str.replace(
     /([A-Z]*)([a-z]*)/g,
     (_, $1, $2) => $1.toLowerCase() + $2.toUpperCase()
@@ -128,7 +130,7 @@ console.log('Prices: $2, €1, ¥9'.match(regexp)); // $2,€1,¥9
 console.log(/love/i.test('I Love JavaScript')); // true
 console.log(/love/.test('I Love JavaScript')); // false
 
-// m 多行修饰符 
+// m 多行修饰符
 str = `1st place: Winnie
 2nd place: Piglet
 33rd place: Eeyore
@@ -142,10 +144,10 @@ console.log(str.match(/\w+$/gm)); // Winnie,Piglet,Eeyore
 regexp = /\w+/y;
 // 下一次搜索位置为3 也就是第4个字符为空格 匹配失败
 regexp.lastIndex = 3;
-console.log('let varName = \'value\''.match(regexp)); // null
+console.log("let varName = 'value'".match(regexp)); // null
 // 下一次搜索位置为4 也就是第5个字符为v 匹配成功
 regexp.lastIndex = 4;
-console.log('let varName = \'value\''.match(regexp)); // varName
+console.log("let varName = 'value'".match(regexp)); // varName
 
 /* 完全匹配 ^以开头 $以结尾 */
 // 时间
@@ -173,7 +175,7 @@ console.log(
 [/quote]`.match(/\[(.+?)\][\s\S]*?\[\/\1\]/g)
 ); // [b]hello![/b],[quote]\n[url]http://google.com[/url]\n[/quote]
 // 标签
-console.log('<style> <styler> <style test=\'...\'>'.match(/<style(>|\s.*?>)/g)); // <style>,<style test='...'>
+console.log("<style> <styler> <style test='...'>".match(/<style(>|\s.*?>)/g)); // <style>,<style test='...'>
 
 /* 量词 */
 // {2} 2个数字
@@ -236,7 +238,7 @@ console.log(
 console.log('<><demo <body> demo>'.match(/<([^<>]+?)>/i)[1]); // body
 // 嵌套
 console.log(
-  '<a href=\'xyz\'>'.match(/<(([a-z0-9]+)\s((\w+)=['"]{1}([^'"]*)['"]{1}))>/i)
+  "<a href='xyz'>".match(/<(([a-z0-9]+)\s((\w+)=['"]{1}([^'"]*)['"]{1}))>/i)
 );
 // 可选组
 console.log('ac'.match(/a(z)?(c)?/)); // ac,undefined,c

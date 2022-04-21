@@ -3,20 +3,20 @@
 
   /**
    * 判断null | undefined | 空字符串
-   * 
+   *
    * @param {*} val
-   * 
+   *
    * @returns {Boolean} 是null或者undefined或者空字符串返回true
    */
   function isNull(val) {
-    return (val == null || val === '');
+    return val == null || val === '';
   }
 
   /**
    * 获取url参数的值
-   * 
+   *
    * @param {String} key 参数的名称
-   * 
+   *
    * @param {String} [url] 链接地址 默认为当前浏览器地址(不填url,必须在浏览器环境下运行)
    */
   function getUrlParam(key, url) {
@@ -32,7 +32,9 @@
       for (let i = 0; i < querys.length; i++) {
         let pair = querys[i].split('=');
         if (pair[0] == key) {
-          return typeof pair[1] == 'string' ? decodeURIComponent(pair[1]) : pair[1];
+          return typeof pair[1] == 'string'
+            ? decodeURIComponent(pair[1])
+            : pair[1];
         }
       }
     } catch (error) {
@@ -42,18 +44,21 @@
 
   /**
    * 修改url参数的值
-   * 
+   *
    * @param {String} key 参数的名称
    * @param {*} value 参数的值 非字符串转换为字符串
    * @param {String} [url] 链接地址 默认为当前浏览器地址(不填url,必须在浏览器环境下运行)
    * @param {Boolean} [hrefFlag = false] 是否修改当前地址 true 修改当前地址
-   * 
+   *
    * @returns 返回修改后的地址
    */
   function changeURLArg(key, value, url, hrefFlag) {
     try {
       let pattern = key + '=([^&]*)';
-      let replaceText = key + '=' + (!(value instanceof Object) ? value : JSON.stringify(value));
+      let replaceText =
+        key +
+        '=' +
+        (!(value instanceof Object) ? value : JSON.stringify(value));
       !url && (url = window.location.href);
       let returnUrl = '';
       if (url.match(pattern)) {
@@ -79,23 +84,17 @@
 
   /**
    * 操作url的方法
-   * 
+   *
    * @param {String} [data.url] 链接地址 默认为当前浏览器地址
    * @param {String} data.type 操作类型
    * @param {String} data.key 参数的名称
    * @param {*} data.value 参数的值 非字符串转换为字符串
    * @param {Boolean} [data.hrefFlag = true] 是否返回字符串地址 true 返回字符串地址
-   * 
+   *
    * @returns {*} 返回值
    */
   function urlMethod(data = {}) {
-    let {
-      url,
-      type,
-      key,
-      value,
-      hrefFlag = true
-    } = data;
+    let { url, type, key, value, hrefFlag = true } = data;
     let href = url || (window ? window.location.href : '');
     if (!href) {
       return 'url不能为空';
@@ -130,7 +129,7 @@
 
   /**
    * 设置期限Storage
-   * 
+   *
    * @param {Object} storage 存储对象类型 localStorage或者sessionStorage
    * @param {String} key 存储对象名称
    * @param {*} value 存储对象值
@@ -140,17 +139,17 @@
     let obj = {
       data: value,
       time: Date.now(),
-      expire: expire
+      expire: expire,
     };
     storage.setItem(key, JSON.stringify(obj));
   }
 
   /**
    * 获取Storage
-   * 
+   *
    * @param {Obeject} storage 存储对象类型 localStorage或者sessionStorage
    * @param {String} key 存储对象名称
-   * 
+   *
    * @returns {*}
    */
   function getExpire(storage, key) {
@@ -170,45 +169,47 @@
 
   /**
    * 获取cookie(必须在浏览器环境下运行)
-   * 
+   *
    * @param {String} name 存储对象名称
-   * 
+   *
    * @returns {String | Undefined}
    */
   function getCookie(name) {
-    let matches = document.cookie.match(new RegExp(
-      '(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)'
-    ));
+    let matches = document.cookie.match(
+      new RegExp(
+        '(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)'
+      )
+    );
     return matches
-    ? matches[1]
-      ? JSON.parse(decodeURIComponent(matches[1]))
-      : undefined
-    : undefined;
+      ? matches[1]
+        ? JSON.parse(decodeURIComponent(matches[1]))
+        : undefined
+      : undefined;
   }
 
   /**
    * 设置cookie(必须在浏览器环境下运行)
-   * 
+   *
    * @param {String} name 存储对象名称
    * @param {String} value 存储对象
    * @param {Object} options 该cookie的配置值
-   * 
+   *
    */
   function setCookie(name, value, options = {}) {
     options = {
       path: '/',
       // 如果需要，可以在这里添加其他默认值
-      ...options
+      ...options,
     };
     if (options.expires instanceof Date) {
       options.expires = options.expires.toUTCString();
     }
     let updatedCookie =
-    encodeURIComponent(name) +
-    '=' +
-    encodeURIComponent(
-      typeof value == 'object' ? JSON.stringify(value) : value
-    );
+      encodeURIComponent(name) +
+      '=' +
+      encodeURIComponent(
+        typeof value == 'object' ? JSON.stringify(value) : value
+      );
     for (let optionKey in options) {
       updatedCookie += '; ' + optionKey;
       let optionValue = options[optionKey];
@@ -221,20 +222,20 @@
 
   /**
    * 删除cookie(依赖setCookie方法)(必须在浏览器环境下运行)
-   * 
+   *
    * @param {String} name 存储对象名称
-   * 
+   *
    */
   function deleteCookie(name) {
     // 设置到期时间 max-age(秒数) expires(时间)
     setCookie(name, '', {
-      'max-age': -1
+      'max-age': -1,
     });
   }
 
   /**
    * 获取浏览器类型 终端类型
-   * 
+   *
    * @returns {Object} 包含终端类型的对象(必须在浏览器环境下运行)
    */
   function os() {
@@ -267,13 +268,13 @@
       weixin,
       ali,
       qq,
-      isPC
+      isPC,
     };
   }
 
   /**
    * 获取浏览器类型
-   * 
+   *
    * @returns {Object} 包含浏览器类型类型的对象以及版本号(必须在浏览器环境下运行)
    */
   function getBrowser() {
@@ -299,7 +300,7 @@
 
   /**
    * 获取支付浏览器类型(必须在浏览器环境下运行)
-   * 
+   *
    * @returns {String} weixin 或者 alipay
    */
   function getPayBrowser() {
@@ -322,7 +323,10 @@
   function closeWindow() {
     // window
     let userAgent = navigator.userAgent;
-    if (userAgent.indexOf('Firefox') != -1 || userAgent.indexOf('Chrome') != -1) {
+    if (
+      userAgent.indexOf('Firefox') != -1 ||
+      userAgent.indexOf('Chrome') != -1
+    ) {
       window.location.href = 'about:blank';
       window.location.replace('about:blank');
     } else if (
@@ -346,10 +350,10 @@
 
   /**
    * 获取下载文件blob(必须在浏览器环境下运行)
-   * 
+   *
    * @param {String} data 文件内容
    * @param {String} type 文件类型
-   * 
+   *
    * @returns {Blob}
    */
   function getDownloadUri(data, type) {
@@ -364,13 +368,13 @@
           uInt8Array[i] = raw.charCodeAt(i);
         }
         return new Blob([uInt8Array], {
-          type: contentType
+          type: contentType,
         });
       }
       case 'txt': {
         const _utf = '\uFEFF'; // 为了使文件以utf-8的编码模式，同时也是解决中文乱码的问题
         return new Blob([_utf + data], {
-          type: 'text/json' // 自己需要的数据格式
+          type: 'text/json', // 自己需要的数据格式
         });
       }
       default:
@@ -381,7 +385,7 @@
 
   /**
    * 下载文件(依赖getBrowser,getDownloadUri方法)(必须在浏览器环境下运行)
-   * 
+   *
    * @param {String} data 文件内容
    * @param {String} fileName 文件名称
    */
@@ -436,10 +440,10 @@
 
   /**
    * 防抖装饰器
-   * 
+   *
    * @param {Function} func 函数
    * @param {Number} ms 毫秒延时
-   * 
+   *
    * @returns {Function}
    */
   function debounce(func, ms) {
@@ -452,10 +456,10 @@
 
   /**
    * 节流装饰器
-   * 
+   *
    * @param {Function} func 函数
    * @param {Number} ms 毫秒延时
-   * 
+   *
    * @returns {Function}
    */
   function throttle(func, ms) {
@@ -484,7 +488,7 @@
 
   let global = (function () {
     return this || (0, eval)('this');
-  }());
+  })();
   let JAFOUtilsMethod = {
     isNull,
     getUrlParam,
@@ -502,7 +506,7 @@
     download,
     downloadByAElement,
     debounce,
-    throttle
+    throttle,
   };
 
   // 最后将插件对象暴露给全局对象
@@ -513,6 +517,7 @@
       return JAFOUtilsMethod;
     });
   } else {
-    !('JAFOUtilsMethod' in global) && (global.JAFOUtilsMethod = JAFOUtilsMethod);
+    !('JAFOUtilsMethod' in global) &&
+      (global.JAFOUtilsMethod = JAFOUtilsMethod);
   }
-}());
+})();

@@ -1,6 +1,8 @@
 // String extends Function;String extends Object;字符串类继承方法类和对象类
 new String('abc'); // String {"abc"} String基本包装类型 一般使用"abc",'abc',`abc`来表示字符串 可以调用String类原型中的方法 当我们使用字符串原型方法、属性时 其实默认会转成基本包装类型然后再销毁
-let str = 'abc'; str.name = 'abc'; /* 这里生效了 */ console.log(str.name); // undefined 因为这里会创建一个新的实例 自然是没有name属性
+let str = 'abc';
+str.name = 'abc'; /* 这里生效了 */
+console.log(str.name); // undefined 因为这里会创建一个新的实例 自然是没有name属性
 String('abc'); // abc 返回字符串
 new String('abc') instanceof String; // true
 new String('abc') instanceof Object; // true
@@ -66,12 +68,12 @@ new String('abc').valueOf(); // "abc" 返回String对象的原始值
 ''.concat(null); // 'null'
 ''.concat(undefined); // 'undefined'
 ''.concat(); // ''
-'a'+'b'+'c'; // 'abc' 一般字符串连接使用+运算
-'0'+'1'+'2'; // '012' 字符串数字连接 注意数字进行+运算时 要把字符串转为数字
+'a' + 'b' + 'c'; // 'abc' 一般字符串连接使用+运算
+'0' + '1' + '2'; // '012' 字符串数字连接 注意数字进行+运算时 要把字符串转为数字
 
 '<demo>'.slice(1, 5); // "demo" 方法提取某个字符串的一部分 并返回一个新的字符串(支持负数)
 '<demo>'.slice(-5, -1); // "demo" startIndex为-5 endIndex为-1 左闭右开[startIndex, endIndex)
-'<demo>'.slice(-5); // "demo>"" 省略endIndex 则到字符串末尾 
+'<demo>'.slice(-5); // "demo>"" 省略endIndex 则到字符串末尾
 '<demo>'.slice(); // "<demo>" 相当于返回一个副本
 
 '<demo>'.substring(1, 5); // "demo" 方法提取某个字符串的一部分 并返回一个新的字符串(不支持负数)
@@ -124,9 +126,10 @@ Array.from(regExpStringIterator); // [["<demo>", "demo"],["<demo1>", "demo1"]]
 '  s  t  r  '.replace(/(\s*)$/g, ''); // __s__t__r 类似于trimEnd()
 '  s  t  r  '.replace(/\b(\s*)\b/g, ''); // __str__
 // 正则中特殊字符转义
-const escapeReg = (str) => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d');
+const escapeReg = (str) =>
+  str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d');
 // 如果不转义hello.中这个点,会把.识别为一个字符的意思
-('hello. helloX hello3').replace(new RegExp(escapeReg('hello.'), 'g'), 'A');
+'hello. helloX hello3'.replace(new RegExp(escapeReg('hello.'), 'g'), 'A');
 
 'abcabc'.replaceAll('a', 'A'); // "AbcAbc" 用新的字符串(第二个参数)替换当前字符串的所有某段字符串(第一个参数) 返回新字符串
 'abcabc'.replaceAll(/a/g, 'A'); // "AbcAbc" 用新的字符串(第二个参数)替换当前字符串的正则(第一个参数)匹配到的所有字符串 返回新字符串(必须使用g)
@@ -205,7 +208,7 @@ function getMmRepeatNum(str, minFlag) {
   arr.sort((a, b) => {
     return b.length - a.length;
   });
-  let lengthArr = arr.map(val => {
+  let lengthArr = arr.map((val) => {
     return val.length;
   });
   if (!minFlag) {
@@ -218,7 +221,7 @@ function getMmRepeatNum(str, minFlag) {
       };
     }
     return {
-      str: arr.slice(firstIndex, arrLen).map(val => {
+      str: arr.slice(firstIndex, arrLen).map((val) => {
         return val[0];
       }),
       num: lastLen,
@@ -233,7 +236,7 @@ function getMmRepeatNum(str, minFlag) {
     };
   }
   return {
-    str: arr.slice(0, lastIndex + 1).map(val => {
+    str: arr.slice(0, lastIndex + 1).map((val) => {
       return val[0];
     }),
     num: firstLen,
@@ -405,7 +408,6 @@ function decrypto(str, xor = 1998, hex = 16) {
   let resultStr = resultList.join('');
   return resultStr;
 }
-
 
 console.log(removeRepeat('askdhg1231asdkjh123')); //askdhg123j
 

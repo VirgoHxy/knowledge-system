@@ -3,14 +3,14 @@ const path = require('path');
 
 /**
  * 同步写入文件夹或文件
- * 
+ *
  * @param {String} paramPath 路径
  */
 function writeByPathSync(paramPath, contentStr) {
   try {
     let write = function (str, appendFlag) {
       if (str.match(/[^\\/]*$/)[0].indexOf('.') != -1) {
-        !contentStr && (console.log('写入内容为空'));
+        !contentStr && console.log('写入内容为空');
         if (!appendFlag) {
           fs.writeFileSync(str, contentStr || '');
         } else {
@@ -46,7 +46,7 @@ function writeByPathSync(paramPath, contentStr) {
 
 /**
  * 同步删除文件夹或文件
- * 
+ *
  * @param {String} paramPath 路径
  */
 function delByPathSync(paramPath) {
@@ -76,9 +76,9 @@ function delByPathSync(paramPath) {
 
 /**
  * 同步读取文件夹或文件
- * 
+ *
  * @param {String} paramPath 路径
- * 
+ *
  * @returns {String | Array}
  */
 function readByPathSync(paramPath) {
@@ -98,7 +98,7 @@ function readByPathSync(paramPath) {
 
 /**
  * 同步拷贝文件夹或文件
- * 
+ *
  * @param {String} sourcePath 源路径
  * @param {String} copyPath 复制路径
  */
@@ -113,7 +113,7 @@ function copyByPathSync(sourcePath, copyPath) {
           let fileName = sourcePath.match(/[^\\/]*$/)[0];
           fs.mkdirSync(str);
           if (lastFlag) {
-            fs.copyFileSync(sourcePath, str+'/'+fileName);
+            fs.copyFileSync(sourcePath, str + '/' + fileName);
           }
         }
       };
@@ -130,14 +130,14 @@ function copyByPathSync(sourcePath, copyPath) {
     };
     if (fs.existsSync(sourcePath)) {
       if (!fs.statSync(sourcePath).isDirectory()) {
-        copy(sourcePath,copyPath);
+        copy(sourcePath, copyPath);
       } else {
         let files = fs.readdirSync(sourcePath);
         files.forEach((file) => {
           let sPath = sourcePath + '/' + file;
           let cPath = copyPath + '/' + file;
           if (fs.statSync(sPath).isDirectory()) {
-            copyByPathSync(sPath,cPath); //递归复制文件夹
+            copyByPathSync(sPath, cPath); //递归复制文件夹
           } else {
             copy(sPath, cPath);
           }
@@ -153,8 +153,12 @@ function copyByPathSync(sourcePath, copyPath) {
 
 console.log(writeByPathSync(path.resolve(__dirname, './none1'))); // 创建文件夹
 console.log(writeByPathSync(path.resolve(__dirname, './none/.eslintrc.json'))); // 创建空文件
-console.log(writeByPathSync(path.resolve(__dirname, './none/.eslintrc.json'), '123')); // 追加123
-console.log(writeByPathSync(path.resolve(__dirname, './none/.eslintrc.json'), '456')); // 追加456
+console.log(
+  writeByPathSync(path.resolve(__dirname, './none/.eslintrc.json'), '123')
+); // 追加123
+console.log(
+  writeByPathSync(path.resolve(__dirname, './none/.eslintrc.json'), '456')
+); // 追加456
 
 // 2s后删除
 setTimeout(() => {
@@ -165,6 +169,21 @@ console.log(readByPathSync(path.resolve(__dirname, './.eslintrc.json'))); // 读
 console.log(readByPathSync(path.resolve(__dirname, './prod'))); // 读取文件夹
 console.log(readByPathSync(path.resolve(__dirname, './none0'))); // 路径不存在
 
-console.log(copyByPathSync(path.resolve(__dirname, './.eslintrc.json'), path.resolve(__dirname, './none2'))); // 复制文件 复制路径不带文件名
-console.log(copyByPathSync(path.resolve(__dirname, './.eslintrc.json'), path.resolve(__dirname, './none2/.123.json'))); // 复制文件 复制路径更换文件名
-console.log(copyByPathSync(path.resolve(__dirname, './prod'), path.resolve(__dirname, './none3'))); // 复制文件夹
+console.log(
+  copyByPathSync(
+    path.resolve(__dirname, './.eslintrc.json'),
+    path.resolve(__dirname, './none2')
+  )
+); // 复制文件 复制路径不带文件名
+console.log(
+  copyByPathSync(
+    path.resolve(__dirname, './.eslintrc.json'),
+    path.resolve(__dirname, './none2/.123.json')
+  )
+); // 复制文件 复制路径更换文件名
+console.log(
+  copyByPathSync(
+    path.resolve(__dirname, './prod'),
+    path.resolve(__dirname, './none3')
+  )
+); // 复制文件夹

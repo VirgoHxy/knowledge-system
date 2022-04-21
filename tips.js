@@ -13,7 +13,7 @@ try {
   y?.a; // 报错 可选链左侧必须声明
 } catch (error) {
   // y is not defined
-  // console.log(error); 
+  // console.log(error);
 }
 y1.a?.b; // 不报错 undefined
 y1.admin?.(); // 不报错 调用可能不存在的admin
@@ -194,10 +194,10 @@ function demo() {
   return Promise.resolve(2);
 }
 demo()
-  .then(result => {
+  .then((result) => {
     console.log(result);
   })
-  .catch(error => {
+  .catch((error) => {
     console.log(error);
   });
 
@@ -207,7 +207,7 @@ class Prom {
     if (value && value.then) {
       return value;
     }
-    return new Prom(resolve => resolve(value));
+    return new Prom((resolve) => resolve(value));
   }
 
   constructor(fn) {
@@ -219,7 +219,7 @@ class Prom {
     this.resolveFns = [];
     this.rejectFns = [];
 
-    const resolve = value => {
+    const resolve = (value) => {
       // 注意此处的 setTimeout
       setTimeout(() => {
         this.status = 'RESOLVED';
@@ -230,7 +230,7 @@ class Prom {
       });
     };
 
-    const reject = e => {
+    const reject = (e) => {
       setTimeout(() => {
         this.status = 'REJECTED';
         this.reason = e;
@@ -273,13 +273,13 @@ class Prom {
 }
 
 Prom.resolve(10)
-  .then(o => o * 10)
-  .then(o => o + 10)
-  .then(o => {
+  .then((o) => o * 10)
+  .then((o) => o + 10)
+  .then((o) => {
     console.log(o);
   });
 
-new Prom((resolve, reject) => reject('Error错误')).catch(e => {
+new Prom((resolve, reject) => reject('Error错误')).catch((e) => {
   console.log('Error', e);
 });
 
@@ -296,8 +296,8 @@ function pMap(list, mapper, concurrency = Infinity) {
       const index = currentIndex;
       currentIndex++;
       Promise.resolve(list[index])
-        .then(o => mapper(o, index))
-        .then(o => {
+        .then((o) => mapper(o, index))
+        .then((o) => {
           result[index] = o;
           resolveCount++;
           if (resolveCount === len) {
@@ -320,7 +320,8 @@ Function.prototype.fakeApply = function (thisObj, args) {
     throw new Error('must be a function!');
   }
   let context = thisObj || window || globalThis;
-  let result, key = Symbol('fn');
+  let result,
+    key = Symbol('fn');
   context[key] = this;
   result = context[key](...args);
   delete context[key];
@@ -333,7 +334,8 @@ Function.prototype.fakeCall = function (thisObj, ...args) {
     throw new Error('must be a function!');
   }
   let context = thisObj || window || globalThis;
-  let result, key = Symbol('fn');
+  let result,
+    key = Symbol('fn');
   context[key] = this;
   result = context[key](...args);
   delete context[key];
@@ -377,7 +379,7 @@ Father.prototype.tell = function () {
 function Child(name) {
   return {
     type: 'son',
-    name
+    name,
   };
 }
 Child.prototype.say = function () {

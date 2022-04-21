@@ -6,17 +6,39 @@
     "node": true,
     "commonjs": true
   },
-  "extends": "eslint:recommended",
   "globals": {
     "define": "readonly"
   },
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "parserOptions": {
-    "ecmaVersion": 11
+    "parser": "@babel/eslint-parser",
+    "ecmaVersion": "latest"
   },
   "rules": {
     "no-var": "warn",
     "semi": "warn",
     "no-unused-vars": "off",
-    "quotes": ["warn", "single"]
-  }
+    "quotes": ["warn", "single", { "avoidEscape": true }],
+    "prettier/prettier": [
+      "warn",
+      {
+        "endOfLine": "auto"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "ecmaVersion": "latest"
+      },
+      "plugins": ["@typescript-eslint"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
+      ]
+    }
+  ]
 }

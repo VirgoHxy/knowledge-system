@@ -13,8 +13,8 @@
       }
       let requiredObj = {
         url: {
-          required: true
-        }
+          required: true,
+        },
       };
       let requiredStr = this._checkParam(requiredObj, data);
       if (!this._isNull(requiredStr)) {
@@ -36,24 +36,18 @@
         this._deviceType = this._getDeviceType();
 
         window.addEventListener('error', (event) => {
-          let {
-            message,
-            filename,
-            lineno,
-            colno,
-            error
-          } = event;
+          let { message, filename, lineno, colno, error } = event;
           let param = {
             file: `${filename}_${lineno}行_${colno}列`,
             message,
-            error
+            error,
           };
           this.reportError(param, true);
         });
 
         // vue错误 正式vue 本地运行需要自行添加该代码
         if (window.Vue) {
-          window.Vue.config.errorHandler = function(err) {
+          window.Vue.config.errorHandler = function (err) {
             setTimeout(() => {
               throw err;
             });
@@ -74,11 +68,11 @@
       if (!eventFlag) {
         let requiredObj = {
           url: {
-            required: true
+            required: true,
           },
           message: {
-            required: true
-          }
+            required: true,
+          },
         };
         let requiredStr = this._checkParam(requiredObj, data);
         if (!this._isNull(requiredStr)) {
@@ -94,7 +88,7 @@
         key: this._getErrorKey(messageStr),
         detailKey: this._getErrorKey(detailStr),
         message: messageStr,
-        detailMessage: detailStr
+        detailMessage: detailStr,
       });
       if (data.error && data.error.stack) {
         // 这种正则 在iphone app编译后会导致语法错误 invalid regular expression invalid group specifier name
@@ -102,22 +96,29 @@
         let regExp = new RegExp('(?<=at\\s)(.+)(?=\\s\\()', 'g');
         let errorStack = data.error.stack.match(regExp);
         Object.assign(param, {
-          errorStack
+          errorStack,
         });
       }
       if (this._windowFlag) {
         param.location = window.location.pathname;
         // 超上限 计数上报
         if (this.time != 0 && this.countUrl) {
-          let num = this._getExpire(window.localStorage, `errorHandler${param.key}`) || 0;
+          let num =
+            this._getExpire(window.localStorage, `errorHandler${param.key}`) ||
+            0;
           num++;
-          this._setExpire(window.localStorage, `errorHandler${param.key}`, num, 24 * 60 * 60 * 1000);
+          this._setExpire(
+            window.localStorage,
+            `errorHandler${param.key}`,
+            num,
+            24 * 60 * 60 * 1000
+          );
           if (num >= this.time) {
             this._report(this.countUrl, {
               key: param.key,
               detailKey: param.detailKey,
               message: messageStr,
-              detailMessage: detailStr
+              detailMessage: detailStr,
             });
             return;
           }
@@ -136,10 +137,10 @@
           href = this._urlMethod({
             url: url,
             type: 'objectSet',
-            value: param
+            value: param,
           });
         }
-        (new Image).src = href;
+        new Image().src = href;
       } else if (this.type == 'POST') {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', url, true);
@@ -150,7 +151,10 @@
 
     // 获取错误唯一标识
     _getErrorID() {
-      return `${this._format(new Date(), 'YYYYMMDDhhmmss')}${this._randomStr()}`;
+      return `${this._format(
+        new Date(),
+        'YYYYMMDDhhmmss'
+      )}${this._randomStr()}`;
     }
 
     // 获取错误标识(统计)
@@ -168,10 +172,12 @@
       for (const key in data) {
         if (Object.hasOwnProperty.call(data, key)) {
           let element = data[key];
-          (typeof element == 'object') && (element = JSON.stringify(element));
+          typeof element == 'object' && (element = JSON.stringify(element));
           // 错误标识生成
-          if ((eventFlag && arr.indexOf(key) != -1) || (!eventFlag && arr
-              .indexOf(key) != -1)) {
+          if (
+            (eventFlag && arr.indexOf(key) != -1) ||
+            (!eventFlag && arr.indexOf(key) != -1)
+          ) {
             str += element + ';';
           }
         }
@@ -190,10 +196,7 @@
       return this._getErrorKeyStr(data, eventFlag, array);
     }
 
-    _checkParam(
-      condition,
-      data
-    ) {
+    _checkParam(condition, data) {
       if (this._isNull(condition) || this._isNull(data)) {
         return '_checkParam: 缺少参数';
       }
@@ -210,28 +213,22 @@
     }
 
     _isNull(val) {
-      return (val == null || val === '');
+      return val == null || val === '';
     }
 
     /**
      * 操作url的方法
-     * 
+     *
      * @param {String} [data.url] 链接地址 默认为当前浏览器地址
      * @param {String} data.type 操作类型
      * @param {String} data.key 参数的名称
      * @param {*} data.value 参数的值 非字符串转换为字符串
      * @param {Boolean} [data.hrefFlag = true] 是否返回字符串地址 true 返回字符串地址
-     * 
+     *
      * @returns {*} 返回值
      */
     _urlMethod(data = {}) {
-      let {
-        url,
-        type,
-        key,
-        value,
-        hrefFlag = true
-      } = data;
+      let { url, type, key, value, hrefFlag = true } = data;
       let href = url || (window ? window.location.href : '');
       if (!href) {
         return 'url不能为空';
@@ -269,7 +266,7 @@
 
     /**
      * 设置期限Storage
-     * 
+     *
      * @param {Object} storage 存储对象类型 localStorage或者sessionStorage
      * @param {String} key 存储对象名称
      * @param {*} value 存储对象值
@@ -279,17 +276,17 @@
       let obj = {
         data: value,
         time: Date.now(),
-        expire: expire
+        expire: expire,
       };
       storage.setItem(key, JSON.stringify(obj));
     }
 
     /**
      * 获取Storage
-     * 
+     *
      * @param {Obeject} storage 存储对象类型 localStorage或者sessionStorage
      * @param {String} key 存储对象名称
-     * 
+     *
      * @returns {*}
      */
     _getExpire(storage, key) {
@@ -309,9 +306,9 @@
 
     /**
      * 获取合规时间
-     * 
+     *
      * @param {Date | String | Number} value 时间字符串
-     * 
+     *
      * @returns {Date} 返回时间对象
      */
     _getRegularTime(value) {
@@ -321,14 +318,19 @@
       };
 
       if (getType(value) == 'string') {
-        let ms = value.match(/\.([\d]{1,})[Z]*/) ? value.match(/\.([\d]{1,})[Z]*/)[1] : 0;
-        if (/T/g.test(value)) { // 去T
+        let ms = value.match(/\.([\d]{1,})[Z]*/)
+          ? value.match(/\.([\d]{1,})[Z]*/)[1]
+          : 0;
+        if (/T/g.test(value)) {
+          // 去T
           value = value.replace(/T/g, ' ');
         }
-        if (/\./g.test(value)) { // 去毫秒 兼容ios ie firefox
+        if (/\./g.test(value)) {
+          // 去毫秒 兼容ios ie firefox
           value = value.replace(/\.[\d]{1,}[Z]*/, '');
         }
-        if (/-/g.test(value)) { // new Date兼容ios ie firefox
+        if (/-/g.test(value)) {
+          // new Date兼容ios ie firefox
           value = value.replace(/-/g, '/');
         }
         let date = new Date(value);
@@ -345,10 +347,10 @@
 
     /**
      * 格式化时间(依赖getRegularTime方法)
-     * 
+     *
      * @param {Date | String | Number} value 时间值
      * @param {String} [formatStr = "YYYY-MM-DD hh:mm:ss"] 格式化规则
-     * 
+     *
      * @returns {String} 返回字符串时间
      */
     _format(value, formatStr) {
@@ -360,7 +362,15 @@
         return '请输入正确的日期';
       }
       let str = formatStr || 'YYYY-MM-DD hh:mm:ss',
-        week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+        week = [
+          '星期日',
+          '星期一',
+          '星期二',
+          '星期三',
+          '星期四',
+          '星期五',
+          '星期六',
+        ],
         fullYear = myDate.getFullYear(),
         year = Number(String(fullYear).substring(2)),
         month = myDate.getMonth(),
@@ -375,7 +385,7 @@
       //两位年份，小于10补零
       str = str.replace(/yy|YY/, year > 9 ? year : '0' + year);
       //月份，小于10补零
-      str = str.replace(/MM/, (month + 1) > 9 ? month + 1 : '0' + (month + 1));
+      str = str.replace(/MM/, month + 1 > 9 ? month + 1 : '0' + (month + 1));
       //月份，不补零
       str = str.replace(/\bM\b/, month + 1);
       //日期，小于10补零
@@ -397,7 +407,10 @@
       //星期几
       str = str.replace(/w|W/g, week[day]);
       //毫秒，小于9或99补零
-      str = str.replace(/MS/, mSecond > 9 ? mSecond > 99 ? mSecond : '0' + mSecond : '00' + mSecond);
+      str = str.replace(
+        /MS/,
+        mSecond > 9 ? (mSecond > 99 ? mSecond : '0' + mSecond) : '00' + mSecond
+      );
       //毫秒，不补零
       str = str.replace(/ms/, mSecond);
       return str;
@@ -473,126 +486,126 @@
           }
           return {
             osName,
-            type: 'mobile'
+            type: 'mobile',
           };
-        }
+        },
       };
       let detectDesktopOS = function () {
         let unknown = '-';
         let nVer = navigator.appVersion;
         let nAgt = navigator.userAgent;
         let os = unknown;
-        let clientStrings = [{
+        let clientStrings = [
+          {
             s: 'Chrome OS',
-            r: /CrOS/
+            r: /CrOS/,
           },
           {
             s: 'Windows 10',
-            r: /(Windows 10.0|Windows NT 10.0)/
+            r: /(Windows 10.0|Windows NT 10.0)/,
           },
           {
             s: 'Windows 8.1',
-            r: /(Windows 8.1|Windows NT 6.3)/
+            r: /(Windows 8.1|Windows NT 6.3)/,
           },
           {
             s: 'Windows 8',
-            r: /(Windows 8|Windows NT 6.2)/
+            r: /(Windows 8|Windows NT 6.2)/,
           },
           {
             s: 'Windows 7',
-            r: /(Windows 7|Windows NT 6.1)/
+            r: /(Windows 7|Windows NT 6.1)/,
           },
           {
             s: 'Windows Vista',
-            r: /Windows NT 6.0/
+            r: /Windows NT 6.0/,
           },
           {
             s: 'Windows Server 2003',
-            r: /Windows NT 5.2/
+            r: /Windows NT 5.2/,
           },
           {
             s: 'Windows XP',
-            r: /(Windows NT 5.1|Windows XP)/
+            r: /(Windows NT 5.1|Windows XP)/,
           },
           {
             s: 'Windows 2000',
-            r: /(Windows NT 5.0|Windows 2000)/
+            r: /(Windows NT 5.0|Windows 2000)/,
           },
           {
             s: 'Windows ME',
-            r: /(Win 9x 4.90|Windows ME)/
+            r: /(Win 9x 4.90|Windows ME)/,
           },
           {
             s: 'Windows 98',
-            r: /(Windows 98|Win98)/
+            r: /(Windows 98|Win98)/,
           },
           {
             s: 'Windows 95',
-            r: /(Windows 95|Win95|Windows_95)/
+            r: /(Windows 95|Win95|Windows_95)/,
           },
           {
             s: 'Windows NT 4.0',
-            r: /(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/
+            r: /(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/,
           },
           {
             s: 'Windows CE',
-            r: /Windows CE/
+            r: /Windows CE/,
           },
           {
             s: 'Windows 3.11',
-            r: /Win16/
+            r: /Win16/,
           },
           {
             s: 'Android',
-            r: /Android/
+            r: /Android/,
           },
           {
             s: 'Open BSD',
-            r: /OpenBSD/
+            r: /OpenBSD/,
           },
           {
             s: 'Sun OS',
-            r: /SunOS/
+            r: /SunOS/,
           },
           {
             s: 'Linux',
-            r: /(Linux|X11)/
+            r: /(Linux|X11)/,
           },
           {
             s: 'iOS',
-            r: /(iPhone|iPad|iPod)/
+            r: /(iPhone|iPad|iPod)/,
           },
           {
             s: 'Mac OS X',
-            r: /Mac OS X/
+            r: /Mac OS X/,
           },
           {
             s: 'Mac OS',
-            r: /(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/
+            r: /(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/,
           },
           {
             s: 'QNX',
-            r: /QNX/
+            r: /QNX/,
           },
           {
             s: 'UNIX',
-            r: /UNIX/
+            r: /UNIX/,
           },
           {
             s: 'BeOS',
-            r: /BeOS/
+            r: /BeOS/,
           },
           {
             s: 'OS/2',
-            r: /OS\/2/
+            r: /OS\/2/,
           },
           {
             s: 'Search Bot',
-            r: /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/
-          }
+            r: /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/,
+          },
         ];
-        for (let i = 0, cs;
-          (cs = clientStrings[i]); i++) {
+        for (let i = 0, cs; (cs = clientStrings[i]); i++) {
           if (cs.r.test(nAgt)) {
             os = cs.s;
             break;
@@ -622,13 +635,14 @@
           case 'iOS':
             if (/OS (\d+)_(\d+)_?(\d+)?/.test(nAgt)) {
               osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
-              osVersion = osVersion[1] + '.' + osVersion[2] + '.' + (osVersion[3] | 0);
+              osVersion =
+                osVersion[1] + '.' + osVersion[2] + '.' + (osVersion[3] | 0);
             }
             break;
         }
         return {
           osName: os + osVersion,
-          type: 'desktop'
+          type: 'desktop',
         };
       };
 
@@ -640,7 +654,9 @@
     }
   }
 
-  let global = (function () { return this || (0, eval)('this'); }());
+  let global = (function () {
+    return this || (0, eval)('this');
+  })();
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = JAFOErrorHandler;
@@ -649,6 +665,7 @@
       return JAFOErrorHandler;
     });
   } else {
-    !('JAFOErrorHandler' in global) && (global.JAFOErrorHandler = JAFOErrorHandler);
+    !('JAFOErrorHandler' in global) &&
+      (global.JAFOErrorHandler = JAFOErrorHandler);
   }
-}());
+})();
