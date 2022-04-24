@@ -90,8 +90,6 @@ console.log('type: ', myBenz.type);
 myBenz.drive();
 
 /* 建造者模式 */
-
-// 建造者模式
 class Car {
   constructor(chassis, engine, electricalEquipment, body) {
     this.chassis = chassis;
@@ -237,8 +235,6 @@ console.log(man.getName()); // 'Woman'
 console.log(woman.getName()); // 'Woman'
 
 /* 模块模式 */
-
-// 模块模式
 class Module {
   #privateVar = 1;
   constructor() {
@@ -252,9 +248,267 @@ class Module {
     return this.property + this.#privateVar;
   }
 }
+
+console.log('---模块模式---');
+
 let moduleObj = new Module();
+
 console.log(moduleObj.property);
 console.log(moduleObj.somethingMethod());
 // Private field '#field' must be declared in an enclosing class
 // console.log(moduleObj.#privateVar);
 // console.log(moduleObj.#privateMethod());
+
+/* 适配器模式 */
+
+class Foreigner {
+  constructor(name) {
+    this.name = name;
+  }
+
+  speakEnglish() {
+    return `Hello! My name is ${this.name}`;
+  }
+}
+
+class Chinese {
+  constructor(name) {
+    this.name = name;
+  }
+
+  speakChinese() {
+    return `你好! 我的名字叫 ${this.name}`;
+  }
+}
+
+class Translator {
+  constructor(foreigner) {
+    this.foreigner = foreigner;
+  }
+
+  transalte(name) {
+    let map = {
+      Jack: '杰克',
+    };
+    return map[name];
+  }
+
+  speakChinese() {
+    return `${this.foreigner.speakEnglish()} 翻译原话: 你好! 我的名字叫 ${this.transalte(
+      this.foreigner.name
+    )}`;
+  }
+}
+
+class ChineseCommunication {
+  speak(person) {
+    console.log(person.speakChinese());
+  }
+}
+
+console.log('---适配器模式---');
+
+let communication = new ChineseCommunication();
+let zhangSan = new Chinese('张三');
+let liSi = new Translator(new Foreigner('Jack'));
+
+communication.speak(zhangSan);
+communication.speak(liSi);
+
+/* 装饰器模式 */
+
+// es6
+class Phone {
+  playGame() {
+    console.log('play game');
+  }
+}
+
+class FanDecorator {
+  constructor(phone) {
+    this.phone = phone;
+  }
+  startFan() {
+    console.log('start fan');
+  }
+  playGame() {
+    this.startFan();
+    this.phone.playGame();
+  }
+}
+
+class CaseDecorator {
+  constructor(phone) {
+    this.phone = phone;
+  }
+  playGame() {
+    this.phone.playGame();
+  }
+  protect() {
+    console.log('protect phone');
+  }
+}
+
+class SupportDecorator {
+  constructor(phone) {
+    this.phone = phone;
+  }
+  playGame() {
+    this.phone.playGame();
+  }
+  support() {
+    console.log('support phone');
+  }
+}
+
+console.log('---装饰器模式---');
+
+let phone = new Phone();
+let phoneWithFan = new FanDecorator(phone);
+let phoneWithCase = new CaseDecorator(phoneWithFan);
+let phoneWithSupport = new SupportDecorator(phoneWithFan);
+
+phoneWithCase.playGame();
+phoneWithCase.protect();
+
+phoneWithSupport.playGame();
+phoneWithSupport.support();
+
+// es7类装饰器
+class PhoneES7 {
+  // 这里用到了es7的装饰器，是Object.defineProperty的语法糖，通过重新定义value，getter等descriptors再通过旧的value来达到装饰
+  // 可以装饰属性，函数，参数，类
+  // 这个需要使用babel-node来运行
+  // 使用npx babel-node file运行
+  // 使用npx babel file -o newFile来编译
+  // 安装的依赖请看@babel/XXX
+  // @startFan // 需要测试时再取消注释
+  // @support('.') // 需要测试时再取消注释
+  playGame() {
+    console.log('play game');
+  }
+}
+
+function startFan(target, key, descriptor) {
+  const fn = descriptor.value;
+  descriptor.value = function (...args) {
+    console.log('start fan');
+    fn && fn(...args);
+    // fn && fn.apply(this, args);
+  };
+}
+
+function support(arg) {
+  return function (target, key, descriptor) {
+    const fn = descriptor.value;
+    descriptor.value = function (...args) {
+      console.log(`support phone ${arg}`);
+      fn && fn(...args);
+      // fn && fn.apply(this, args);
+    };
+  };
+}
+
+console.log('---es7装饰器模式---');
+
+let phoneES7 = new PhoneES7();
+
+phoneES7.playGame();
+
+/* 代理模式 */
+
+class Star {
+  constructor(price) {
+    this.price = price;
+  }
+  provideService() {
+    console.log('star sing a song');
+  }
+}
+
+class Broker {
+  constructor() {
+    this.star = new Star(100);
+  }
+  judge() {
+    return this.contract.money > this.star.price;
+  }
+  provideService() {
+    this.star.provideService();
+  }
+  tellResult(contract) {
+    this.contract = contract;
+    let flag = this.judge();
+    flag ? console.log('ok ok') : console.log('too cheap');
+  }
+}
+
+class Producer {
+  createContract(money) {
+    return {
+      money: money,
+      other: {},
+    };
+  }
+}
+
+console.log('---代理模式---');
+
+let producer = new Producer();
+let broker = new Broker();
+
+let contract80 = producer.createContract(80);
+broker.tellResult(contract80);
+let contract120 = producer.createContract(120);
+broker.tellResult(contract120);
+broker.provideService();
+
+/* 外观模式 */
+
+class BuyService {
+  constructor(order) {
+    this.orderService = new OrderService(order);
+    this.payService = new PayService();
+    this.logisticsService = new LogisticsService();
+  }
+  service() {
+    this.orderService.service();
+    this.payService.service();
+    this.logisticsService.service();
+  }
+}
+
+class OrderService {
+  constructor(order) {
+    this.order = order;
+  }
+  service() {
+    console.log(`placing an order ${this.order}. jump to payment process.`);
+  }
+}
+
+class PayService {
+  service() {
+    console.log('paying. pay successful.');
+  }
+}
+
+class LogisticsService {
+  service() {
+    console.log('thx! wait patiently.');
+  }
+}
+
+class Client {
+  buy(order) {
+    let buyService = new BuyService(order);
+    buyService.service();
+  }
+}
+
+console.log('---外观模式---');
+
+let client = new Client();
+
+client.buy(1);
+client.buy(2);

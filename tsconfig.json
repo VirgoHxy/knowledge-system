@@ -2,6 +2,9 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "lib": ["dom", "es5", "es6", "es7"]
-  }
+    "lib": ["dom", "es5", "es6", "es7"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "exclude": ["node_modules"]
 }
