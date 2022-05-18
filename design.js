@@ -658,3 +658,180 @@ let client = new Client();
 
 client.buy(1);
 client.buy(2);
+
+/* 观察者模式
+
+设计意图：它定义了一种一对N的关系，让N个观察者对象同时观察某一个被观察者对象，这个被观察者对象的状态发生变化时就会通知所有的观察者对象，使得它们能够自动更新自己。
+具体划分：观察者模式，发布订阅(基于观察者模式的一种范式)
+
+观察者模式
+  设计：
+    由被观察者和观察者组成，被观察者发生改变，观察者会收到通知
+  场景：
+    一个对象(观察者)的行为依赖于另一个对象(被观察者)的状态，这个被观察者才是重点
+  总结：
+    观察者和被观察者它们之间是抽象耦合的。并且建立了异步触发机制；
+    当订阅者比较多的时候，同时通知所有的订阅者可能会造成性能问题；无用的观察者需清除逻辑。
+  例如：
+    js中的事件流(dom.onclick和dom.click(),这个是一对一的)(多个dom.addEventListener('click')和dom.click(),这个是一对多);
+    nodejs的events的EventEmitter(只是eventEmitter又是观察者(on)又是被观察者(emit));
+    websocket,服务端的websocket可以既是观察者又是被观察者,客户端的websocket也是如此,可以相互send或者onMessage;
+
+发布订阅
+  设计：
+    由发布者、订阅者和发布订阅中心组成，发布者和订阅者并不直接交互，发布者向中心发布内容，订阅者从中心订阅了某个topic，某个topic变化后，中心去通知订阅者
+  场景：
+    一个对象的行为依赖于另一个对象的状态，但是它们是相互独立的，由发布订阅中心来派发，这个中心才是重点
+  总结：
+    观察者和被观察者它们之间是抽象耦合的。并且建立了异步触发机制；
+    当订阅者比较多的时候，同时通知所有的订阅者可能会造成性能问题；无用的观察者需清除逻辑。
+  例如：
+    海量数据实时处理中心kafka
+    异步事件流处理工具RXJs
+    代码中发现有watch、watcher、observe、observer、listen、listener、dispatch、trigger、emit、on、event、eventbus、EventEmitter这类单词出现的地方
+
+*/
+
+// 被观察者(主题)
+function Subject() {
+  this.observerList = [];
+}
+Subject.prototype.addObserver = function (observer) {
+  this.observerList.push(observer);
+};
+Subject.prototype.removeObserver = function (observer) {
+  const index = this.observerList.findIndex((o) => o.name === observer.name);
+  this.observerList.splice(index, 1);
+};
+Subject.prototype.notifyObservers = function (message) {
+  this.observerList.forEach((observer) => observer.notify(message));
+};
+
+// 观察者
+function Observer(name, subject) {
+  this.name = name;
+  this.event = {};
+  subject && subject.addObserver(this);
+}
+Observer.prototype.notify = function (message) {
+  this.event[this.name + message] && this.event[this.name + message]();
+};
+Observer.prototype.onNotify = function (message, func) {
+  this.event[this.name + message] = func;
+};
+
+console.log('---观察者模式---');
+
+let subject = new Subject();
+let observerA = new Observer('observerA');
+let observerB = new Observer('observerB', subject);
+subject.addObserver(observerA);
+
+observerA.onNotify('click', function () {
+  console.log('observerA click cancel');
+});
+observerA.onNotify('click', function () {
+  console.log('observerA click last');
+});
+observerA.onNotify('dblclick', function () {
+  console.log('observerA dblclick');
+});
+observerB.onNotify('click', function () {
+  console.log('observerB click');
+});
+observerB.onNotify('dblclick', function () {
+  console.log('observerB dblclick');
+});
+
+subject.notifyObservers('click');
+subject.notifyObservers('dblclick');
+
+subject.removeObserver(observerA);
+
+subject.notifyObservers('click');
+subject.notifyObservers('dblclick');
+
+// 发布订阅范式
+function PubSub() {
+  this.messages = {};
+  this.listeners = {};
+}
+PubSub.prototype.publish = function (type, content) {
+  this.messages[type] = content;
+  this.notify(type);
+};
+PubSub.prototype.subscribe = function (type, cb) {
+  const existListener = this.listeners[type];
+  if (!existListener) {
+    this.listeners[type] = [];
+  }
+  // 这里用数组表示可以存储多个事件,也可以直接后面事件覆盖前面事件,只保留一个事件
+  this.listeners[type].push(cb);
+};
+// notify 通知方法 可以作为一个调度管控 比如一些100万粉up不可能一下通知100万个人或者说给某些up限流
+PubSub.prototype.notify = function (type) {
+  switch (type) {
+    case '美食作家王刚':
+      this.doCallBack(type);
+      break;
+    case '央视新闻':
+      setTimeout(() => {
+        this.doCallBack(type);
+      }, 2000);
+      break;
+    default:
+      this.doCallBack(type);
+      break;
+  }
+};
+PubSub.prototype.doCallBack = function (type) {
+  const messages = this.messages[type];
+  const subscribers = this.listeners[type] || [];
+  subscribers.forEach((cb) => cb(messages));
+};
+
+function Publisher(name, context) {
+  this.name = name;
+  this.context = context;
+}
+Publisher.prototype.publish = function (type, content) {
+  this.context.publish(type, content);
+};
+
+function Subscriber(name, context) {
+  this.name = name;
+  this.context = context;
+}
+Subscriber.prototype.subscribe = function (type, cb) {
+  this.context.subscribe(type, cb);
+};
+
+console.log('---发布订阅范式---');
+
+let center = new PubSub();
+
+let subscriberA = new Subscriber('publisherA', center);
+let subscriberB = new Subscriber('publisherB', center);
+
+let wangGang = new Publisher('美食作家王刚', center);
+let news = new Publisher('央视新闻', center);
+
+subscriberA.subscribe(wangGang.name, function (...args) {
+  console.log('subscriberA: 准备好零食');
+});
+subscriberA.subscribe(wangGang.name, function (...args) {
+  console.log('subscriberA: 打开视频');
+});
+subscriberA.subscribe(news.name, function (...args) {
+  console.log('subscriberA: 打开视频');
+});
+
+subscriberB.subscribe(wangGang.name, function (...args) {
+  console.log('subscriberB: 打开视频');
+});
+subscriberB.subscribe(news.name, function (...args) {
+  console.log('subscriberB: 今天不看了,不打开视频');
+});
+
+wangGang.publish(wangGang.name, { title: '盐焗黄鳝' });
+news.publish(news.name, { title: '粮食安全意识之粮转饲' });

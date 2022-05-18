@@ -539,3 +539,167 @@ const client = new Client();
 
 client.buy(1);
 client.buy(2);
+
+/* 观察者模式 */
+
+class Subject {
+  private observerList = [];
+  addObserver(observer) {
+    this.observerList.push(observer);
+  }
+  removeObserver(observer) {
+    const index = this.observerList.findIndex((o) => o.name === observer.name);
+    this.observerList.splice(index, 1);
+  }
+  notifyObservers(message) {
+    this.observerList.forEach((observer) => observer.notify(message));
+  }
+}
+
+class Observer {
+  private event = {};
+  name: string;
+  constructor(name: string, subject?: Subject) {
+    this.name = name;
+    subject && subject.addObserver(this);
+  }
+  notify(message: string) {
+    this.event[this.name + message] && this.event[this.name + message]();
+  }
+  onNotify(message: string, func: () => void) {
+    this.event[this.name + message] = func;
+  }
+}
+
+console.log('---观察者模式---');
+
+const subject = new Subject();
+const observerA = new Observer('observerA');
+const observerB = new Observer('observerB', subject);
+subject.addObserver(observerA);
+
+observerA.onNotify('click', function () {
+  console.log('observerA click cancel');
+});
+observerA.onNotify('click', function () {
+  console.log('observerA click last');
+});
+observerA.onNotify('dblclick', function () {
+  console.log('observerA dblclick');
+});
+observerB.onNotify('click', function () {
+  console.log('observerB click');
+});
+observerB.onNotify('dblclick', function () {
+  console.log('observerB dblclick');
+});
+
+subject.notifyObservers('click');
+subject.notifyObservers('dblclick');
+
+subject.removeObserver(observerA);
+
+subject.notifyObservers('click');
+subject.notifyObservers('dblclick');
+
+// 发布订阅范式
+class PubSub {
+  messages = {};
+  listeners = {};
+  constructor() {
+    this.messages = {};
+    this.listeners = {};
+  }
+  publish(type: string, content: unknown) {
+    this.messages[type] = content;
+    this.notify(type);
+  }
+  subscribe(type, cb) {
+    const existListener = this.listeners[type];
+    if (!existListener) {
+      this.listeners[type] = [];
+    }
+    // 这里用数组表示可以存储多个事件,也可以直接后面事件覆盖前面事件,只保留一个事件
+    this.listeners[type].push(cb);
+  }
+  // notify 通知方法 可以作为一个调度管控 比如一些100万粉up不可能一下通知100万个人或者说给某些up限流
+  private notify(type) {
+    switch (type) {
+      case '美食作家王刚':
+        this.doCallBack(type);
+        break;
+      case '央视新闻':
+        setTimeout(() => {
+          this.doCallBack(type);
+        }, 2000);
+        break;
+      default:
+        this.doCallBack(type);
+        break;
+    }
+  }
+  private doCallBack(type) {
+    const messages = this.messages[type];
+    const subscribers = this.listeners[type] || [];
+    subscribers.forEach((cb) => cb(messages));
+  }
+}
+
+class Publisher {
+  name: string;
+  context: PubSub;
+  constructor(name: string, context: PubSub) {
+    this.name = name;
+    this.context = context;
+  }
+  publish(type: string, content: unknown) {
+    this.context.publish(type, content);
+  }
+}
+
+class Subscriber {
+  name: string;
+  context: PubSub;
+  constructor(name: string, context: PubSub) {
+    this.name = name;
+    this.context = context;
+  }
+  subscribe(type: string, cb: () => void) {
+    this.context.subscribe(type, cb);
+  }
+}
+
+console.log('---发布订阅范式---');
+
+const center = new PubSub();
+
+const subscriberA = new Subscriber('publisherA', center);
+const subscriberB = new Subscriber('publisherB', center);
+
+const wangGang = new Publisher('美食作家王刚', center);
+const news = new Publisher('央视新闻', center);
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+subscriberA.subscribe(wangGang.name, function (...args) {
+  console.log('subscriberA: 准备好零食');
+});
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+subscriberA.subscribe(wangGang.name, function (...args) {
+  console.log('subscriberA: 打开视频');
+});
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+subscriberA.subscribe(news.name, function (...args) {
+  console.log('subscriberA: 打开视频');
+});
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+subscriberB.subscribe(wangGang.name, function (...args) {
+  console.log('subscriberB: 打开视频');
+});
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+subscriberB.subscribe(news.name, function (...args) {
+  console.log('subscriberB: 今天不看了,不打开视频');
+});
+
+wangGang.publish(wangGang.name, { title: '盐焗黄鳝' });
+news.publish(news.name, { title: '粮食安全意识之粮转饲' });

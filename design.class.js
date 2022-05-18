@@ -512,3 +512,157 @@ let client = new Client();
 
 client.buy(1);
 client.buy(2);
+
+/* 观察者模式 */
+
+// 观察者模式
+class Subject {
+  #observerList = [];
+  constructor() {}
+  addObserver(observer) {
+    this.#observerList.push(observer);
+  }
+  removeObserver(observer) {
+    const index = this.#observerList.findIndex((o) => o.name === observer.name);
+    this.#observerList.splice(index, 1);
+  }
+  notifyObservers(message) {
+    this.#observerList.forEach((observer) => observer.notify(message));
+  }
+}
+
+class Observer {
+  #event = {};
+  constructor(name, subject) {
+    this.name = name;
+    subject && subject.addObserver(this);
+  }
+  notify(message) {
+    this.#event[this.name + message] && this.#event[this.name + message]();
+  }
+  onNotify(message, func) {
+    this.#event[this.name + message] = func;
+  }
+}
+
+console.log('---观察者模式---');
+
+let subject = new Subject();
+let observerA = new Observer('observerA');
+let observerB = new Observer('observerB', subject);
+subject.addObserver(observerA);
+
+observerA.onNotify('click', function () {
+  console.log('observerA click cancel');
+});
+observerA.onNotify('click', function () {
+  console.log('observerA click last');
+});
+observerA.onNotify('dblclick', function () {
+  console.log('observerA dblclick');
+});
+observerB.onNotify('click', function () {
+  console.log('observerB click');
+});
+observerB.onNotify('dblclick', function () {
+  console.log('observerB dblclick');
+});
+
+subject.notifyObservers('click');
+subject.notifyObservers('dblclick');
+
+subject.removeObserver(observerA);
+
+subject.notifyObservers('click');
+subject.notifyObservers('dblclick');
+
+// 发布订阅范式
+class PubSub {
+  constructor() {
+    this.messages = {};
+    this.listeners = {};
+  }
+  publish(type, content) {
+    this.messages[type] = content;
+    this.#notify(type);
+  }
+  subscribe(type, cb) {
+    const existListener = this.listeners[type];
+    if (!existListener) {
+      this.listeners[type] = [];
+    }
+    // 这里用数组表示可以存储多个事件,也可以直接后面事件覆盖前面事件,只保留一个事件
+    this.listeners[type].push(cb);
+  }
+  // notify 通知方法 可以作为一个调度管控 比如一些100万粉up不可能一下通知100万个人或者说给某些up限流
+  #notify(type) {
+    switch (type) {
+      case '美食作家王刚':
+        this.#doCallBack(type);
+        break;
+      case '央视新闻':
+        setTimeout(() => {
+          this.#doCallBack(type);
+        }, 2000);
+        break;
+      default:
+        this.#doCallBack(type);
+        break;
+    }
+  }
+  #doCallBack(type) {
+    const messages = this.messages[type];
+    const subscribers = this.listeners[type] || [];
+    subscribers.forEach((cb) => cb(messages));
+  }
+}
+
+class Publisher {
+  constructor(name, context) {
+    this.name = name;
+    this.context = context;
+  }
+  publish(type, content) {
+    this.context.publish(type, content);
+  }
+}
+
+class Subscriber {
+  constructor(name, context) {
+    this.name = name;
+    this.context = context;
+  }
+  subscribe(type, cb) {
+    this.context.subscribe(type, cb);
+  }
+}
+
+console.log('---发布订阅范式---');
+
+let center = new PubSub();
+
+let subscriberA = new Subscriber('publisherA', center);
+let subscriberB = new Subscriber('publisherB', center);
+
+let wangGang = new Publisher('美食作家王刚', center);
+let news = new Publisher('央视新闻', center);
+
+subscriberA.subscribe(wangGang.name, function (...args) {
+  console.log('subscriberA: 准备好零食');
+});
+subscriberA.subscribe(wangGang.name, function (...args) {
+  console.log('subscriberA: 打开视频');
+});
+subscriberA.subscribe(news.name, function (...args) {
+  console.log('subscriberA: 打开视频');
+});
+
+subscriberB.subscribe(wangGang.name, function (...args) {
+  console.log('subscriberB: 打开视频');
+});
+subscriberB.subscribe(news.name, function (...args) {
+  console.log('subscriberB: 今天不看了,不打开视频');
+});
+
+wangGang.publish(wangGang.name, { title: '盐焗黄鳝' });
+news.publish(news.name, { title: '粮食安全意识之粮转饲' });
