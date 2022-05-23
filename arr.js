@@ -10,7 +10,7 @@ Array(3, 3, 3); // [3,3,3] 可以使用Array(3).fill(3), Array.from({length: 3},
 Array() instanceof Array; // true
 Array() instanceof Object; // true
 
-// Set extends Function;Set extends Object;值集合类继承方法类和对象类 weakSet的值只能是对象引用 如果引用被垃圾回收 weakSet的值也会被清除 而且weakSet不能被枚举
+// Set extends Function;Set extends Object;值集合类继承方法类和对象类 weakSet的值只能是对象引用 如果引用被垃圾回收 weakSet的值也会被清除 而且weakSet不能被枚举 只有add()、has()、delete()这个三种方法
 let set = new Set(),
   tempSetObj = { a: 1 },
   tempSetArr = [2];
@@ -36,10 +36,16 @@ set.delete(tempSetObj); // 这里成功删除
 
 set.size; // 5
 set.keys(); // [Set Iterator] { '2', true, { a: 1 }, [ 2 ], [ 2 ] } set允许存储任何类型的唯一值(基本类型判断值 复杂类型判断地址)
-set.values(); // [Set Iterator] { '2', true, { a: 1 }, [ 2 ], [ 2 ] } 所以keys和values一致
+set.values(); // [Set Iterator] { '2', true, { a: 1 }, [ 2 ], [ 2 ] } 因为是值集合 所以keys和values一致
+set.forEach((ele, key, set) => {}, this); // ele是set值 key是set的键(set键值是一样的) set是Set实例
+for (const iterator of set) {
+  if (iterator === '2') {
+    console.log('set', iterator); // [ '2', '值' ]
+  }
+}
 Array.from(set); // [ '2', true, { a: 1 }, [ 2 ], [ 2 ] ] set 可以做数组去重 仅使用基本类型
 
-// Map extends Function;Map extends Object;键值对集合类继承方法类和对象类 weakMap的键只能是对象引用 如果引用被垃圾回收 weakMap的值也会被清除 而且weakMap不能被枚举
+// Map extends Function;Map extends Object;键值对集合类继承方法类和对象类 weakMap的键只能是对象引用 如果引用被垃圾回收 weakMap的值也会被清除 而且weakMap不能被枚举 只有get()、set()、has()、delete()这个四种方法
 let map = new Map(),
   tempMapObj = { a: 1 },
   tempMapArr = [2];
@@ -72,10 +78,11 @@ map.delete(tempMapObj); // 这里成功删除
 map.length; // 5
 map.keys(); // [Map Iterator] { '2', true, { a: 1 }, [ 2 ], [ 2 ] } map允许存储任何类型的唯一key(基本类型判断值 复杂类型判断地址)和值 元素为[key, value]格式
 map.values(); // [Map Iterator] { '值', '值', '值', '值', '值' }
+map.forEach((ele, key, map) => {}, this); // ele是map值 key是map的键 map是Map实例
 for (const iterator of map) {
   let [key, value] = iterator;
   if (key === '2') {
-    console.log('iterator', iterator); // [ '2', '值' ]
+    console.log('map', iterator); // [ '2', '值' ]
   }
 }
 Array.from(map); // [[ '2', '值' ],[ true, '值' ],[ { a: 1 }, '值' ],[ [ 2 ], '值' ],[ [ 2 ], '值' ]]
