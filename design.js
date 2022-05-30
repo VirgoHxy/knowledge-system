@@ -662,7 +662,7 @@ client.buy(2);
 /* 观察者模式
 
 设计意图：它定义了一种一对N的关系，让N个观察者对象同时观察某一个被观察者对象，这个被观察者对象的状态发生变化时就会通知所有的观察者对象，使得它们能够自动更新自己。
-具体划分：观察者模式，发布订阅(基于观察者模式的一种范式)
+具体划分：观察者模式，发布订阅(基于观察者模式的一种范式,只是多了一个中心去处理观察者和被观察者)
 
 观察者模式
   设计：
@@ -670,12 +670,9 @@ client.buy(2);
   场景：
     一个对象(观察者)的行为依赖于另一个对象(被观察者)的状态，这个被观察者才是重点
   总结：
-    观察者和被观察者它们之间是抽象耦合的。并且建立了异步触发机制；
+    观察者和被观察者它们之间是抽象耦合的，并且建立了异步触发机制；
     当订阅者比较多的时候，同时通知所有的订阅者可能会造成性能问题；无用的观察者需清除逻辑。
   例如：
-    js中的事件流(dom.onclick和dom.click(),这个是一对一的)(多个dom.addEventListener('click')和dom.click(),这个是一对多);
-    nodejs的events的EventEmitter(只是eventEmitter又是观察者(on)又是被观察者(emit));
-    websocket,服务端的websocket可以既是观察者又是被观察者,客户端的websocket也是如此,可以相互send或者onMessage;
 
 发布订阅
   设计：
@@ -683,11 +680,13 @@ client.buy(2);
   场景：
     一个对象的行为依赖于另一个对象的状态，但是它们是相互独立的，由发布订阅中心来派发，这个中心才是重点
   总结：
-    观察者和被观察者它们之间是抽象耦合的。并且建立了异步触发机制；
-    当订阅者比较多的时候，同时通知所有的订阅者可能会造成性能问题；无用的观察者需清除逻辑。
+    观察者和被观察者它们之间是松耦合的，也具有高伸缩性，高灵活性，并且建立了异步触发机制；
   例如：
-    海量数据实时处理中心kafka
-    异步事件流处理工具RXJs
+    js中的事件流(dom.onclick和dom.click(),这个是一对一的)(多个dom.addEventListener('click')和dom.click(),这个是一对多)；
+    nodejs的events的EventEmitter(只是eventEmitter又是观察者(on)又是被观察者(emit))；
+    websocket,服务端的websocket可以既是观察者又是被观察者,客户端的websocket也是如此,可以相互send或者onMessage；
+    海量数据实时处理中心kafka；
+    异步事件流处理工具RXJs；
     代码中发现有watch、watcher、observe、observer、listen、listener、dispatch、trigger、emit、on、event、eventbus、EventEmitter这类单词出现的地方
 
 */
@@ -753,11 +752,11 @@ subject.notifyObservers('dblclick');
 
 // 发布订阅范式
 function PubSub() {
-  this.messages = {};
+  this.arg = {};
   this.listeners = {};
 }
-PubSub.prototype.publish = function (type, content) {
-  this.messages[type] = content;
+PubSub.prototype.publish = function (type, arg) {
+  this.arg[type] = arg;
   this.notify(type);
 };
 PubSub.prototype.subscribe = function (type, cb) {
@@ -785,25 +784,25 @@ PubSub.prototype.notify = function (type) {
   }
 };
 PubSub.prototype.doCallBack = function (type) {
-  const messages = this.messages[type];
+  const arg = this.arg[type];
   const subscribers = this.listeners[type] || [];
-  subscribers.forEach((cb) => cb(messages));
+  subscribers.forEach((cb) => cb(arg));
 };
 
-function Publisher(name, context) {
+function Publisher(name, pubsub) {
   this.name = name;
-  this.context = context;
+  this.pubsub = pubsub;
 }
-Publisher.prototype.publish = function (type, content) {
-  this.context.publish(type, content);
+Publisher.prototype.publish = function (type, arg) {
+  this.pubsub.publish(type, arg);
 };
 
-function Subscriber(name, context) {
+function Subscriber(name, pubsub) {
   this.name = name;
-  this.context = context;
+  this.pubsub = pubsub;
 }
 Subscriber.prototype.subscribe = function (type, cb) {
-  this.context.subscribe(type, cb);
+  this.pubsub.subscribe(type, cb);
 };
 
 console.log('---发布订阅范式---');

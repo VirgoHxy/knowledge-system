@@ -579,11 +579,11 @@ subject.notifyObservers('dblclick');
 // 发布订阅范式
 class PubSub {
   constructor() {
-    this.messages = {};
+    this.arg = {};
     this.listeners = {};
   }
-  publish(type, content) {
-    this.messages[type] = content;
+  publish(type, arg) {
+    this.arg[type] = arg;
     this.#notify(type);
   }
   subscribe(type, cb) {
@@ -591,10 +591,8 @@ class PubSub {
     if (!existListener) {
       this.listeners[type] = [];
     }
-    // 这里用数组表示可以存储多个事件,也可以直接后面事件覆盖前面事件,只保留一个事件
     this.listeners[type].push(cb);
   }
-  // notify 通知方法 可以作为一个调度管控 比如一些100万粉up不可能一下通知100万个人或者说给某些up限流
   #notify(type) {
     switch (type) {
       case '美食作家王刚':
@@ -611,29 +609,29 @@ class PubSub {
     }
   }
   #doCallBack(type) {
-    const messages = this.messages[type];
+    const arg = this.arg[type];
     const subscribers = this.listeners[type] || [];
-    subscribers.forEach((cb) => cb(messages));
+    subscribers.forEach((cb) => cb(arg));
   }
 }
 
 class Publisher {
-  constructor(name, context) {
+  constructor(name, pubsub) {
     this.name = name;
-    this.context = context;
+    this.pubsub = pubsub;
   }
-  publish(type, content) {
-    this.context.publish(type, content);
+  publish(type, arg) {
+    this.pubsub.publish(type, arg);
   }
 }
 
 class Subscriber {
-  constructor(name, context) {
+  constructor(name, pubsub) {
     this.name = name;
-    this.context = context;
+    this.pubsub = pubsub;
   }
   subscribe(type, cb) {
-    this.context.subscribe(type, cb);
+    this.pubsub.subscribe(type, cb);
   }
 }
 
