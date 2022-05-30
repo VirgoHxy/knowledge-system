@@ -79,7 +79,7 @@ let cloneObj = Object.create({}, Object.getOwnPropertyDescriptors(sourceObj)); /
 cloneObj.b.c = 2; // sourceObj,cloneObj都会改变
 
 // configurable writable enumerable value set           get
-// 是否修改删除  是否赋值  是否可枚举  值    设置函数setter 获取函数getter
+// 是否删除      是否修改 是否可枚举  值    设置函数setter 获取函数getter
 // 给对象添加一个属性并指定该属性的配置 不指定默认都为false
 let defineObj = {};
 Object.defineProperty(defineObj, 'globalConfig', {

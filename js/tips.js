@@ -56,6 +56,28 @@ function sumAll(...args) {
 sumAllx(1, 2, 3, 4, 5, 6); // 21
 sumAll(1, 2, 3, 4, 5, 6); // 21
 
+/* == 隐式转换比较
+
+if(false || null || undefined || "" || 0 || NaN) 这6种为false 其他都为true
+
+如果两个变量都是对象，则当都引用同一对象时才返回true
+
+null == undefined -- 返回true
+
+当两个变量类型不一致时会进行类型转换：
+  string == number -- string转换为number后再进行比较
+  boolean == any -- boolean转换为number后再进行比较
+  object == string/number/symbol -- 尝试调用object的valueOf或toString将其转换为原始类型后再进行比较
+
+当两个变量类型一致时：
+  number == number -- 其中有一个为NaN时返回false; +0 == -0时返回true
+
+*/
+[] == ''; // true [].valueOf()结果还是[] [].toString()会用逗号分隔数组元素 空数组返回''
+[3] == 3; // true 与上述一致 长度为1的数组会返回这个唯一元素 字符串再转为数字
+[] == false; // true 由上述可知道是 '' == false 也就是 Number('') == Number(false) 都是0所以为true
+42 == true; // false 由上述可知道是 Number(42) == Number(true)
+
 /* 函数方法 */
 // 箭头函数 箭头函数没有自己的arguments和this 箭头函数的this在创建时候绑定的 有非箭头函数包裹箭头函数 箭头函数的this"继承"了那个非箭头函数的this 如果没有非箭头函数包裹箭头函数 浏览器中this指向window对象 node环境中module.exports
 // node文件运行的this指向的是module.exports(模块化) 在全局作用域中声明的函数this指向的是global
@@ -86,6 +108,12 @@ console.log(this === module.exports); // true
 arrowFunc.log();
 arrowFunc.arrowLog();
 arrowFunc.arrowLog1();
+
+function logThis() {
+  console.log(this);
+}
+// 如果处于非严格模式下 要绑定的this指定为null或undefined时会自动替换为全局对象 原始值则会被包装
+logThis.call(3); // 非严格 -- [Number: 3] 严格 -- 3
 
 // 定时器可传参
 setTimeout(
@@ -362,7 +390,7 @@ function myNew(constructor, ...args) {
   }
   // 通过构造函数的原型创建一个对象
   const obj = Object.create(constructor.prototype);
-  // 得到构造函数执行的结果
+  // 得到构造函数执行的结果 如果结果是object则返回这个结果
   const res = constructor.apply(obj, args);
   const isObject = typeof res === 'object' && res !== null;
   const isFunction = typeof res === 'function';
