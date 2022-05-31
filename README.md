@@ -5,6 +5,7 @@
 | 文件夹名称 | 说明       |
 | ---------- | ---------- |
 | design     | 设计模式   |
+| java       | Java       |
 | js         | JavaScript |
 | node       | Node 模块  |
 | regexp     | 正则       |
@@ -18,6 +19,12 @@
 | design.ts       | TypeScript | ts 实现设计模式          |
 | design.class.js | es6+       | class 实现设计模式       |
 | design.js       | es5        | js function 实现设计模式 |
+
+### java 文件夹概括
+
+| 文件名称  | 类型 | 说明            |
+| --------- | ---- | --------------- |
+| info.java | Java | java 的基础语法 |
 
 ### js 文件夹概括
 
