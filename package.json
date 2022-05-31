@@ -1,5 +1,5 @@
 {
-  "name": "js-always-forget-operation",
+  "name": "knowledge-system",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -7,14 +7,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VirgoHxy/js-always-forget-operation.git"
+    "url": "git+https://github.com/VirgoHxy/knowledge-system.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/VirgoHxy/js-always-forget-operation/issues"
+    "url": "https://github.com/VirgoHxy/knowledge-system/issues"
   },
-  "homepage": "https://github.com/VirgoHxy/js-always-forget-operation#readme",
+  "homepage": "https://github.com/VirgoHxy/knowledge-system#readme",
   "devDependencies": {
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.9",

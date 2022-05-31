@@ -494,7 +494,7 @@ fi
 # 文件检测运算符
 # path="C:\Windows\System32" ##这里是一个完整的路径
 # path="/etc/hosts" ##这里的绝对路径是git bash的目录
-path="./str.js" ##这里的相对路径是相对于运行目录(这里是js-always-forget-operation)
+path="./str.js" ##这里的相对路径是相对于运行目录(这里是knowledge-system)
 
 ## 仅列出部分文件检测运算符
 if [ -r ${path} ]; then
