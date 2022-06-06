@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from dataclasses import dataclass
 import math
 import random
 
@@ -63,9 +64,6 @@ print('hello', 'world')
 # 转义输出
 print('hello \'demo\' \n')
 
-# 不转义输出
-print(r'\n')
-
 # 多行输出
 print('''var1
 var2
@@ -93,9 +91,11 @@ print(var1)
 # 在函数、class外声明的变量都是全局变量，函数、class内的则是局部变量
 # print(locals())  # 返回局部变量字典 此时locals指向的也是全局空间
 # print(globals())  # 返回全局变量字典
+# 如果需要在函数内部声明全局变量可以使用 global 关键字
+# 如果需要在嵌套作用域中修改外层作用域(非全局作用域)可以使用 nonlocal 关键字
 
 # 特殊变量，也就是python内置变量
-print(__name__)
+print(__name__)  # 等于__main__，表示在自身运行，否则表示在被其他模块引用运行
 print(__file__)
 
 # 多变量赋值
@@ -139,12 +139,21 @@ print(var1[3:0])
 print('hello %s %d %.4f' % (var1, 18, 0.12))
 #   format()函数法
 print('hello {str} {num} {num1}'.format(str=var1, num=18, num1=0.12))
-#   f-string
+print('hello {0} {1} {2}'.format(var1, 18, 0.12))
+
+# f,r,b,u
+#   f-string，格式化字符串，是一个在运行时运算求值的表达式，版本3.6+
 print(var3)
 #     使用表达式
 print(f'{1+2}')
 #     使用变量
 print(f'{1+2+var4}')
+#   r-string，r的作用是原样保存转义字符
+print(r'\n')
+#   b-string，表示一个bytes对象，因为版本2.x之前str是byte类，版本3.x是unicode类
+print(b'123')
+#   u-string，unicode格式进行编码，防止使用乱码
+print(u'中文')
 
 # 字符串函数
 #   返回40位字符长度的字符串，居中显示，两边由*补充
@@ -598,7 +607,56 @@ print(
 )
 
 '''
-------函数与模块------
+------错误和异常------
+
+常见错误：
+SyntaxError -- 语法错误
+TypeError -- 类型错误，字符串类型和数字类型不能混合操作
+ValueError -- 传给函数的参数类型错误
+NameError -- 未声明错误，没有定义该变量
+AttributeError -- 对象没有属性错误
+IndexError -- 索引超出序列范围错误
+KeyError -- 没有属性错误，字典没有关键字
+IndentationError -- 缩进错误，混用了tab和空格
+IOError -- 文件输入输出错误
+ZeroDivisionError -- 除数为0
+'''
+arg = 'test.txt'
+try:
+    f = open(arg, 'r')
+    # 这个语法虽然看上去正确，但是会触发ZeroDivisionError
+    demo = 1/0
+except IOError:
+    print('io异常，无法打开', arg)
+except ZeroDivisionError:
+    print('除数不能未0')
+except:
+    print('捕获到了其他任何异常')
+else:
+    print(arg, 'has', len(f.readlines()), 'lines')
+    f.close()
+finally:
+    print('这个一定会打印')
+
+try:
+    # 抛出一个NameError
+    raise NameError('HiThere')
+except NameError:
+    print('An exception flew by!')
+    # raise 这个raise会继续抛出错误
+
+
+class MyError(Exception):
+    # 自定以Error，继承了Exception，多继承使用逗号分割，并覆盖了两个内置方法
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
+
+
+'''
+------函数与类------
 '''
 
 
@@ -662,3 +720,121 @@ myArgs(1, b=3)
 myArgs1(1, 2, 3, 4)
 # **打包成字典
 myArgs2(1, b=2, c=3)
+
+
+class MyClass:
+    # 一个简单的类
+
+    # __双下划线表示私有，方法也是同样规则
+    __num = 1
+    str = 'hello world'
+
+    # 构造函数
+    def __init__(self, num):
+        self.__num = num
+
+    # 实例方法第一个参数必须是self，它指向实例
+    def getNum(self):
+        return self.__num
+
+
+# MyClass()就是创建新实例
+print("MyClass实例", MyClass().str, MyClass(3).getNum())
+
+
+@dataclass
+class MyClass1:
+    # 一个简单的类，等同于MyClass，版本3.7+
+    __num: int = 1
+    str = 'hello world'
+
+    # 实例方法第一个参数必须是self，它指向实例
+    def getNum(self):
+        return self.__num
+
+
+print("MyClass1实例", MyClass1().str, MyClass1(3).getNum())
+
+
+@dataclass
+class MyClass2:
+    # 一个简单的类，在MyClass1基础新增类方法和实例方法，版本3.7+
+    __num: int = 1
+    str = 'hello world'
+    flag = True
+
+    # 实例方法第一个参数必须是self，它指向实例
+    def getNum(self):
+        return self.__num
+
+    # 静态方法，可以被类和实例类调用
+    @staticmethod
+    def getConst():
+        return '常量'
+
+    # 类方法，可以被类和实例调用
+    @classmethod
+    def getFlag(self):
+        return self.flag
+
+
+print("MyClass2实例", MyClass2(2).str, MyClass2(3).getNum(),
+      MyClass2.getConst(), MyClass2.getFlag(),
+      MyClass2().getConst(), MyClass2().getFlag())
+
+'''
+------模块与包------
+
+模块引入方法：
+
+这里的moduleName也就是文件名,funcName和className分别是函数和类
+import moduleName -- 引入一个模块，使用模块.方法/类/变量来使用该方法/类/变量，这种方法在版本3已被废弃，只能引入lib中的包
+from moduleName import funcName,className -- 只引入一个模块的方法/类/变量，直接调用方法/类/变量，需要避免同名变量覆盖
+from moduleName import * -- 引入模块的所有内容，直接调用即可，需要避免同名变量覆盖，避免使用该方法
+
+包内部引入模块：
+
+from . import moduleName -- 从当前文件夹相对导入一个模块，.代表当前模块，..代表上层模块，...代表上上层模块，依次类推
+from package import moduleName -- 从指定包绝对导入一个模块
+'''
+
+print(dir())  # 函数可提供当前模块的定义的所有名称，包括自身定义的和引入模块的，以字符串列表返回
+
+# 包
+# 只有一个目录包含了__init__.py文件才认作一个包
+# 包之间可以嵌套，嵌套的包就是一个子包
+# 当__init__.py存在一个__all__的变量，那么在使用 from package import * 的时候就把这个列表变量中的模块导入，这个变量就表示是*的意思
+
+'''
+------File------
+
+File:
+
+fsObj = open(路径,读取模式) -- open函数用来打开一个文件，x新建文件，r只能读取，w覆盖写入，a文件追加
+fsObj.close() -- close函数用来关闭一个文件对象
+fsObj.tell() -- 返回文件当前位置
+fsObj.seek(offset[, whence]) -- 移动文件读取指针到指定位置
+fsObj.read([size]) -- 读取多少个字符，默认读全部
+fsObj.readline([size]) -- 读取一行并且包括\n，存在size则读取多少个字符
+fsObj.write(str) -- 追加写入
+fsObj.writelines(sequence) -- 追加写入列表
+'''
+# 写
+with open('test.txt', 'w', encoding='utf-8') as f:
+    # with ... as ... 可以自动处理异常，还可以自动关闭和清理资源
+    f.write('test\ntest\ntest\n')
+    f.writelines(['testLine\n', 'testLine\n', 'testLine'])
+# 读
+with open('test.txt', 'r', encoding='utf-8') as f:
+    print('3', f.readline())  # 读取后会改变文件指针
+    print('4', f.readline())
+
+'''
+------标准库------
+
+os -- 操作系统
+glob -- glob.glob('*.py')可以生成文件名列表
+re -- 正则表达式工具
+math -- 数学工具
+datetime -- 时间日期工具
+'''
