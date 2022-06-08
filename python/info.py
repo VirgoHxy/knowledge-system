@@ -620,6 +620,7 @@ KeyError -- 没有属性错误，字典没有关键字
 IndentationError -- 缩进错误，混用了tab和空格
 IOError -- 文件输入输出错误
 ZeroDivisionError -- 除数为0
+ValidationError -- 验证器错误
 '''
 arg = 'test.txt'
 try:
