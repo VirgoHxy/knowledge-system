@@ -5,14 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Node Run Current File",
       "type": "pwa-node",
       "request": "launch",
-      "name": "Run Current File",
       "skipFiles": ["<node_internals>/**"],
       "program": "${file}"
     },
     {
-      "name": "Run Current TS File",
+      "name": "Node Run Current TS File",
       "type": "node",
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/ts-node/dist/bin.js",
@@ -21,13 +21,21 @@
       "protocol": "inspector"
     },
     {
-      "name": "Babel Run Current File",
+      "name": "Babel Node Run Current File",
       "type": "node",
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/@babel/node/bin/babel-node.js",
       "args": ["${relativeFile}"],
       "cwd": "${workspaceRoot}",
       "protocol": "inspector"
+    },
+    {
+      "name": "Python Run Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true
     }
   ]
 }

@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-
-from dataclasses import dataclass
+from collections.abc import Iterable
+from functools import reduce
+import json
 import math
 import random
+import types
 
 '''
 三个字符串可作为多行注释，可以是单引号或者双引号
@@ -24,25 +26,52 @@ python是动态类型，强类型语言
 动态类型是因为python不需要用指定类型去定义变量
 强类型是因为python更偏向于不在运算时有隐式的转换变量类型
 
-python是区分大小写的，而且布尔值为True，False
+python是区分大小写的，而且布尔值为True，False，它类型是Number类型
 
 python中的None和js的null是一个意思，表示啥都没存，''首先是字符串，再是空字符串
+
+python中的 ** 和 * 类似于js中扩展运算符 ... ，可以将多个参数打包在一个变量中，也可以解包该变量为多个参数对应到方法的多个参数
+
+python中类的实例方法第一个参数必须要是self,如果不加self就类似于是静态方法
+
+python中object, dict获取不存在的key直接报错,不会返回None -- 使用 key in dict 先判断是否存在，再去调用，或者用try/except包裹使用，或者使用get方法
 
 python六个标准的数据类型：
 Number（数字）
     int、float、bool、complex（复数）
-    不可变，值类型，理解为js中的简单类型
+    不可变，理解为js中的简单类型, Number
 String（字符串）
-    '' ''
-    不可变，值类型，理解为js中的简单类型
+    str
+    不可变，理解为js中的简单类型, String
 Tuple（元组）
-    不可变，值类型，理解为js中的简单类型
+    tuple
+    元组元素不包含可变对象，那么这个元组也是不可变的
+    元组元素包含可变对象，那么这个元组将变成是可变的
+    不可变，理解为js中的复杂类型，被冻结的数组，Freeze Array
 List（列表）
-    可变，引用类型，理解为js中的复杂类型
+    list
+    可变，理解为js中的复杂类型，Array
 Set（集合）
-    可变，引用类型，理解为js中的复杂类型
+    set
+    可变，理解为js中的复杂类型，Set
 Dictionary（字典）
-    可变，引用类型，理解为js中的复杂类型
+    dict
+    可变，理解为js中的复杂类型，Map
+
+常用库：
+json -- json操作
+sys -- 操作解释器
+os -- 操作系统
+glob -- glob.glob('*.py')可以生成文件名列表
+re -- 正则表达式工具
+math -- 数学工具
+time / datetime -- 时间日期工具
+functools -- 函数工具
+
+不爽的地方:
+字典不能使用.来获取key的值,必须要转换为object或者json才可以
+没有switch 逻辑语句
+因为由缩进控制代码逻辑,导致代码的风格会出现很多多余的换行
 '''
 
 '''
@@ -230,6 +259,7 @@ print(list1)
 list0 = ['demo', 1314, 250, 'temp']
 list1 = [1, 2, 3, 1]
 list2 = [(2, 2), (3, 4), (4, 1), (1, 3)]
+list3 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 # 访问列表
 print(list0)
 #   获取列表长度
@@ -252,6 +282,12 @@ print(list0[:3])
 print(list0[2:3])
 #   左边索引大于右边索引，会打印空列表
 print(list0[3:2])
+#   先取一个，每两个再取一个
+print(list3[::2])
+#   前[0,8)个数每两个取一个
+print(list3[:8:2])
+#   复制列表
+print(list3[:])
 
 # 操作列表
 #   赋值
@@ -294,13 +330,13 @@ print(list0)
 '''
 ------元组操作------
 '''
-# 元组和列表基本一致，但元组值不能二次赋值，相当于只读列表
+# 元组和列表基本一致，但元组值不能二次赋值，相当于只读列表，表示指向不变，不代表元素绝对不变
 tupleTemp = (1, 2, 3)
 
 '''
 ------集合操作------
 '''
-# 集合不包含重复元素
+# 集合不包含重复元素，并且值不能使用可变对象，也就是List，Set，Dictionary，Object
 set1 = {1, 2, 3, 1, 2}
 set2 = set([1, 2, 3])
 frozenset1 = frozenset(range(10))
@@ -338,15 +374,18 @@ print(set1 ^ set2)
 '''
 ------字典操作------
 '''
-# 字典键不能重复
+# 字典键不能重复，并且key不能使用可变对象，也就是List，Set，Dictionary，Object
+# 字典类似于js中的map而不是object
 dictionary1 = {'a': 1, 'b': 2, 'c': 3}
 
 # 访问字典
 print(dictionary1)
 #   字典元素个数
 print(len(dictionary1))
-#   以key访问
+#   以key访问，key不存在将报错
 print(dictionary1['a'])
+#   以get方法访问，key不存在也不会报错
+print(dictionary1.get('a'))
 #   键列表
 print(dictionary1.keys())
 #   值列表
@@ -360,12 +399,72 @@ dictionary1['a'] = 2
 print(dictionary1)
 #   删除
 del dictionary1['a']
+dictionary1.pop('b')
 print(dictionary1)
+
+
+'''
+------object操作------
+'''
+# object是所有数据类型，值，变量，函数，类，实例等等的基石，也就是万物皆对象
+# type是所有类的类型，type是继承object
+# type表示类型，object表示东西，class就是我们自定义的一个type，它的实例就是一个object
+# object可以使用.获取/操作属性值，也可以使用*attr方法
+
+
+class MyClass:
+    def __init__(self):
+        self.demo = 1
+
+
+my_object = MyClass()
+print(my_object.__dict__)
+# 赋值
+my_object.demo1 = 2
+setattr(my_object, 'demo2', 3)
+# 获取
+print(my_object.demo)
+print(getattr(my_object, 'demo1'))
+print(hasattr(my_object, 'demo2'))
+print(my_object.__dict__)
+# 删除
+delattr(my_object, 'demo1')
+del my_object.demo2
+print(my_object.__dict__)
+
+'''
+------判断类型操作------
+'''
+
+
+class MyDemoClass:
+    pass
+
+
+def fn():
+    pass
+
+
+# type，一般判断对象类型
+print(type("asd") == str)
+print(type(1) == int)
+print(type(fn) == types.FunctionType)
+print(type(fn) == types.BuiltinFunctionType)
+
+# isinstance，可用于判断class
+print(isinstance("asd", str))
+print(isinstance(1, int))
+print(isinstance({}, dict))
+print(isinstance('abc', Iterable))  # 是否可迭代
+print(isinstance([1, 2, 3], (list, tuple)))  # 是否是其中一种
+print(isinstance(MyDemoClass(), MyDemoClass))
+
 
 '''
 ------类型转换操作------
 '''
 # 数字类型转换
+#   第二个参数是表示第一个参数值的进制
 print(int('12', 10))
 print(int('10', 2))
 print(float('12'))
@@ -374,13 +473,41 @@ print(float('12'))
 print(str([1, 2, 3]))
 print(ord('a'))  # 字符 -> ASCII 数值
 print(chr(98))  # 0～255 ASCII 数值 -> 字符
-print(eval('pow(2,2)'))  # 字符串 -> 表达式
+print(eval('pow(2,2)'))  # 字符串 -> python表达式，常用于字符转字典
 
-# 对象类型转换
+# 布尔值转换
+print(bool(0))
+print(bool(1))
+
+# 复杂类型转换
 print(tuple([1, 1, 2, 3, 3]))
 print(list((1, 1, 2, 3, 3)))
 print(set([1, 1, 2, 3, 3]))
 print(dict([('a', 1), ('b', 2), ('c', 3)]))
+
+# json object dict
+my_object = MyClass()
+print(json.dumps({'a': 1}))  # dict => json
+print(json.dumps(my_object.__dict__))  # object => dict => json
+print(json.loads(r'{"demo": 1, "demo2": 2}'))  # json => dict
+my_object.__dict__ = json.loads(r'{"demo": 1, "demo2": 2}')
+print(my_object.demo2)  # json => dict => objedt
+
+'''
+------迭代器操作------
+'''
+# reduce返回累计计算结果
+print(reduce(lambda x, y: x ** y, [2, 3, 4]))
+# map循环函数返回一个迭代器，list将迭代器序列转为列表
+print(list(map(lambda x: x ** x, [1, 2, 3])))
+# filter过滤函数返回一个迭代器，tuple将迭代器序列转为元组
+print(tuple(filter(lambda x: x % 2 == 1, [1, 2, 3])))
+# sorted排序函数
+print(sorted([36, 5, -12, 9, -21]))
+#    按abs函数绝对值来排序
+print(sorted([36, 5, -12, 9, -21], key=abs))
+#    按小写字母排序，并反转
+print(sorted(['bob', 'about', 'Zoo', 'Credit'], key=str.lower, reverse=True))
 
 '''
 ------运算符操作------
@@ -530,7 +657,7 @@ print(list0 == list2)
 '''
 ------逻辑语句------
 '''
-# if else
+# if else 只要条件是非零数值、非空字符串、非空list等，就判断为True，否则为False
 x = random.choice(range(100))
 y = random.choice(range(100))
 if x > y:
@@ -557,6 +684,7 @@ for item in list1:
 else:
     print("没有找到5")
 print('完成循环!')
+
 # for range()函数，得到一个数字序列 => 0,2,4
 for item in range(0, 5, 2):
     if item == 0:
@@ -566,28 +694,40 @@ for item in range(0, 5, 2):
         # 什么都不做，因为python靠缩进来控制逻辑，用pass占位
         pass
     print(item)
+
 # for 列表
+for value in [1, 2, 3, 4]:
+    print(value)
+for x, y in [[1, 2], [3, 4], [5, 6], [7, 8]]:
+    print(x, y)
 for index, value in enumerate(['1', '2', '3']):
     print(index, value)
 for key, value in zip(['a', 'b', 'c'], ['1', '2', '3']):
     print(key, value)
+
 # for 字典
 for key in {'a': 1, 'b': 2, 'c': 3}:
     print(key)
+for value in {'a': 1, 'b': 2, 'c': 3}.values():
+    print(value)
 for key, value in {'a': 1, 'b': 2, 'c': 3}.items():
     print(key, value)
 
 # 推导式
-dictionary0 = {'a': 1, 'b': 2, 'c': 3}
 #   列表推导式，将一个序列构建成新的列表
 #     每个值乘2得到新列表
 print([item*2 for item in [1, 2, 3]])
 #     如果大于1则放入新列表，就是过滤掉不符合后面if条件的
 print([item for item in [1, 2, 3] if item > 1])
+#     if和else，如果不符合条件就用else的做返回
+print([item if item > 1 else -item for item in [1, 2, 3]])
 
-#   元组推导式，将一个序列构建成生成器对象
-print((item for item in (1, 2, 3)))
-#     每个值-1得到新元组
+#   generator推导式，将一个序列构建成生成器对象
+generator0 = (item for item in (1, 2, 3))
+print(next(generator0))
+for v in generator0:
+    print(v)
+#     每个值乘2得到generator，再使用tuple转为元组
 print(tuple(item*2 for item in (1, 2, 3)))
 #     如果是奇数则放入新元组，就是过滤掉不符合后面if条件的
 print(tuple(item for item in (1, 2, 3) if item % 2 == 1))
@@ -600,6 +740,7 @@ print({item for item in {1, 2, 3} if item % 2 == 1})
 
 #   字典推导式，将一个序列构建成新的字典
 #     每个值2次幂得到新字典
+dictionary0 = {'a': 1, 'b': 2, 'c': 3}
 print({key: dictionary0[key]**2 for key in dictionary0})
 #     如果是奇数则放入新字典，就是过滤掉不符合后面if条件的
 print(
@@ -631,8 +772,9 @@ except IOError:
     print('io异常，无法打开', arg)
 except ZeroDivisionError:
     print('除数不能未0')
-except:
-    print('捕获到了其他任何异常')
+except Exception as exception:
+    # Exception是基类
+    print(exception, '捕获到了其他任何异常')
 else:
     print(arg, 'has', len(f.readlines()), 'lines')
     f.close()
@@ -663,6 +805,7 @@ class MyError(Exception):
 
 def myMax(a, b=2):
     # 通过 def 关键字来定义函数
+    # 默认参数必须指向不变对象，要不该参数会保留上次结果
     if a > b:
         return a
     else:
@@ -670,7 +813,7 @@ def myMax(a, b=2):
 
 
 # 通过 lambda 关键字来定义匿名函数，只需要写表达式
-print(list(map(lambda x: x ** x, [1, 2, 3])))
+print(lambda x: x ** x, [1, 2, 3])
 
 
 def createfunc(n):
@@ -692,12 +835,13 @@ print(myMax(1))
 
 
 def f(a, b, /, c, d, *, e, f):
-    # 形参 a 和 b 必须使用指定位置参数，c 或 d 可以是位置形参或关键字形参，而 e 和 f 要求为关键字形参
-    # 强制位置参数，版本3.8+
+    # 参数 a 和 b 必须使用指定位置参数，c 或 d 可以是位置参数或关键字参数，而 e 和 f 要求为关键字参数
+    # / 强制位置参数，版本3.8+
+    # * 可以让之后的参数都为关键字参数
     print(a, b, c, d, e, f)
 
 
-def myArgs(a, *, b):
+def myArgs(a, b):
     print(a, b)
 
 
@@ -709,79 +853,78 @@ def myArgs1(a, *tuple1):
 
 
 def myArgs2(a, **dictionary1):
-    # 解包
+    # 解包，不能用**来解包字典
     print('a', *dictionary1)
     # 切片
     print({'a': a, **dictionary1})
 
 
-# 位置传参，但是省略参数，后面参数必须用关键字参数
+def myArgs3(*args, **kwargs):
+    # *args称之为Non-keyword Variable Arguments，无关键字参数；
+    # **kwargs称之为keyword Variable Arguments，有关键字参数；
+
+    # 解包
+    print(args)
+    # 切片
+    print(kwargs)
+
+
+# 位置传参 + 关键字参数
 myArgs(1, b=3)
 # *打包成元组
 myArgs1(1, 2, 3, 4)
+myArgs1(1)
 # **打包成字典
 myArgs2(1, b=2, c=3)
+myArgs2(1)
+# *args, **kwargs
+myArgs3(1, 2, b=3, c=4)
 
 
 class MyClass:
     # 一个简单的类
 
-    # __双下划线表示私有，方法也是同样规则
+    # __双下划线表示私有，方法也是同样规则，外部无法通过该变量名访问
     __num = 1
+    # 单划线也表示私有，但它是约定熟成的私有，并不是官方规定，是可以访问的
+    _num1 = 1
     str = 'hello world'
 
     # 构造函数
-    def __init__(self, num):
+    def __init__(self, num=1):
         self.__num = num
 
     # 实例方法第一个参数必须是self，它指向实例
     def getNum(self):
+        # 取得实例过后的__num
         return self.__num
 
+    # 如果不加self，那它等同于静态方法
+    def getNum1():
+        # 取得默认值1
+        return MyClass._num1
 
-# MyClass()就是创建新实例
+
+class MyClass1(MyClass):
+    # 继承MyClass，私有变量无法继承
+    __num = 1
+
+    def __init__(self, *args, **kwargs):
+        super(MyClass1, self).__init__(*args, **kwargs)
+
+    def getNum(self):
+        # 覆盖父类中的getNum
+        return self.__num * 2
+
+
+# MyClass()就是创建新实例，MyClass就是静态调用
 print("MyClass实例", MyClass().str, MyClass(3).getNum())
-
-
-@dataclass
-class MyClass1:
-    # 一个简单的类，等同于MyClass，版本3.7+
-    __num: int = 1
-    str = 'hello world'
-
-    # 实例方法第一个参数必须是self，它指向实例
-    def getNum(self):
-        return self.__num
-
-
-print("MyClass1实例", MyClass1().str, MyClass1(3).getNum())
-
-
-@dataclass
-class MyClass2:
-    # 一个简单的类，在MyClass1基础新增类方法和实例方法，版本3.7+
-    __num: int = 1
-    str = 'hello world'
-    flag = True
-
-    # 实例方法第一个参数必须是self，它指向实例
-    def getNum(self):
-        return self.__num
-
-    # 静态方法，可以被类和实例类调用
-    @staticmethod
-    def getConst():
-        return '常量'
-
-    # 类方法，可以被类和实例调用
-    @classmethod
-    def getFlag(self):
-        return self.flag
-
-
-print("MyClass2实例", MyClass2(2).str, MyClass2(3).getNum(),
-      MyClass2.getConst(), MyClass2.getFlag(),
-      MyClass2().getConst(), MyClass2().getFlag())
+print("MyClass1实例", MyClass1().str, MyClass1()._num1, MyClass1(3).getNum())
+print("MyClass类", MyClass.getNum1(), MyClass._num1)
+try:
+    print("MyClass类", MyClass.__num, MyClass().__num)
+except:
+    print('AttributeError 无法访问内部变量')
 
 '''
 ------模块与包------
@@ -802,9 +945,9 @@ from package import moduleName -- 从指定包绝对导入一个模块
 print(dir())  # 函数可提供当前模块的定义的所有名称，包括自身定义的和引入模块的，以字符串列表返回
 
 # 包
-# 只有一个目录包含了__init__.py文件才认作一个包
-# 包之间可以嵌套，嵌套的包就是一个子包
-# 当__init__.py存在一个__all__的变量，那么在使用 from package import * 的时候就把这个列表变量中的模块导入，这个变量就表示是*的意思
+#   只有一个目录包含了__init__.py文件才认作一个包
+#   包之间可以嵌套，嵌套的包就是一个子包
+#   当__init__.py存在一个__all__的变量，那么在使用 from package import * 的时候就把这个列表变量中的模块导入，这个变量就表示是*的意思
 
 '''
 ------File------
@@ -829,13 +972,3 @@ with open('test.txt', 'w', encoding='utf-8') as f:
 with open('test.txt', 'r', encoding='utf-8') as f:
     print('3', f.readline())  # 读取后会改变文件指针
     print('4', f.readline())
-
-'''
-------标准库------
-
-os -- 操作系统
-glob -- glob.glob('*.py')可以生成文件名列表
-re -- 正则表达式工具
-math -- 数学工具
-datetime -- 时间日期工具
-'''
