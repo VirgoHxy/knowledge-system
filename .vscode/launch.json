@@ -17,8 +17,7 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/ts-node/dist/bin.js",
       "args": ["${relativeFile}"],
-      "cwd": "${workspaceRoot}",
-      "protocol": "inspector"
+      "cwd": "${workspaceRoot}"
     },
     {
       "name": "Babel Node Run Current File",
@@ -26,8 +25,7 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/@babel/node/bin/babel-node.js",
       "args": ["${relativeFile}"],
-      "cwd": "${workspaceRoot}",
-      "protocol": "inspector"
+      "cwd": "${workspaceRoot}"
     },
     {
       "name": "Python Run Current File",

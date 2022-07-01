@@ -5,6 +5,7 @@ import json
 import math
 import random
 import types
+import itertools
 
 '''
 三个字符串可作为多行注释，可以是单引号或者双引号
@@ -69,9 +70,9 @@ time / datetime -- 时间日期工具
 functools -- 函数工具
 
 不爽的地方:
-字典不能使用.来获取key的值,必须要转换为object或者json才可以
-没有switch 逻辑语句
-因为由缩进控制代码逻辑,导致代码的风格会出现很多多余的换行
+字典不能使用‘.’来获取key的值，要转换为object或者json才可以用‘.’
+没有switch 逻辑语句，要用字典来替代switch
+因为由缩进控制代码逻辑，导致代码的风格会出现很多多余的换行
 '''
 
 '''
@@ -133,20 +134,37 @@ print(var2, var3, var4)
 var2, var3, var4 = 1, 2, 3
 print(var2, var3, var4)
 
+# 解构
+x, y, z = [1, 2, 3]
+
+# 变量交换
+var2, var3 = 1, 2
+print(var2, var3)
+var2, var3 = var3, var2
+print(var2, var3)
+
 # 删除变量
 del var1
 del var2, var3, var4
+
 
 '''
 ------字符串操作------
 '''
 var1 = 'string'
+# 多行字符串
 var2 = '''
 多行字符串\n
 并且识别转义符
 '''
+# 字符串拆分，注意需要自己在末尾添加空格
+var5 = ("select * from test "
+        "where type = 1 "
+        "order by create time")
 var3 = f'{1+2}'
 var4 = 1
+print(var2)
+print(var5)
 # 读取字符串
 #   获取字符长度
 print(len(var1))
@@ -288,6 +306,8 @@ print(list3[::2])
 print(list3[:8:2])
 #   复制列表
 print(list3[:])
+#   反转列表
+print(list3[::-1])
 
 # 操作列表
 #   赋值
@@ -325,7 +345,12 @@ print(list2)
 #   反转列表
 list0.reverse()
 print(list0)
-
+#   查找列表最多项，最少项就用min
+print(max(set([1, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4]),
+      key=[1, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4].count))
+#   拉平二维列表到一维列表
+print(list(itertools.chain.from_iterable([[1, 2], [3, 4], [[5], [6]]])))
+#   拉平多维列表需要安装more_itertools，使用list(more_itertools.collapse(temp_list))
 
 '''
 ------元组操作------
@@ -555,6 +580,11 @@ print(y < 'b')  # 字符串比较ASCII
 print(x >= 1)
 #   小于等于
 print(x <= 1)
+#   比较聚合，注意js不能这样写
+#     x大于0并且小于2
+print(0 < x < 2)
+#     x小于10并且还小于2
+print(10 > x < 2)
 
 # 赋值运算符
 x = 1
@@ -666,6 +696,8 @@ elif x == y:
     print('x + y:', x + y)
 else:
     print('y:', y)
+#   三元运算符，如果x大于50，z就是1，否则为0
+z = 1 if x > 50 else 0
 
 # while else
 count = 0
@@ -719,7 +751,7 @@ for key, value in {'a': 1, 'b': 2, 'c': 3}.items():
 print([item*2 for item in [1, 2, 3]])
 #     如果大于1则放入新列表，就是过滤掉不符合后面if条件的
 print([item for item in [1, 2, 3] if item > 1])
-#     if和else，如果不符合条件就用else的做返回
+#     if和else，如果不符合条件就用else的做返回，三元运算
 print([item if item > 1 else -item for item in [1, 2, 3]])
 
 #   generator推导式，将一个序列构建成生成器对象
