@@ -51,9 +51,7 @@ class AbstractCarFactory {
     }
   }
   createCar() {
-    throw new Error(
-      'abstract class must implement this method, abstract functions cannot be called directly'
-    );
+    throw new Error('abstract class must implement this method, abstract functions cannot be called directly');
   }
 }
 
@@ -142,12 +140,7 @@ class CarBuilder {
     return this;
   }
   createCar() {
-    return new Car(
-      this.chassis,
-      this.engine,
-      this.electricalEquipment,
-      this.body
-    );
+    return new Car(this.chassis, this.engine, this.electricalEquipment, this.body);
   }
 }
 
@@ -174,8 +167,7 @@ class Singleton {
     this.name = name;
     return Singleton.#hasInstance
       ? Singleton.#instance
-      : (Singleton.#hasInstance = true) &&
-          (Singleton.#instance = new Singleton(name));
+      : (Singleton.#hasInstance = true) && (Singleton.#instance = new Singleton(name));
   }
   getName() {
     return this.name;
@@ -294,9 +286,7 @@ class Translator {
   }
 
   speakChinese() {
-    return `${this.foreigner.speakEnglish()} 翻译原话: 你好! 我的名字叫 ${this.transalte(
-      this.foreigner.name
-    )}`;
+    return `${this.foreigner.speakEnglish()} 翻译原话: 你好! 我的名字叫 ${this.transalte(this.foreigner.name)}`;
   }
 }
 

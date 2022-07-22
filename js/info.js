@@ -31,7 +31,7 @@ let obj = { a: 1 };
 let arr = [0, 1, 2];
 let newObj, newArr;
 
-// spread深克隆 数组/对象元素是基本类型则为深克隆 反之为浅克隆
+// spread克隆 数组/对象元素是基本类型则为深克隆 反之为浅克隆
 newObj = { ...obj }; // { a: 1 }
 newArr = [...arr]; // [ 0, 1, 2 ]
 
@@ -252,9 +252,7 @@ class Prom {
       setTimeout(() => {
         this.status = 'RESOLVED';
         this.value = value;
-        this.resolveFns.forEach(({ fn, resolve: res, reject: rej }) =>
-          res(fn(value))
-        );
+        this.resolveFns.forEach(({ fn, resolve: res, reject: rej }) => res(fn(value)));
       });
     };
 
@@ -262,9 +260,7 @@ class Prom {
       setTimeout(() => {
         this.status = 'REJECTED';
         this.reason = e;
-        this.rejectFns.forEach(({ fn, resolve: res, reject: rej }) =>
-          rej(fn(e))
-        );
+        this.rejectFns.forEach(({ fn, resolve: res, reject: rej }) => rej(fn(e)));
       });
     };
 

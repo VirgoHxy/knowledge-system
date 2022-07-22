@@ -1,4 +1,4 @@
-# 后端 api 项目开发
+# django 后端 api 项目开发
 
 - django 框架搭配一系列插件依赖
 - [项目地址](https://github.com/VirgoHxy/my_django_project.git)

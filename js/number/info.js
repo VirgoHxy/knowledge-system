@@ -186,7 +186,7 @@ Number.isInteger(-10); // true
 Number.isSafeInteger(Math.pow(2, 53) - 1); // true 是否为安全整数 polyfill用的是Number.isInteger方法以及绝对值小于Number.MAX_SAFE_INTEGER
 Number.isSafeInteger(-(Math.pow(2, 53) - 1)); // true 是否为安全整数
 
-Number.isNaN(Infinity); // false 是否为NaN(首先要typeof value === 'number'再判断) polyfill用的是全局的isNaN方法
+Number.isNaN(Infinity); // false 是否为NaN(首先要typeof value === 'number'再判断) polyfill用的是全局的isNaN方法，因为全局的isNaN不会判断是number，所以字符串等其他非number类型也会判断为true
 Number.isNaN('10'); // false
 Number.isNaN(true); // false
 Number.isNaN(NaN); // true
@@ -283,9 +283,7 @@ getDecimal2FloatValue(0.111); // 0.875 二进制转十进制
 parseInt(-100, 2); // -4 二进制转十进制
 getDecimal2FloatValue(1011.01); // 11.25 二进制转十进制
 getDecimal2FloatValue(-1011.01); // -11.25 二进制转十进制
-getDecimal2FloatValue(
-  '0.010011001100110011001100110011001100110011001100110100'
-); // 0.30000000000000004 二进制转十进制
+getDecimal2FloatValue('0.010011001100110011001100110011001100110011001100110100'); // 0.30000000000000004 二进制转十进制
 
 // 位运算
 
@@ -312,24 +310,9 @@ let f = 21;
 e = ~e + 1; // -10 转换数字符号 利用取反公式 但是0不会转换为-0
 f = -f; // -21 0会转换为-0
 
-isEquals(
-  15 ^ 9,
-  parseInt('1111', 2) ^ parseInt('1001', 2),
-  parseInt('0110', 2),
-  6
-); // true都相等 按位异^运算 相同位返回0 不同为返回1
-isEquals(
-  15 & 9,
-  parseInt('1111', 2) & parseInt('1001', 2),
-  parseInt('1001', 2),
-  9
-); // true都相等 按位与&运算 相同位都为1返回1 反之返回0
-isEquals(
-  15 | 9,
-  parseInt('1111', 2) | parseInt('1001', 2),
-  parseInt('1111', 2),
-  15
-); // true都相等 按位或|运算 对应位有为1返回1 反之返回0
+isEquals(15 ^ 9, parseInt('1111', 2) ^ parseInt('1001', 2), parseInt('0110', 2), 6); // true都相等 按位异^运算 相同位返回0 不同为返回1
+isEquals(15 & 9, parseInt('1111', 2) & parseInt('1001', 2), parseInt('1001', 2), 9); // true都相等 按位与&运算 相同位都为1返回1 反之返回0
+isEquals(15 | 9, parseInt('1111', 2) | parseInt('1001', 2), parseInt('1111', 2), 15); // true都相等 按位或|运算 对应位有为1返回1 反之返回0
 
 ~-6 == 5; // true 取反 按位非~取反结果公式 ~x = -(x + 1) 将目标值转换符号再减1
 ~5 == -6; // true
@@ -383,7 +366,7 @@ isEquals(
 1 * 2**0 + 0 * 2**1 + 1 * 2**2 + ... + 1 * 2**28 + 1 * 2**29 = 1073741821
 */
 
-// --START-- 测试所用方法
+/* --START-- 执行所需方法 */
 // 多个值是否相等
 function isEquals() {
   let i, j;
@@ -407,7 +390,13 @@ function isEquals() {
   return true;
 }
 
-// 二进制小数转十进制
+/**
+ * 带小数的二进制转十进制
+ *
+ * @param {Number} val
+ *
+ * @returns
+ */
 function getDecimal2FloatValue(val) {
   let arr = val.toString().split('.');
   let number =
@@ -431,185 +420,4 @@ function getDecimal2FloatValue(val) {
       return '';
   }
 }
-// --END-- 测试所用方法
-
-/**
- * 加减乘除运算(解决精度问题)
- *
- * @param {number} x 第一个数字
- * @param {number} y 第二个数字
- * @param {String} type 类型
- * @param {String} fixedLength fixed位数
- *
- * @returns {number}
- */
-function fixed(x, y, type, fixedLength) {
-  switch (type) {
-    case '+':
-      return parseFloat((x + y).toFixed(fixedLength || 10));
-    case '-':
-      return parseFloat((x - y).toFixed(fixedLength || 10));
-    case '*':
-      return parseFloat((x * y).toFixed(fixedLength || 10));
-    case '/':
-      return parseFloat((x / y).toFixed(fixedLength || 10));
-    default:
-      return '类型错误';
-  }
-}
-
-/**
- * 是否相等(解决精度问题)
- *
- * @param {number} left 数字
- * @param {number} right 数字
- *
- * @returns {string}
- */
-function isEqual(left, right) {
-  return Math.abs(left - right) < Number.EPSILON;
-}
-
-/**
- * 返回n到m的随机小数 [n,m)
- *
- * @param {number} n
- * @param {number} m
- *
- * @returns {number}
- */
-function random(n, m) {
-  return (Math.random() * (m - n) + n).toFixed(2);
-}
-
-/**
- * 返回n到m的随机整数 [n,m)
- *
- * @param {number} n
- * @param {number} m
- *
- * @returns {number}
- */
-function randomInt(n, m) {
-  return parseInt(Math.random() * (m - n) + n);
-}
-
-/**
- * 返回n位随机整数
- *
- * @param {number} n
- *
- * @returns {String}
- */
-function randomOfDigit(n) {
-  if (n <= 0 || n > 16) {
-    return null;
-  }
-  return Math.random().toString().slice(-n);
-}
-
-/**
- * 生成4位16进制数字
- *
- * @returns {String}
- */
-function S4() {
-  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-}
-
-/**
- * 生成唯一guid
- *
- * @returns {String}
- */
-function guid() {
-  return (
-    S4() +
-    S4() +
-    '-' +
-    S4() +
-    '-' +
-    S4() +
-    '-' +
-    S4() +
-    '-' +
-    S4() +
-    S4() +
-    S4()
-  );
-}
-
-/**
- * 生成唯一16长度id
- *
- * @returns {String}
- */
-function id16() {
-  return S4() + S4() + S4() + S4();
-}
-
-/**
- * 判断数字是否为奇数
- *
- * @param {number} num 数字
- *
- * @returns {Boolean}
- */
-function isOdd(num) {
-  return Math.abs(num % 2) === 1;
-}
-
-/**
- * 数字左补零
- *
- * @param {number} num 数字
- * @param {number} fill 补零后总长度
- *
- * @returns {String}
- */
-function padNumber(num, fill) {
-  let len = ('' + num).length;
-  return Array(fill > len ? fill - len + 1 || 0 : 0).join(0) + num;
-}
-
-console.log(0.1 + 0.2);
-console.log(0.354 - 0.0003);
-console.log(fixed(0.1, 0.2, '+'));
-console.log(fixed(0.354, 0.0003, '-'));
-console.log(35.41 * 100);
-console.log(35.41 / 10);
-console.log(fixed(35.41, 100, '*'));
-console.log(fixed(35.41, 10, '/'));
-
-console.log(0.1 + 0.2);
-console.log(0.354 - 0.0003);
-console.log(isEqual(0.1 + 0.2, 0.3));
-console.log(isEqual(0.354 - 0.0003, 0.3537));
-console.log(35.41 * 100);
-console.log(35.41 / 10);
-console.log(isEqual(35.41 * 100, 3541));
-console.log(isEqual(35.41, 10, 3.541));
-
-console.log(random(0.9, 2.1));
-
-console.log(randomInt(1, 100));
-
-console.log(randomOfDigit(0)); // 随机小数
-console.log(randomOfDigit(6)); // 6位随机数
-console.log(randomOfDigit(16)); // 16位随机数
-console.log(randomOfDigit(20)); // 20位随机数 因为超过最大安全整数 所以为null
-
-console.log(guid());
-
-console.log(id16());
-
-console.log(isOdd(1)); // true
-
-console.log(padNumber(1234, 4));
-console.log(padNumber(1, 4));
-// 也可以使用string.prototype.padStart
-console.log('1234'.padStart(4, '0'));
-console.log('1'.padStart(4, '0'));
-// 数字右补零
-console.log('1234'.padEnd(4, '0'));
-console.log('1'.padEnd(4, '0'));
+/* --END-- 执行所需方法 */

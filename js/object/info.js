@@ -55,10 +55,7 @@ function Child() {
   Father.call(this); // call super constructor.
   Mother.call(this); // call super constructor.
   this.my = () => {
-    console.log(
-      this.advantageF + this.advantageM,
-      this.shortcomingF + this.shortcomingM
-    );
+    console.log(this.advantageF + this.advantageM, this.shortcomingF + this.shortcomingM);
   };
 }
 // 继承父类
@@ -136,9 +133,7 @@ Object.getOwnPropertyNames([1, 2]); // [ '0', '1', 'length' ] 返回自身属性
 Object.getOwnPropertySymbols({ a: 1, b: 2, [Symbol('c')]: 3 }); // [ Symbol(c) ] 返回自身属性(只包括Symbol)数组
 Object.getPrototypeOf({}) === Object.prototype; // true 返回指定对象的原型对象
 Object.getPrototypeOf(Object) === Function.prototype; // true Object是构造函数 所以为true
-Object.setPrototypeOf({ 0: 1, 1: 2, length: 2 }, Array.prototype).map(
-  (ele) => ele * 2
-); // [2, 4] 设置一个对象的原型为指定的原型
+Object.setPrototypeOf({ 0: 1, 1: 2, length: 2 }, Array.prototype).map((ele) => ele * 2); // [2, 4] 设置一个对象的原型为指定的原型
 
 let freezeObj = { a: 1, b: {}, c: 2 };
 Object.freeze(freezeObj); // {a: 1, b: {}, c: 2} 冻结对象 其他代码不能删除、更改、添加任何属性 冻结 == 只能读取
@@ -257,9 +252,7 @@ Object.fromEntries([
   ['a', 1],
   ['b', 2],
 ]); // {a: 1, b: 2} 方法把[key, value]数组转换为一个对象
-Object.fromEntries(
-  Object.entries({ a: 1, b: 2 }).map(([key, val]) => [key, val * 2])
-); // {a: 2, b: 4} 可以做对象转换
+Object.fromEntries(Object.entries({ a: 1, b: 2 }).map(([key, val]) => [key, val * 2])); // {a: 2, b: 4} 可以做对象转换
 
 Object.values({ a: 1, b: 2 }); // [1, 2] 返回对象自身可枚举属性的值数组
 Object.values(['10', '2']); // ["10", "2"]
@@ -272,103 +265,3 @@ Object.is(Number.NaN, Number.NaN); // true 数字需要注意NaN
 +0 === -0 && +0 === 0; // true
 // eslint-disable-next-line
 Number.NaN === Number.NaN; // false
-
-/**
- * 判断对象是否相等
- *
- * @param {Object} x 对象1
- * @param {Object} y 对象2
- *
- * @return {Boolean} true 为相等，false 为不等
- */
-function compareObject(x, y) {
-  // 指向同一内存时
-  if (x === y) {
-    return true;
-  } else if (
-    typeof x == 'object' &&
-    x != null &&
-    typeof y == 'object' &&
-    y != null
-  ) {
-    if (Object.keys(x).length != Object.keys(y).length) {
-      return false;
-    }
-    for (let prop in x) {
-      if (Object.prototype.hasOwnProperty.call(y, prop)) {
-        if (!compareObject(x[prop], y[prop])) {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    }
-    return true;
-  } else {
-    return false;
-  }
-}
-
-/**
- * 深克隆对象(JSON.parse(JSON.stringify(target)) 可深克隆一个对象 但有一定局限)
- *
- * @param {*} target 克隆对象 不支持日期对象,正则对象,map,set,promise等克隆
- *
- * @returns {*}
- *
- */
-function clone(target, map = new WeakMap()) {
-  if (typeof target === 'object' && target !== null) {
-    let cloneTarget = Array.isArray(target) ? [] : {};
-    if (map.get(target)) {
-      return map.get(target);
-    }
-    map.set(target, cloneTarget);
-    for (const key in target) {
-      cloneTarget[key] = clone(target[key], map);
-    }
-    return cloneTarget;
-  } else {
-    return target;
-  }
-}
-
-/**
- * 判断数据类型
- *
- * @param {*} o 各种类型值
- *
- * @returns {String} 详细类型
- */
-function getType(o) {
-  let s = Object.prototype.toString.call(o);
-  return s.match(/\[object (.*?)\]/)[1].toLowerCase();
-}
-
-let user = {
-  [Symbol.toStringTag]: 'User',
-};
-console.log(getType(1)); //number
-console.log(getType(new Date())); //date
-console.log(getType(user)); //user
-
-let sourceObj1 = {
-  a: 1,
-  c: null,
-  date: new Date(),
-  func: () => {
-    console.log(1);
-  },
-  regexp: new RegExp('1'),
-  map: new Map([[1, 1]]),
-};
-sourceObj1.b = sourceObj1;
-let cloneObj1 = clone(sourceObj1);
-sourceObj1.a = 2;
-sourceObj1.c = 3;
-sourceObj1.date.setFullYear(1998);
-sourceObj1.func.name = '1998';
-sourceObj1.regexp.lastIndex = 5;
-sourceObj1.map.set(1, 5);
-console.log(sourceObj1);
-console.log(cloneObj1);

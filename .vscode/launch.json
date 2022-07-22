@@ -6,7 +6,7 @@
   "configurations": [
     {
       "name": "Node Run Current File",
-      "type": "pwa-node",
+      "type": "node",
       "request": "launch",
       "skipFiles": ["<node_internals>/**"],
       "program": "${file}"

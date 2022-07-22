@@ -76,12 +76,7 @@ class Car {
   engine: Engine;
   electricalEquipment: ElectricalEquipment;
   body: Body;
-  constructor(
-    chassis: Chassis,
-    engine: Engine,
-    electricalEquipment: ElectricalEquipment,
-    body: Body
-  ) {
+  constructor(chassis: Chassis, engine: Engine, electricalEquipment: ElectricalEquipment, body: Body) {
     this.chassis = chassis;
     this.engine = engine;
     this.electricalEquipment = electricalEquipment;
@@ -139,12 +134,7 @@ class CarBuilder {
     return this;
   }
   createCar(): Car {
-    return new Car(
-      this.engine,
-      this.chassis,
-      this.electricalEquipment,
-      this.body
-    );
+    return new Car(this.engine, this.chassis, this.electricalEquipment, this.body);
   }
 }
 
@@ -170,8 +160,7 @@ class Singleton {
     this.name = name;
     return Singleton.hasInstance
       ? Singleton.instance
-      : (Singleton.hasInstance = true) &&
-          (Singleton.instance = new Singleton(name));
+      : (Singleton.hasInstance = true) && (Singleton.instance = new Singleton(name));
   }
   getName(): string {
     return this.name;
@@ -304,9 +293,7 @@ class Translator {
   }
 
   speakChinese(): string {
-    return `${this.foreigner.speakEnglish()} 翻译原话: 你好! 我的名字叫 ${this.transalte(
-      this.foreigner.name
-    )}`;
+    return `${this.foreigner.speakEnglish()} 翻译原话: 你好! 我的名字叫 ${this.transalte(this.foreigner.name)}`;
   }
 }
 
@@ -396,11 +383,7 @@ class PhoneES7 {
   }
 }
 
-function startFan(
-  target: unknown,
-  key: string,
-  descriptor: PropertyDescriptor
-) {
+function startFan(target: unknown, key: string, descriptor: PropertyDescriptor) {
   const fn = descriptor.value;
   descriptor.value = function (...args: unknown[]) {
     console.log('start fan');
@@ -410,11 +393,7 @@ function startFan(
 }
 
 function support(arg: unknown) {
-  return function (
-    target: unknown,
-    key: string,
-    descriptor: PropertyDescriptor
-  ) {
+  return function (target: unknown, key: string, descriptor: PropertyDescriptor) {
     const fn = descriptor.value;
     descriptor.value = function (...args: unknown[]) {
       console.log(`support phone ${arg}`);

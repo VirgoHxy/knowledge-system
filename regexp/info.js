@@ -27,21 +27,55 @@
 // m 多行搜索
 // y 粘性标志,精准搜索,必须从头部开始
 
+/* 
+\p{name} Unicode中命名为name的字符类，例如\p{L}表示包含字母，必须使用修饰符u
+
+字母（Letter） L:
+  小写（lowercase） Ll
+  修饰（modifier） Lm,
+  首字母大写（titlecase） Lt,
+  大写（uppercase） Lu,
+  其它（other） Lo。
+数字（Number） N:
+  十进制数字（decimal digit） Nd,
+  字母数字（letter number） Nl,
+  其它（other） No。
+标点符号（Punctuation） P:
+  链接符（connector） Pc,
+  横杠（dash） Pd,
+  起始引用号（initial quote） Pi,
+  结束引用号（final quote） Pf,
+  开（open） Ps,
+  闭（close） Pe,
+  其它（other） Po。
+标记（Mark） M (accents etc):
+  间隔合并（spacing combining） Mc,
+  封闭（enclosing） Me,
+  非间隔（non-spacing） Mn。
+符号（Symbol） S:
+  货币（currency） Sc,
+  修饰（modifier） Sk,
+  数学（math） Sm,
+  其它（other） So。
+分隔符（Separator） Z:
+  行（line） Zl,
+  段落（paragraph） Zp,
+  空格（space） Zs。
+其它（Other） C:
+  控制符（control） Cc,
+  格式（format） Cf,
+  未分配（not assigned） Cn,
+  私有（private use） Co,
+  代理伪字符（surrogate） Cs。
+*/
+
 let str, regexp;
 
 /* 动态正则 new RegExp(`/@import\\s+(\\S+)\\.js/`) */
 let ext = 'js';
-console.log(
-  "@import 'demo.js';@import 'demo.css';".match(
-    new RegExp(`@import\\s+'\\S+\\.${ext}'`, 'g')
-  )[0]
-);
+console.log("@import 'demo.js';@import 'demo.css';".match(new RegExp(`@import\\s+'\\S+\\.${ext}'`, 'g'))[0]);
 ext = 'css';
-console.log(
-  "@import 'demo.js';@import 'demo.css';".match(
-    new RegExp(`@import\\s+'\\S+\\.${ext}'`, 'g')
-  )[0]
-);
+console.log("@import 'demo.js';@import 'demo.css';".match(new RegExp(`@import\\s+'\\S+\\.${ext}'`, 'g'))[0]);
 
 /* 字符正则方法 */
 console.log('1,2,3'.match(/\d/)); // 1, index: 0, input: '1,2,3'
@@ -64,35 +98,16 @@ console.log('124'.replace(/12/g, "$'")); // 44
 // 捕获组number
 console.log('12-34-56'.replace(/(\d+)-(\d+)-(\d+)/g, '$2-$3-$1')); // 34-56-12
 // 捕获组name
-console.log(
-  '12-34-56'.replace(
-    /(?<one>\d+)-(?<two>\d+)-(?<three>\d+)/g,
-    '$<two>-$<three>-$<one>'
-  )
-); // 34-56-12
+console.log('12-34-56'.replace(/(?<one>\d+)-(?<two>\d+)-(?<three>\d+)/g, '$<two>-$<three>-$<one>')); // 34-56-12
 // replace函数 没有捕获组 match匹配项 index位置 input源字符串
-console.log(
-  'html and css'.replace(/html|css/gi, (match) => match.toUpperCase())
-); // HTML and CSS
+console.log('html and css'.replace(/html|css/gi, (match) => match.toUpperCase())); // HTML and CSS
 // replace函数 没有捕获组 match匹配项 p1,p2,...,pn分组内容 index位置 input源字符串 groups分组对象
-console.log(
-  'html and css'.replace(
-    /(html).*(css)/gi,
-    (match, p1, p2, offset, input, groups) => `${p2} and ${p1}`
-  )
-); // css and html
+console.log('html and css'.replace(/(html).*(css)/gi, (match, p1, p2, offset, input, groups) => `${p2} and ${p1}`)); // css and html
 // 将下划线命名转换为大驼峰
-let line2upper = (str) =>
-  str
-    .replace(/\s/g, '')
-    .replace(/_{0,1}([^_])([^_]*)/g, (_, $1, $2) => $1.toUpperCase() + $2);
+let line2upper = (str) => str.replace(/\s/g, '').replace(/_{0,1}([^_])([^_]*)/g, (_, $1, $2) => $1.toUpperCase() + $2);
 console.log(line2upper('line__a_to_upper'));
 // 大小写互换
-let lowerSwapUpper = (str) =>
-  str.replace(
-    /([A-Z]*)([a-z]*)/g,
-    (_, $1, $2) => $1.toLowerCase() + $2.toUpperCase()
-  );
+let lowerSwapUpper = (str) => str.replace(/([A-Z]*)([a-z]*)/g, (_, $1, $2) => $1.toLowerCase() + $2.toUpperCase());
 console.log(lowerSwapUpper('line__a_to_upper'));
 // exec通过循环得到所有匹配项 matchAll的替代方法 返回 match匹配项,index位置,input源字符串,groups分组对象
 regexp = /javascript/gi;
@@ -163,9 +178,7 @@ console.log('javascript typescript'.match(/(type|java)script/gi)); // javascript
 // 时间
 console.log('12:12'.match(/\b([01]\d|2[0-3]):[0-5]\d\b/g)); // 12:12
 // 编程语言 无法匹配一个单独字母C
-console.log(
-  'Java JavaScript C++ PHP C C1'.match(/\bJava(Script)?\b|\bPHP\b|C(\+\+)?/g)
-); // Java,JavaScript,C++,PHP,C
+console.log('Java JavaScript C++ PHP C C1'.match(/\bJava(Script)?\b|\bPHP\b|C(\+\+)?/g)); // Java,JavaScript,C++,PHP,C
 // 嵌套标签
 console.log(
   `
@@ -196,9 +209,7 @@ console.log('1 10 100 1000'.match(/10*/g)); // 1,10,100,1000
 console.log('<body><h1>Hi!</h1></body>'.match(/<[a-z][a-z0-9]*>/gi)); // <body>,<h1>
 // 颜色
 console.log(
-  'color:#121212; background-color:#AA00ef bad-colors:f#fddee #fd2 #12345678'.match(
-    /(#((\p{Hex_Digit}){3}){1,2}\b)/gu
-  )
+  'color:#121212; background-color:#AA00ef bad-colors:f#fddee #fd2 #12345678'.match(/(#((\p{Hex_Digit}){3}){1,2}\b)/gu)
 ); // #121212,#AA00ef,#fd2
 // 懒惰量词
 console.log('a "witch" and her "broom" is one'.match(/".+?"/g)); // "witch","broom"
@@ -231,15 +242,11 @@ console.log('Gogogo now!'.match(/(go)+/i)); // "Gogogo"
 // 域名
 console.log('site.com my.site.com'.match(/(\w+\.)+\w+/g)); // site.com,my.site.com
 // 兼容email
-console.log(
-  'my@mail.com @ his@site.com.uk'.match(/[-.\w]+@([\w-]+\.)+[\w-]+/g)
-); // my@mail.com, his@site.com.uk
+console.log('my@mail.com @ his@site.com.uk'.match(/[-.\w]+@([\w-]+\.)+[\w-]+/g)); // my@mail.com, his@site.com.uk
 // 标签名
 console.log('<><demo <body> demo>'.match(/<([^<>]+?)>/i)[1]); // body
 // 嵌套
-console.log(
-  "<a href='xyz'>".match(/<(([a-z0-9]+)\s((\w+)=['"]{1}([^'"]*)['"]{1}))>/i)
-);
+console.log("<a href='xyz'>".match(/<(([a-z0-9]+)\s((\w+)=['"]{1}([^'"]*)['"]{1}))>/i));
 // 可选组
 console.log('ac'.match(/a(z)?(c)?/)); // ac,undefined,c
 // 命名组
@@ -254,16 +261,10 @@ console.log(str.replace(regexp, '$<day>.$<month>.$1'));
 // 非捕获组 ?:
 console.log('<demo>'.match(/(?:<)(.+)(?:>)/i)[1]); // demo
 // 颜色
-console.log(
-  'color: #3f3; background-color: #AA00ef; and: #abcd'.match(
-    /(#((\p{Hex_Digit}){3}){1,2}\b)/gu
-  )
-);
+console.log('color: #3f3; background-color: #AA00ef; and: #abcd'.match(/(#((\p{Hex_Digit}){3}){1,2}\b)/gu));
 // 数字
 console.log('-1.5 0 2 -123.4.'.match(/[-+]?\d+(\.\d+)?/g));
-let [s, a, op, b] = '1.2 * 3.4'.match(
-  /([-+]?\d+(?:\.\d+)?)\s*([+\-*/])\s*([-+]?\d+(?:\.\d+)?)/
-);
+let [s, a, op, b] = '1.2 * 3.4'.match(/([-+]?\d+(?:\.\d+)?)\s*([+\-*/])\s*([-+]?\d+(?:\.\d+)?)/);
 console.log(s); // 1.2 * 3.4
 console.log(a); // 1.2
 console.log(op); // *
@@ -289,9 +290,7 @@ console.log('Breakfast at 09:00 in the room 123:456'.match(/\b\d\d:\d\d\b/));
 // 编号反向引用 \N
 console.log('He said: "She\'s the one!".'.match(/(['"])(.*?)\1/g)); // "She's the one!"
 // 按命名反向引用：\k<name>
-console.log(
-  'He said: "She\'s the one!".'.match(/(?<quote>['"])(.*?)\k<quote>/g)
-); // "She's the one!"
+console.log('He said: "She\'s the one!".'.match(/(?<quote>['"])(.*?)\k<quote>/g)); // "She's the one!"
 
 /* 断言 */
 // 前瞻断言 匹配\d仅在后面是€
@@ -317,8 +316,7 @@ str = `
 console.log(str.replace(/(?<=(<body.*?>))/, '<h1>Hello</h1>'));
 // 防止无限回溯
 str = '12312312222222222222222222222222222222222222222222222222222222232!';
-let str1 =
-  'An input string that takes a long time or even makes this regexp to hang';
+let str1 = 'An input string that takes a long time or even makes this regexp to hang';
 // console.log(/^(\d+)*$/.test(str)); // 将会导致javascript挂起
 // console.log(/^(\w+\s?)*$/.test(str1)); // 将会导致javascript挂起
 // 解决 反向引用的n根据括号位置定义

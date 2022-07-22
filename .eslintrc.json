@@ -1,4 +1,5 @@
 {
+  // 使用注释 // eslint-disable-next-line 可以取消掉下一行检查
   "env": {
     "browser": true,
     "es2020": true,
@@ -22,7 +23,8 @@
     "prettier/prettier": [
       "warn",
       {
-        "endOfLine": "auto"
+        "endOfLine": "auto",
+        "printWidth": 120
       }
     ]
   },
@@ -34,11 +36,7 @@
         "ecmaVersion": "latest"
       },
       "plugins": ["@typescript-eslint"],
-      "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended"
-      ]
+      "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"]
     }
   ]
 }

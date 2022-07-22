@@ -29,9 +29,7 @@ function getUrlParam(key, url) {
     for (let i = 0; i < querys.length; i++) {
       let pair = querys[i].split('=');
       if (pair[0] == key) {
-        return typeof pair[1] == 'string'
-          ? decodeURIComponent(pair[1])
-          : pair[1];
+        return typeof pair[1] == 'string' ? decodeURIComponent(pair[1]) : pair[1];
       }
     }
   } catch (error) {
@@ -52,8 +50,7 @@ function getUrlParam(key, url) {
 function changeURLArg(key, value, url, hrefFlag) {
   try {
     let pattern = key + '=([^&]*)';
-    let replaceText =
-      key + '=' + (!(value instanceof Object) ? value : JSON.stringify(value));
+    let replaceText = key + '=' + (!(value instanceof Object) ? value : JSON.stringify(value));
     !url && (url = window.location.href);
     let returnUrl = '';
     if (url.match(pattern)) {
@@ -123,6 +120,81 @@ function urlMethod(data = {}) {
 }
 
 /**
+ * 防抖装饰器
+ *
+ * @param {Function} func 函数
+ * @param {Number} ms 毫秒延时
+ *
+ * @returns {Function}
+ */
+function debounce(func, ms) {
+  let timeout;
+  return function () {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, arguments), ms);
+  };
+}
+
+/**
+ * 节流装饰器
+ *
+ * @param {Function} func 函数
+ * @param {Number} ms 毫秒延时
+ *
+ * @returns {Function}
+ */
+function throttle(func, ms) {
+  let isThrottled = false,
+    savedArgs,
+    savedThis;
+
+  function wrapper() {
+    if (isThrottled) {
+      savedArgs = arguments;
+      savedThis = this;
+      return;
+    }
+    func.apply(this, arguments);
+    isThrottled = true;
+    setTimeout(function () {
+      isThrottled = false;
+      if (savedArgs) {
+        wrapper.apply(savedThis, savedArgs);
+        savedArgs = savedThis = null;
+      }
+    }, ms);
+  }
+  return wrapper;
+}
+
+/**
+ * 判断多个参数是否完全相等
+ *
+ * @returns {Boolean}
+ */
+function isEquals() {
+  let i, j;
+  if (arguments.length < 2) {
+    return '至少需要两个参数!';
+  }
+  for (i = 0; i < arguments.length; i++) {
+    for (j = i + 1; j < arguments.length; j++) {
+      let a = arguments[i];
+      let b = arguments[j];
+      //如果类型不同，返回false
+      if (typeof a !== typeof b) {
+        return false;
+      } else {
+        if (a !== b) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
+
+/**
  * 设置期限Storage
  *
  * @param {Object} storage 存储对象类型 localStorage或者sessionStorage
@@ -162,14 +234,6 @@ function getExpire(storage, key) {
   return val.data;
 }
 
-/*
-// 遍历缓存键值对
-for(let i = 0; i < localStorage.length; i++) {
-  let key = localStorage.key(i);
-  console.log(`${key}: ${localStorage.getItem(key)}`);
-}
-*/
-
 /**
  * 获取cookie(必须在浏览器环境下运行)
  *
@@ -179,15 +243,9 @@ for(let i = 0; i < localStorage.length; i++) {
  */
 function getCookie(name) {
   let matches = document.cookie.match(
-    new RegExp(
-      '(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)'
-    )
+    new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)')
   );
-  return matches
-    ? matches[1]
-      ? JSON.parse(decodeURIComponent(matches[1]))
-      : undefined
-    : undefined;
+  return matches ? (matches[1] ? JSON.parse(decodeURIComponent(matches[1])) : undefined) : undefined;
 }
 
 /**
@@ -208,11 +266,7 @@ function setCookie(name, value, options = {}) {
     options.expires = options.expires.toUTCString();
   }
   let updatedCookie =
-    encodeURIComponent(name) +
-    '=' +
-    encodeURIComponent(
-      typeof value == 'object' ? JSON.stringify(value) : value
-    );
+    encodeURIComponent(name) + '=' + encodeURIComponent(typeof value == 'object' ? JSON.stringify(value) : value);
   for (let optionKey in options) {
     updatedCookie += '; ' + optionKey;
     let optionValue = options[optionKey];
@@ -329,10 +383,7 @@ function closeWindow() {
   if (userAgent.indexOf('Firefox') != -1 || userAgent.indexOf('Chrome') != -1) {
     window.location.href = 'about:blank';
     window.location.replace('about:blank');
-  } else if (
-    userAgent.indexOf('Android') > -1 ||
-    userAgent.indexOf('Linux') > -1
-  ) {
+  } else if (userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1) {
     window.opener = null;
     window.open('about:blank', '_self', '').close();
   } else {
@@ -450,145 +501,29 @@ function readBlob(blob, type) {
     reader.onload = function (e) {
       resolve(e.target.result);
     };
-    type.indexOf('image') != -1
-      ? reader.readAsDataURL(blob)
-      : reader.readAsText(blob);
+    type.indexOf('image') != -1 ? reader.readAsDataURL(blob) : reader.readAsText(blob);
   });
 }
 
-/**
- * 防抖装饰器
- *
- * @param {Function} func 函数
- * @param {Number} ms 毫秒延时
- *
- * @returns {Function}
- */
-function debounce(func, ms) {
-  let timeout;
-  return function () {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, arguments), ms);
-  };
-}
-
-/**
- * 节流装饰器
- *
- * @param {Function} func 函数
- * @param {Number} ms 毫秒延时
- *
- * @returns {Function}
- */
-function throttle(func, ms) {
-  let isThrottled = false,
-    savedArgs,
-    savedThis;
-
-  function wrapper() {
-    if (isThrottled) {
-      savedArgs = arguments;
-      savedThis = this;
-      return;
-    }
-    func.apply(this, arguments);
-    isThrottled = true;
-    setTimeout(function () {
-      isThrottled = false;
-      if (savedArgs) {
-        wrapper.apply(savedThis, savedArgs);
-        savedArgs = savedThis = null;
-      }
-    }, ms);
-  }
-  return wrapper;
-}
-
-console.log(isNull(1));
-console.log(isNull(0));
-console.log(isNull());
-console.log(isNull(null));
-console.log(isNull(''));
-console.log(isNull({}));
-console.log(isNull(false));
-
-console.log(
-  getUrlParam('c', 'http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1')
-);
-
-console.log(
-  changeURLArg(
-    'c',
-    123,
-    'http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1'
-  )
-);
-console.log(
-  changeURLArg(
-    'b',
-    123,
-    'http://wxy.ittiger.club:9999/In?p=20180718152957184&c=1'
-  )
-);
-
-console.log(
-  urlMethod({
-    url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-    type: 'get',
-    key: 'openId',
-  })
-);
-console.log(
-  urlMethod({
-    url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-    type: 'has',
-    key: 'openId',
-  })
-);
-let href = urlMethod({
-  url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-  type: 'delete',
-  key: 'openId',
-});
-console.log(href);
-let href1 = urlMethod({
-  url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-  type: 'set',
-  key: 'openId',
-  value: '123123',
-});
-console.log(href1);
-console.log(
-  urlMethod({
-    url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-    type: 'set',
-    key: 'openId',
-    value: '123123',
-    hrefFlag: false,
-  })
-);
-let href2 = urlMethod({
-  url: 'http://wxy.ittiger.club:4001/?1=1&openId=oIyVLwypKFQ',
-  type: 'objectSet',
-  value: {
-    demo1: '123123',
-    demo2: '456456',
-  },
-});
-console.log(href2);
-
-let demo = debounce(function () {
-  console.log('debounce');
-}, 1000);
-// 只会执行一次
-for (let index = 0; index < 10000; index++) {
-  demo();
-}
-
-let demo1 = throttle(function (x) {
-  console.log('throttle' + x);
-}, 2000);
-demo1(1); // throttle1
-demo1(2); // 节流
-demo1(3); // 节流
-// 2000ms后 输出throttle3 2被3替换
+module.exports = {
+  isNull,
+  getUrlParam,
+  changeURLArg,
+  urlMethod,
+  debounce,
+  throttle,
+  isEquals,
+  setExpire,
+  getExpire,
+  getCookie,
+  setCookie,
+  deleteCookie,
+  os,
+  getBrowser,
+  getPayBrowser,
+  closeWindow,
+  getDownloadUri,
+  download,
+  downloadByAElement,
+  readBlob,
+};

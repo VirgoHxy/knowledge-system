@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 from collections.abc import Iterable
 from functools import reduce
+import os
 import json
 import math
 import random
 import types
 import itertools
+from enum import Enum, unique
 
 '''
 三个字符串可作为多行注释，可以是单引号或者双引号
@@ -73,6 +75,9 @@ functools -- 函数工具
 字典不能使用‘.’来获取key的值，要转换为object或者json才可以用‘.’
 没有switch 逻辑语句，要用字典来替代switch
 因为由缩进控制代码逻辑，导致代码的风格会出现很多多余的换行
+
+优点:
+有些操作方式很优雅，简洁
 '''
 
 '''
@@ -226,7 +231,14 @@ print(len('string'))
 print('string str s'.replace('s', 'h', 2))
 #   以空格为分隔符或者指定字符串分割为列表
 print('this is string example'.split())
-print('1,2,3'.split(','))
+print('1,2,3'.split(',', 1))  # 并且只分割一次
+#   去掉空格
+#     去掉左边空格
+print('  123  '.lstrip())
+#     去掉右边空格
+print('  123  '.rstrip())
+#     去掉左边空格
+print('  123  '.strip())
 #   全部大写
 print('string'.upper())
 #   全部小写
@@ -357,6 +369,7 @@ print(list(itertools.chain.from_iterable([[1, 2], [3, 4], [[5], [6]]])))
 '''
 # 元组和列表基本一致，但元组值不能二次赋值，相当于只读列表，表示指向不变，不代表元素绝对不变
 tupleTemp = (1, 2, 3)
+tupleTemp = (1,)  # 注意一个元素不能直接(1)，这会把括号识别为优先级符号
 
 '''
 ------集合操作------
@@ -915,7 +928,7 @@ myArgs3(1, 2, b=3, c=4)
 
 class MyClass:
     # 一个简单的类
-
+    # __slots__用来限制实例可以绑定的属性名称，了解即可
     # __双下划线表示私有，方法也是同样规则，外部无法通过该变量名访问
     __num = 1
     # 单划线也表示私有，但它是约定熟成的私有，并不是官方规定，是可以访问的
@@ -931,10 +944,30 @@ class MyClass:
         # 取得实例过后的__num
         return self.__num
 
+    def setNum(self, num):
+        self.__num = num
+
     # 如果不加self，那它等同于静态方法
     def getNum1():
         # 取得默认值1
         return MyClass._num1
+
+
+# MyClass()就是创建新实例，MyClass就是静态调用
+myClassInstance = MyClass()
+myClassInstance.str1 = 1
+myClassInstance.setNum(10)
+print("MyClass实例", MyClass().str, MyClass(3).getNum())
+print("MyClass实例", myClassInstance.__dict__)
+print("MyClass类", MyClass.getNum1(), MyClass._num1)
+try:
+    myClassInstance.demo = 1
+except:
+    print('AttributeError 无法赋值')
+try:
+    print("MyClass类", MyClass.__num, MyClass().__num)
+except:
+    print('AttributeError 无法访问内部变量')
 
 
 class MyClass1(MyClass):
@@ -949,14 +982,66 @@ class MyClass1(MyClass):
         return self.__num * 2
 
 
-# MyClass()就是创建新实例，MyClass就是静态调用
-print("MyClass实例", MyClass().str, MyClass(3).getNum())
 print("MyClass1实例", MyClass1().str, MyClass1()._num1, MyClass1(3).getNum())
-print("MyClass类", MyClass.getNum1(), MyClass._num1)
-try:
-    print("MyClass类", MyClass.__num, MyClass().__num)
-except:
-    print('AttributeError 无法访问内部变量')
+
+
+class Student(object):
+
+    # 会产生一个get_score方法
+    @property
+    def score(self):
+        return self._score
+
+    # 会产生一个set_score方法
+    @score.setter
+    def score(self, value):
+        if not isinstance(value, int):
+            raise ValueError('score must be an integer!')
+        if value < 0 or value > 100:
+            raise ValueError('score must between 0 ~ 100!')
+        self._score = value
+
+
+student = Student()
+student.score = 100  # 其实调用的是set_score方法
+print('Student', student.score)  # 其实调用的是get_score方法
+
+# 利用type创建类
+
+
+def fn(self, name='world'):
+    #   先定义函数
+    print('Hello, %s.' % name)
+
+
+#   创建Hello class，分别为class名称，继承父类的集合，第三个参数以字典形式绑定属性
+Hello = type('Hello', (object,), dict(hello=fn))
+Hello().hello()
+
+'''
+------枚举------
+'''
+month = Enum('Month', ('Jan', 'Feb', 'Mar', 'Apr', 'May',
+                       'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'))
+print(month.Jan)
+print(month.Jan.name)
+print(month.Jan.value)  # 默认是int值，从1开始
+
+
+@unique
+class Weekday(Enum):
+    Sun = 0  # Sun的value被设定为0
+    Mon = 1
+    Tue = 2
+    Wed = 3
+    Thu = 4
+    Fri = 5
+    Sat = 6
+
+
+for name, member in Weekday.__members__.items():
+    print(name, '=>', member)
+
 
 '''
 ------模块与包------
@@ -982,6 +1067,21 @@ print(dir())  # 函数可提供当前模块的定义的所有名称，包括自�
 #   当__init__.py存在一个__all__的变量，那么在使用 from package import * 的时候就把这个列表变量中的模块导入，这个变量就表示是*的意思
 
 '''
+------os------
+
+os:
+os.mkdir() -- 创建文件夹
+os.getcwwd() -- 获取工作目录
+
+os.path:
+os.path.join(path1[, path2[, ...]]) -- 拼接路径
+os.path.split(path) -- 把路径分割成 dirname 和 basename，返回一个元组
+'''
+the_path = os.path.split(os.path.realpath(__file__))[0]  # 脚本目录
+cwd_path = os.getcwd()  # 工作目录
+os.mkdir(os.path.join(the_path, 'test'))
+
+'''
 ------File------
 
 File:
@@ -996,11 +1096,24 @@ fsObj.write(str) -- 追加写入
 fsObj.writelines(sequence) -- 追加写入列表
 '''
 # 写
-with open('test.txt', 'w', encoding='utf-8') as f:
+with open(os.path.join(the_path, 'test/test.txt'), 'w', encoding='utf-8') as f:
     # with ... as ... 可以自动处理异常，还可以自动关闭和清理资源
     f.write('test\ntest\ntest\n')
     f.writelines(['testLine\n', 'testLine\n', 'testLine'])
 # 读
-with open('test.txt', 'r', encoding='utf-8') as f:
+with open(os.path.join(the_path, 'test/test.txt'), 'r', encoding='utf-8') as f:
     print('3', f.readline())  # 读取后会改变文件指针
     print('4', f.readline())
+
+'''
+------Regexp------
+
+Regexp:
+
+re.match(pattern, string, flags=0) -- 使用正则匹配
+re.search(pattern, string, flags=0) -- 使用正则搜索
+re.sub(pattern, repl, string, count=0, flags=0) -- 使用正则替换
+re.compile(pattern[, flags]) -- 生成一个正则表达式（ Pattern ）对象
+pattern.findall(string[, pos[, endpos]]) -- 正则匹配的所有子串，并返回一个列表
+re.split(pattern, string[, maxsplit=0, flags=0]) -- 能够匹配的子串将字符串分割后返回列表
+'''

@@ -304,10 +304,16 @@ new Array(5).fill(0); // [0,0,0,0,0] 将数组元素都填充0 改变原数组 s
 // es6填充数组
 Array.from(Array(5), (x) => 0); // [0,0,0,0,0]
 Array.from({ length: 5 }, (x) => 0); // [0,0,0,0,0]
+Array.from(new Array(100).keys()); // [0,1,2,3,...98,99]
+[...Array(100).keys()]; // [0,1,2,3,...98,99]
 // es5填充数组 循环方法需要注意将empty数组转换为undefined数组
 Array.apply(null, Array(5)).map((x) => 0); // [0,0,0,0,0] 注意不能直接使用 new Array(5).map((x) => 0) 因为值为empty不会执行callback
+Object.keys(Array.apply(null, { length: 100 })) // [0,1,2,3,...98,99]
+  .map(function (item) {
+    return +item;
+  })
 
-[1, 2, 3].includes(1, 2); // false 从2索引开始判断一个数组是否包含1 包含返回true 不包含返回false
+  [(1, 2, 3)].includes(1, 2); // false 从2索引开始判断一个数组是否包含1 包含返回true 不包含返回false
 [1, 2, NaN].includes('', 10); // index大于数组长度 直接返回false
 [1, 2, NaN].includes(NaN, -1); // true 可以进行判断NaN index小于0 默认为0
 [-0, +0].includes(0); // true 符号0不区分
@@ -320,11 +326,7 @@ Array.prototype.reverse.call({ length: 2, 0: 1, 1: 2 }); // { '0': 2, '1': 1, le
 [1, 2, [3, [4, 5]]].flat(Infinity); // [1,2,3,4,5] "拉平"所有
 Array.prototype.concat.apply([], [1, 2, [3, 4]]); // "拉平"1层
 let myFlat = (array) => {
-  return array.reduce(
-    (start, ele) =>
-      Array.isArray(ele) ? start.concat(myFlat(ele)) : start.concat(ele),
-    []
-  );
+  return array.reduce((start, ele) => (Array.isArray(ele) ? start.concat(myFlat(ele)) : start.concat(ele)), []);
 };
 myFlat([1, 2, [3, [4, [5, [6, 7]]]]]); // [1,2,3,4,5,6,7] 递归"拉平"所有层
 
@@ -336,12 +338,8 @@ myFlat([1, 2, [3, [4, [5, [6, 7]]]]]); // [1,2,3,4,5,6,7] 递归"拉平"所有�
   return ele > 0;
 }); // 0 返回第一个符合条件的元素的索引 返回索引 否则返回-1
 
-["it's Sunny in", '', 'California'].flatMap((ele, index, array) =>
-  ele.split(' ')
-); // ["it's","Sunny","in", "", "California"] 使用映射函数映射每个元素 然后将结果压缩成一个新数组
-["it's Sunny in", '', 'California']
-  .map((ele, index, array) => ele.split(' '))
-  .flat(); // ["it's","Sunny","in", "", "California"]
+["it's Sunny in", '', 'California'].flatMap((ele, index, array) => ele.split(' ')); // ["it's","Sunny","in", "", "California"] 使用映射函数映射每个元素 然后将结果压缩成一个新数组
+["it's Sunny in", '', 'California'].map((ele, index, array) => ele.split(' ')).flat(); // ["it's","Sunny","in", "", "California"]
 
 /* 数组对象互转 */
 
@@ -370,198 +368,3 @@ Object.fromEntries(
 /* spread扩展运算
 { '0': { id: '1998090901', text: '一' }, '1': { id: '1998090902', text: '二' }, '2': { id: '1998090903', text: '三' } } 
 */
-
-/**
- * 数组随机排序
- *
- * @param {Array} arr 源数组
- *
- * @returns {Array} 返回数组
- */
-function shuffle(arr) {
-  let array = [].concat.apply([], arr);
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1)); // 从 0 到 i 的随机索引
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-/**
- * 数组去重(不会破坏已有排序 利用对象属性不重复)
- *
- * @param {Array} arr 源数组
- *
- * @returns {Array} 返回去重数组(保留一个重复元素 取第一个位置)
- */
-function distinctOfObj(arr) {
-  let result = [],
-    obj = {};
-  for (let i of arr) {
-    if (!obj[i]) {
-      result.push(i);
-      obj[i] = 1;
-    }
-  }
-  return result;
-}
-
-/**
- * 数组去重(不会破坏已有排序 set数据结构 类似于数组但是成员的值都是唯一的)
- *
- * @param {Array} arr 源数组
- *
- * @returns {Array} 返回去重数组(保留一个重复元素 重复取第一个位置)
- */
-function distinctOfSet(arr) {
-  return Array.from(new Set(arr));
-}
-
-/**
- * 去除数组指定元素
- *
- * @param {Array} arr 源数组
- * @param {Array} removeArr 删除数组
- * @param {String} [key] 针对对象字段去除数组
- *
- * @returns {Array} 返回数组
- */
-function removeItem(arr, removeArr, key) {
-  if (!key) {
-    return arr.filter((item) => removeArr.indexOf(item) == -1);
-  }
-  return arr.filter((item) => removeArr.indexOf(item[key]) == -1);
-}
-
-/**
- * 判断简单数组是否相等(元素类型必须完全相同)
- *
- * @param {Array} x 数组1
- * @param {Array} y 数组2
- * @param {Array} [positionFlag = true] 数组元素所在位置是否必须相同 默认true false可不相同
- *
- * @returns {Boolean}
- */
-function compareArray(x, y, positionFlag = true) {
-  if (x.length !== y.length) {
-    return false;
-  } else {
-    if (!positionFlag) {
-      x = x.sort();
-      y = y.sort();
-    }
-    for (let i = 0; i < x.length; i++) {
-      if (x[i] !== y[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-}
-
-/**
- * 按数组长度分割数组成二维数组(分割长度不足够则会增加)
- *
- * @param {Array} array 原数组
- * @param {Number} length 数组最大位数
- * @param {Number} number 数组元素最小长度
- *
- * @returns 返回二维数组
- */
-function splitOfArrayLength(array, length, number) {
-  if (array.length == 0) {
-    return [[]];
-  }
-  let num = Math.ceil(array.length / length);
-  let index = 0;
-  let newArray = [];
-  num = num <= number ? number : num;
-  // 分割数组
-  while (index < array.length) {
-    newArray.push(array.slice(index, (index += num)));
-  }
-  return newArray;
-}
-
-/**
- * 按元素长度分割数组成二维数组
- *
- * @param {Array} array 原数组
- * @param {Number} number 数组元素长度
- *
- * @returns 返回二维数组
- */
-function splitOfElementLength(array, number) {
-  if (array.length == 0) {
-    return [[]];
-  }
-  let index = 0;
-  let newArray = [];
-  while (index < array.length) {
-    newArray.push(array.slice(index, (index += number)));
-  }
-  return newArray;
-}
-
-let count = {
-  123: 0,
-  132: 0,
-  213: 0,
-  231: 0,
-  321: 0,
-  312: 0,
-};
-for (let index = 0; index < 10000; index++) {
-  let arr = shuffle([1, 2, 3]);
-  count[arr.join('')]++;
-}
-console.log(count);
-
-console.log(distinctOfObj([1, 2, 3, 1, 2]));
-
-console.log(distinctOfSet([1, 2, 3, 1, 2]));
-console.log(distinctOfSet([1, 2, 3, 1, [1, 4]]));
-console.log(distinctOfSet([1, 2, 3, 1, { a: 1 }]));
-
-console.log(removeItem([3, 7, 11, 0, 0, 0, 3, 0, 55], [0, 55]));
-console.log(
-  JSON.stringify(
-    removeItem(
-      [
-        {
-          id: '1',
-        },
-        {
-          id: '2',
-        },
-        {
-          id: '3',
-        },
-      ],
-      ['1', '3'],
-      'id'
-    )
-  )
-);
-
-console.log(
-  compareArray(['3', '11', '21', '1'], ['1', '11', '21', '3'], false)
-);
-console.log(compareArray(['3', '11', '21', '1'], ['1', '11', '21', '3']));
-
-let array = [];
-for (let index = 0; index < 100; index++) {
-  array.push(index);
-}
-// 原本生成5位数组 分割长度为10
-// 这里为了达到生成5位数组 分割长度增加到20
-console.log(splitOfArrayLength(array, 5, 10));
-let array1 = [];
-for (let index = 0; index < 95; index++) {
-  array1.push(index);
-}
-// 生成5位数组 每组长度(接近)平均分配(15)
-console.log(splitOfArrayLength(array1, 5));
-
-// 这里生成7位数组 分割长度为16
-console.log(splitOfElementLength(array, 16));
