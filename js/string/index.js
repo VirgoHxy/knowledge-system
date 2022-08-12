@@ -1,8 +1,6 @@
 /**
  * 字符串去重
- *
  * @param {String} val 字符串
- *
  * @returns {String}
  */
 function removeRepeat(val) {
@@ -18,10 +16,8 @@ function removeRepeat(val) {
 
 /**
  * 字符串中子字符串的重复次数
- *
  * @param {String} str 字符串
  * @param {String} val 某个字符或字符串
- *
  * @returns {Number} 字符串次数
  */
 function getRepeatNum(str, val) {
@@ -30,10 +26,8 @@ function getRepeatNum(str, val) {
 
 /**
  * 字符串中的子字符重复最多/少次数
- *
  * @param {String} str 字符串
  * @param {Boolean} minFlag 默认为false true查找最少的 false查找最多的
- *
  * @returns {Object | Array} 字符串次数和字符串,如果有同样多的,字符串则是个数组
  * {
  *    str,
@@ -84,9 +78,7 @@ function getMinMaxRepeatNum(str, minFlag) {
 
 /**
  * 返回随机字符串
- *
  * @param {Number} length 字符串长度
- *
  * @returns {String}
  */
 function randomStr(length) {
@@ -103,7 +95,6 @@ function randomStr(length) {
 
 /**
  * 获取大写字母数组
- *
  * @returns {Array}
  */
 function upperLetter() {
@@ -116,7 +107,6 @@ function upperLetter() {
 
 /**
  * 获取小写字母数组
- *
  * @returns {Array}
  */
 function lowerLetter() {
@@ -129,11 +119,9 @@ function lowerLetter() {
 
 /**
  * 超过最大长度的将用三个字符代替
- *
  * @param {String} str 字符串
  * @param {Number} [maxlength = 10] 字符串最大长度
  * @param {String} [character = .] 替换字符
- *
  * @returns 长度-的字符串
  */
 function truncate(str, maxlength = 10, character = '.') {
@@ -142,10 +130,8 @@ function truncate(str, maxlength = 10, character = '.') {
 
 /**
  * 通过字符串索引删除字符串
- *
  * @param {String} str 字符串
  * @param {Number|Array} index 字符串索引或索引数组
- *
  * @returns 字符串
  */
 function deleteByIndex(str, index) {
@@ -160,10 +146,8 @@ function deleteByIndex(str, index) {
 
 /**
  * 删除最后一个指定字符
- *
  * @param {String} str 源字符串
  * @param {String} delStr 删除字符串
- *
  * @returns 字符串
  */
 function deleteLastStr(str, delStr) {
@@ -173,7 +157,6 @@ function deleteLastStr(str, delStr) {
 
 /**
  * encrypto 加密程序
- *
  * @param {Strng} str 待加密字符串
  * @param {Number} xor 异或值
  * @param {Number} hex 加密后的进制数
@@ -202,7 +185,6 @@ function encrypto(str, xor = 1998, hex = 16) {
 
 /**
  * decrypto 解密程序
- *
  * @param {Strng} str 待解密字符串
  * @param {Number} xor 异或值
  * @param {Number} hex 加密后的进制数

@@ -1,11 +1,9 @@
 /**
  * 加减乘除运算(解决精度问题)
- *
  * @param {number} x 第一个数字
  * @param {number} y 第二个数字
  * @param {String} type 类型
  * @param {String} fixedLength fixed位数
- *
  * @returns {number}
  */
 function fixed(x, y, type, fixedLength) {
@@ -25,10 +23,8 @@ function fixed(x, y, type, fixedLength) {
 
 /**
  * 是否相等(解决精度问题)
- *
  * @param {number} left 数字
  * @param {number} right 数字
- *
  * @returns {string}
  */
 function isEqual(left, right) {
@@ -37,10 +33,8 @@ function isEqual(left, right) {
 
 /**
  * 返回n到m的随机小数 [n,m)
- *
  * @param {number} n
  * @param {number} m
- *
  * @returns {number}
  */
 function randomOfBetween(n, m) {
@@ -49,10 +43,8 @@ function randomOfBetween(n, m) {
 
 /**
  * 返回n到m的随机整数 [n,m)
- *
  * @param {number} n
  * @param {number} m
- *
  * @returns {number}
  */
 function randomIntOfBetween(n, m) {
@@ -61,9 +53,7 @@ function randomIntOfBetween(n, m) {
 
 /**
  * 返回n位随机整数
- *
  * @param {number} n
- *
  * @returns {String}
  */
 function randomInt(n) {
@@ -75,7 +65,6 @@ function randomInt(n) {
 
 /**
  * 生成4位随机16进制数字
- *
  * @returns {String}
  */
 function random4OfHex() {
@@ -84,7 +73,6 @@ function random4OfHex() {
 
 /**
  * 生成唯一guid
- *
  * @returns {String}
  */
 function guid() {
@@ -106,7 +94,6 @@ function guid() {
 
 /**
  * 生成唯一16长度id
- *
  * @returns {String}
  */
 function id16() {
@@ -115,9 +102,7 @@ function id16() {
 
 /**
  * 判断数字是否为奇数
- *
  * @param {number} num 数字
- *
  * @returns {Boolean}
  */
 function isOdd(num) {
@@ -126,10 +111,8 @@ function isOdd(num) {
 
 /**
  * 数字左补零
- *
  * @param {number} num 数字
  * @param {number} fill 补零后总长度
- *
  * @returns {String}
  */
 function padNumber(num, fill) {
@@ -139,9 +122,7 @@ function padNumber(num, fill) {
 
 /**
  * 带小数的二进制转十进制
- *
  * @param {Number} val
- *
  * @returns
  */
 function getDecimal2FloatValue(val) {

@@ -3,31 +3,29 @@ const path = require('path');
 
 /**
  * 同步写入文件
- * @description 如果传入的是一个文件夹目录，则会创建这个文件夹路径
- *
- * @param {String} filePath 文件路径
- * @param {String | Buffer} content 文件内容
- *
- * @returns {Boolean}
+ * @param {string} filePath 文件路径
+ * @param {string | ArrayBufferView} content 文件内容
+ * @param {('a'|'u')} [options] 选项
+ * @returns {Boolean} result
  */
-function writeSync(filePath, content) {
+function writeSync(filePath, content = '', options) {
   if (!path.isAbsolute(filePath)) {
     filePath = path.resolve(__dirname, filePath);
   }
-  mkdirSync(filePath);
   if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, content || '');
-  } else {
-    fs.appendFileSync(filePath, content || '');
+    mkdirSync(filePath);
+    fs.writeFileSync(filePath, content);
+  } else if (options == 'u') {
+    updateSync(filePath, content);
+  } else if (options == 'a') {
+    appendSync(filePath, content);
   }
   return true;
 }
 
 /**
  * 同步删除文件夹或文件
- *
- * @param {String} dirPath 文件路径/文件夹路径
- *
+ * @param {string} dirPath 文件路径/文件夹路径
  * @returns {Boolean}
  */
 function delSync(dirPath) {
@@ -57,12 +55,47 @@ function delSync(dirPath) {
 }
 
 /**
+ * 同步修改文件
+ * @param {string} filePath 文件路径
+ * @param {string | ArrayBufferView} content 文件内容
+ * @returns {Boolean}
+ */
+function updateSync(filePath, content) {
+  if (!path.isAbsolute(filePath)) {
+    filePath = path.resolve(__dirname, filePath);
+  }
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+    fs.writeFileSync(filePath, content || '');
+    return true;
+  } else {
+    throw new Error(`路径不存在: ${filePath}`);
+  }
+}
+
+/**
+ * 同步追加文件
+ * @param {string} filePath 文件路径
+ * @param {string | Uint8Array} content 文件内容
+ * @returns {Boolean}
+ */
+function appendSync(filePath, content) {
+  if (!path.isAbsolute(filePath)) {
+    filePath = path.resolve(__dirname, filePath);
+  }
+  if (fs.existsSync(filePath)) {
+    fs.appendFileSync(filePath, content || '');
+    return true;
+  } else {
+    throw new Error(`路径不存在: ${filePath}`);
+  }
+}
+
+/**
  * 同步读取目录列表或文件内容
- *
- * @param {String} dirPath 文件路径/文件夹路径
- * @param {String} [fileEncoding] 文件编码
- *
- * @returns {String | Array}
+ * @param {string} dirPath 文件路径/文件夹路径
+ * @param {string} [fileEncoding] 文件编码
+ * @returns {string | Array}
  */
 function readSync(dirPath, fileEncoding) {
   if (!path.isAbsolute(dirPath)) {
@@ -83,10 +116,8 @@ function readSync(dirPath, fileEncoding) {
 /**
  * 同步拷贝文件夹或文件
  * @description 源路径和复制路径需要保持一致性，都是文件或是都是文件夹
- *
- * @param {String} sourcePath 源路径
- * @param {String} copyPath 复制路径
- *
+ * @param {string} sourcePath 源路径
+ * @param {string} copyPath 复制路径
  * @returns {Boolean}
  */
 function copySync(sourcePath, copyPath) {
@@ -118,10 +149,8 @@ function copySync(sourcePath, copyPath) {
 /**
  * 同步移动文件夹或文件
  * @description 源路径和移动路径需要保持一致性，都是文件或是都是文件夹
- *
- * @param {String} sourcePath 源路径
- * @param {String} movePath 移动路径
- *
+ * @param {string} sourcePath 源路径
+ * @param {string} movePath 移动路径
  * @returns {Boolean}
  */
 function moveSync(sourcePath, movePath) {
@@ -153,10 +182,8 @@ function moveSync(sourcePath, movePath) {
 /**
  * 同步流式拷贝文件夹或大文件
  * @description 源路径和复制路径需要保持一致性，都是文件或是都是文件夹
- *
- * @param {String} sourcePath 源路径
- * @param {String} copyPath 复制路径
- *
+ * @param {string} sourcePath 源路径
+ * @param {string} copyPath 复制路径
  * @returns {Boolean}
  */
 function copyByStreamSync(sourcePath, copyPath) {
@@ -189,9 +216,7 @@ function copyByStreamSync(sourcePath, copyPath) {
 
 /**
  * 递归创建文件夹
- *
- * @param {String} dirPath 文件路径/文件夹路径
- *
+ * @param {string} dirPath 文件路径/文件夹路径
  * @returns {Boolean}
  */
 function mkdirSync(dirPath) {
@@ -211,6 +236,33 @@ function mkdirSync(dirPath) {
   }
 }
 
+/**
+ * stream转buffer
+ * @param {Stream} stream 流
+ * @returns {Prromise<Buffer>}
+ */
+function streamToBuffer(stream) {
+  return new Promise((resolve, reject) => {
+    let buffers = [];
+    stream.on('error', reject);
+    stream.on('data', (data) => buffers.push(data));
+    stream.on('end', () => resolve(Buffer.concat(buffers)));
+  });
+}
+
+/**
+ * buffer转stream
+ * @param {Buffer} buffer buffer
+ * @returns {Duplex}
+ */
+function bufferToStream(buffer) {
+  let Duplex = require('stream').Duplex;
+  let stream = new Duplex();
+  stream.push(buffer);
+  stream.push(null);
+  return stream;
+}
+
 module.exports = {
   writeSync,
   delSync,
@@ -219,4 +271,6 @@ module.exports = {
   moveSync,
   copyByStreamSync,
   mkdirSync,
+  streamToBuffer,
+  bufferToStream,
 };

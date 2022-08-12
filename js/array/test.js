@@ -1,11 +1,11 @@
 const {
   shuffle,
-  distinctOfObj,
-  distinctOfSet,
+  removeRepeatByObj,
+  removeRepeatBySet,
   removeItem,
-  compareArray,
-  splitOfArrayLength,
-  splitOfElementLength,
+  isEqual,
+  splitByArrayLength,
+  splitByElementNum,
 } = require('.');
 
 let array = [...Array(100).keys()]; // [0,1,2,3,...99]
@@ -38,14 +38,14 @@ function shuffleTest() {
   console.log(count);
 }
 
-function distinctOfObjTest() {
-  console.log(distinctOfObj([1, 2, 3, 1, 2]));
+function removeRepeatByObjTest() {
+  console.log(removeRepeatByObj([1, 2, 3, 1, 2]));
 }
 
-function distinctOfSetTest() {
-  console.log(distinctOfSet([1, 2, 3, 1, 2]));
-  console.log(distinctOfSet([1, 2, 3, 1, [1, 4]]));
-  console.log(distinctOfSet([1, 2, 3, 1, { a: 1 }]));
+function removeRepeatBySetTest() {
+  console.log(removeRepeatBySet([1, 2, 3, 1, 2]));
+  console.log(removeRepeatBySet([1, 2, 3, 1, [1, 4]]));
+  console.log(removeRepeatBySet([1, 2, 3, 1, { a: 1 }]));
 }
 
 function removeItemTest() {
@@ -71,27 +71,29 @@ function removeItemTest() {
   );
 }
 
-function compareArrayTest() {
-  console.log(compareArray(['3', '11', '21', '1'], ['1', '11', '21', '3'], false));
-  console.log(compareArray(['3', '11', '21', '1'], ['1', '11', '21', '3']));
+function isEqualTest() {
+  console.log(isEqual(['3', '11', '21', '1'], ['1', '11', '21', '3'], false));
+  console.log(isEqual(['3', '11', '21', '1'], ['1', '11', '21', '3']));
 }
 
-function splitOfArrayLengthTest() {
-  // 原本生成5位数组 分割长度为10 但这里为了达到生成5位数组 分割长度增加到20
-  console.log(splitOfArrayLength(array, 5, 10));
+function splitByArrayLengthTest() {
+  // 原本生成5位数组 元素个数为10 但这里为了达到生成5位数组 元素个数增加到20
+  console.log(splitByArrayLength(array, 5, 10));
   // 生成6位数组 每组长度平均分配(16) 但会有一组长度可能会低于平均水平
-  console.log(splitOfArrayLength(array, 6));
+  console.log(splitByArrayLength(array, 6));
+  // 生成101位数组，可元素最多只有100位，所以只会返回100位的二维数组
+  console.log(splitByArrayLength(array, 101));
 }
 
-function splitOfElementLengthTest() {
+function splitByElementNumTest() {
   // 这里生成7位数组 分割长度为16
-  console.log(splitOfElementLength(array, 16));
+  console.log(splitByElementNum(array, 16));
 }
 
 shuffleTest();
-distinctOfObjTest();
-distinctOfSetTest();
+removeRepeatByObjTest();
+removeRepeatBySetTest();
 removeItemTest();
-compareArrayTest();
-splitOfArrayLengthTest();
-splitOfElementLengthTest();
+isEqualTest();
+splitByArrayLengthTest();
+splitByElementNumTest();

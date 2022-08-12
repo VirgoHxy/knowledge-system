@@ -1,7 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
-const { writeSync, delSync, readSync, copySync, moveSync, copyByStreamSync, mkdirSync } = require('.');
+const {
+  writeSync,
+  delSync,
+  readSync,
+  copySync,
+  moveSync,
+  copyByStreamSync,
+  mkdirSync,
+  streamToBuffer,
+  bufferToStream,
+} = require('.');
 
 console.log_ = console.log;
 console.log = function () {
@@ -59,6 +69,13 @@ function mkdirSyncTest() {
   // 递归创建文件夹;
   console.log(mkdirSync('./test/test1/test2/test3'));
 }
+async function streamToBufferTest() {
+  const readStream = fs.createReadStream(path.resolve(__dirname, '../../.eslintrc.json'));
+  console.log(await streamToBuffer(readStream));
+}
+async function bufferToStreamTest() {
+  console.log(bufferToStream(readSync('../../.eslintrc.json')));
+}
 
 writeSyncTest();
 delSyncTest();
@@ -67,3 +84,5 @@ copySyncTest();
 moveSyncTest();
 copyByStreamSyncTest();
 mkdirSyncTest();
+streamToBufferTest();
+bufferToStreamTest();

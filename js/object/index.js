@@ -1,6 +1,5 @@
 /**
  * 判断对象内容是否相等
- *
  * @param {Object} x 对象1
  * @param {Object} y 对象2
  *
@@ -31,9 +30,7 @@ function compareObject(x, y) {
 
 /**
  * 深克隆对象(JSON.parse(JSON.stringify(target)) 可深克隆一个对象 但有一定局限)
- *
  * @param {*} target 克隆对象 不支持日期对象,正则对象,map,set,promise等克隆
- *
  * @returns {*}
  *
  */
@@ -55,9 +52,7 @@ function clone(target, map = new WeakMap()) {
 
 /**
  * 判断数据类型
- *
  * @param {*} o 各种类型值
- *
  * @returns {String} 详细类型
  */
 function getType(o) {

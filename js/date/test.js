@@ -1,17 +1,13 @@
 const {
-  getRegularTime,
-  getDate2XLSX,
+  getRegularDate,
   format,
-  convertJson,
-  convertToStamp,
-  convertStamp,
-  sortDate,
-  getCalcDate,
-  getDateDiff,
+  getDateOfExcel,
+  calcDate,
   isLeapYear,
   getDays,
-  getDesignDate,
-  getDateStr,
+  getLengthOfTime,
+  sortDate,
+  sortDateByKey,
 } = require('.');
 
 console.log_ = console.log;
@@ -26,61 +22,33 @@ console.log = function () {
   console.log_(...arguments);
 };
 
-function getRegularTimeTest() {
-  console.log(getRegularTime('2022-02-08T06:51:31.000Z').toLocaleString());
-  console.log(getRegularTime('2020-12-12 11:22:33').toLocaleString());
-  console.log(getRegularTime(1278930470649).toLocaleString());
-  console.log(getRegularTime(new Date()).toLocaleString());
-}
-function getDate2XLSXTest() {
-  console.log(getDate2XLSX(44352.2919791667));
-  console.log(getDate2XLSX(44352.2919791667).toLocaleString());
+function getRegularDateTest() {
+  console.log(getRegularDate('2022-02-08T06:51:31.000Z').toLocaleString());
+  console.log(getRegularDate('2022-02-08T06:51Z').toLocaleString());
+  console.log(getRegularDate('2020-12-12 11:22:33').toLocaleString());
+  console.log(getRegularDate('1278930470649').toLocaleString());
+  console.log(getRegularDate('/Date(1278930470649)/').toLocaleString());
+  console.log(getRegularDate(1278930470649).toLocaleString());
+  console.log(getRegularDate(new Date()).toLocaleString());
 }
 function formatTest() {
   console.log(format(new Date(), 'YYYY-MM-DD hh:mm:ss.MS W'));
   console.log(format('2012/12/25 20:17:11.111', 'YYYY-MM-DD hh:mm:ss.MS W'));
 }
-function convertJsonTest() {
-  console.log(convertJson(/Date(1278930470649)/));
+function formatTest1() {
+  console.log(new Date().format('YYYY-MM-DD hh:mm:ss.MS W'));
+  console.log(new Date('2012/12/25 20:17:11.111').format('YYYY-MM-DD hh:mm:ss.MS W'));
 }
-function convertToStampTest() {
-  console.log(convertToStamp(new Date()));
+function getDate2XLSXTest() {
+  console.log(getDateOfExcel(44352.2919791667).toLocaleString());
 }
-function convertStampTest() {
-  console.log(convertStamp(Date.now()));
-}
-function sortDateTest() {
-  console.log(sortDate([/Date(1594361486000)/, /Date(1594363486000)/, /Date(1594362486000)/]));
-  console.log(sortDate([1594361486000, 1594363486000, 1594362486000]));
-  console.log(sortDate(['3999-01-01 00:00:00', '3020-08-04 14:56:46', '3970-01-19 19:28:43']));
-}
-function getCalcDateTest() {
-  console.log(
-    getCalcDate(new Date(), {
-      type: 'ms',
-      value: 10000,
-    })
-  );
-  console.log(
-    getCalcDate(new Date(), [
-      {
-        type: 'ms',
-        value: 10000,
-      },
-      {
-        type: 'h',
-        value: 24,
-      },
-    ])
-  );
-}
-function getDateDiffTest() {
-  console.log(getDateDiff(['2020-06-02 14:24:23.000Z', '2020-08-08 15:23:24.000Z']));
-  console.log(getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24']));
-  console.log(getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'date'));
-  console.log(getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'hour'));
-  console.log(getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'minute'));
-  console.log(getDateDiff(['2020-06-02 14:24:23', '2020-06-04 15:25:24'], 'minute'));
+function calcDateTest() {
+  console.log(calcDate(new Date(), '10000ms').toLocaleString());
+  console.log(calcDate(new Date(), '24h,10000ms').toLocaleString());
+  console.log(calcDate(new Date(), '12h,10m,20s').toLocaleString());
+  console.log(calcDate(new Date(), '1M').toLocaleString());
+  console.log(calcDate(new Date(), '1y').toLocaleString());
+  console.log(calcDate(new Date(), '1d').toLocaleString());
 }
 function isLeapYearTest() {
   console.log(isLeapYear(2000));
@@ -88,27 +56,38 @@ function isLeapYearTest() {
 function getDaysTest() {
   console.log(getDays('2020-4'));
 }
-function getDesignDateTest() {
-  console.log(getDesignDate(1, 'd', false));
-  console.log(getDesignDate(-1, 'mm', false));
+function getLengthOfTimeTest() {
+  console.log(getLengthOfTime('0m'));
+  console.log(getLengthOfTime('29.25h'));
+  console.log(getLengthOfTime('124m'));
+  console.log(getLengthOfTime('12000s'));
+  console.log(getLengthOfTime('12224m'));
 }
-function getDateStrTest() {
-  console.log(getDateStr(0, 'm'));
-  console.log(getDateStr(124, 'm'));
-  console.log(getDateStr(124));
-  console.log(getDateStr(12224, 'm'));
+function sortDateTest() {
+  console.log(sortDate(['3999-01-01 00:00:00', '3020-08-04 14:56:46', '3970-01-19 19:28:43']));
+  console.log(sortDate([1594361486000, 1594363486000, 1594362486000]));
+  console.log(sortDate(['/Date(1594361486000)/', '/Date(1594363486000)/', '/Date(1594362486000)/']));
+}
+function sortDateByKeyTest() {
+  console.log(
+    sortDateByKey(
+      [
+        { id: 1, time: '3999-01-01 00:00:00' },
+        { id: 2, time: '3020-08-04 14:56:46' },
+        { id: 3, time: '3970-01-19 19:28:43' },
+      ],
+      'time'
+    )
+  );
 }
 
-getRegularTimeTest();
-getDate2XLSXTest();
+getRegularDateTest();
 formatTest();
-convertJsonTest();
-convertToStampTest();
-convertStampTest();
+formatTest1();
+getDate2XLSXTest();
 sortDateTest();
-getCalcDateTest();
-getDateDiffTest();
+sortDateByKeyTest();
+calcDateTest();
 isLeapYearTest();
 getDaysTest();
-getDesignDateTest();
-getDateStrTest();
+getLengthOfTimeTest();

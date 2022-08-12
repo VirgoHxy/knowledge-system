@@ -1,0 +1,5 @@
+{
+  "注释可以取消掉下一行检查": "// prettier-ignore",
+  "singleQuote": true,
+  "printWidth": 120
+}

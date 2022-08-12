@@ -1,8 +1,6 @@
 /**
  * 判断null | undefined | 空字符串
- *
  * @param {*} val
- *
  * @returns {Boolean} 是null或者undefined或者空字符串返回true
  */
 function isNull(val) {
@@ -11,9 +9,7 @@ function isNull(val) {
 
 /**
  * 获取url参数的值
- *
  * @param {String} key 参数的名称
- *
  * @param {String} [url] 链接地址 默认为当前浏览器地址
  */
 function getUrlParam(key, url) {
@@ -39,12 +35,10 @@ function getUrlParam(key, url) {
 
 /**
  * 修改url参数的值
- *
  * @param {String} key 参数的名称
  * @param {*} value 参数的值 非字符串转换为字符串
  * @param {String} [url] 链接地址 默认为当前浏览器地址
  * @param {Boolean} [hrefFlag = false] 是否修改当前地址 true 修改当前地址
- *
  * @returns 返回修改后的地址
  */
 function changeURLArg(key, value, url, hrefFlag) {
@@ -76,13 +70,11 @@ function changeURLArg(key, value, url, hrefFlag) {
 
 /**
  * 操作url的方法
- *
  * @param {String} [data.url] 链接地址 默认为当前浏览器地址
  * @param {String} data.type 操作类型
  * @param {String} data.key 参数的名称
  * @param {*} data.value 参数的值 非字符串转换为字符串
  * @param {Boolean} [data.hrefFlag = true] 是否返回字符串地址 true 返回字符串地址
- *
  * @returns {*} 返回值
  */
 function urlMethod(data = {}) {
@@ -121,10 +113,8 @@ function urlMethod(data = {}) {
 
 /**
  * 防抖装饰器
- *
  * @param {Function} func 函数
  * @param {Number} ms 毫秒延时
- *
  * @returns {Function}
  */
 function debounce(func, ms) {
@@ -137,10 +127,8 @@ function debounce(func, ms) {
 
 /**
  * 节流装饰器
- *
  * @param {Function} func 函数
  * @param {Number} ms 毫秒延时
- *
  * @returns {Function}
  */
 function throttle(func, ms) {
@@ -169,7 +157,6 @@ function throttle(func, ms) {
 
 /**
  * 判断多个参数是否完全相等
- *
  * @returns {Boolean}
  */
 function isEquals() {
@@ -196,7 +183,6 @@ function isEquals() {
 
 /**
  * 设置期限Storage
- *
  * @param {Object} storage 存储对象类型 localStorage或者sessionStorage
  * @param {String} key 存储对象名称
  * @param {*} value 存储对象值
@@ -213,10 +199,8 @@ function setExpire(storage, key, value, expire) {
 
 /**
  * 获取Storage
- *
  * @param {Obeject} storage 存储对象类型 localStorage或者sessionStorage
  * @param {String} key 存储对象名称
- *
  * @returns {*}
  */
 function getExpire(storage, key) {
@@ -236,9 +220,7 @@ function getExpire(storage, key) {
 
 /**
  * 获取cookie(必须在浏览器环境下运行)
- *
  * @param {String} name 存储对象名称
- *
  * @returns {String | Undefined}
  */
 function getCookie(name) {
@@ -250,7 +232,6 @@ function getCookie(name) {
 
 /**
  * 设置cookie(必须在浏览器环境下运行)
- *
  * @param {String} name 存储对象名称
  * @param {String} value 存储对象
  * @param {Object} options 该cookie的配置值
@@ -279,7 +260,6 @@ function setCookie(name, value, options = {}) {
 
 /**
  * 删除cookie(依赖setCookie方法)(必须在浏览器环境下运行)
- *
  * @param {String} name 存储对象名称
  *
  */
@@ -292,7 +272,6 @@ function deleteCookie(name) {
 
 /**
  * 获取终端类型(必须在浏览器环境下运行)
- *
  * @returns {Object} 包含终端类型的对象
  */
 function os() {
@@ -331,7 +310,6 @@ function os() {
 
 /**
  * 获取浏览器类型(必须在浏览器环境下运行)
- *
  * @returns {Object} 包含浏览器类型类型的对象以及版本号
  */
 function getBrowser() {
@@ -357,7 +335,6 @@ function getBrowser() {
 
 /**
  * 获取支付浏览器类型(必须在浏览器环境下运行)
- *
  * @returns {String} weixin 或者 alipay
  */
 function getPayBrowser() {
@@ -401,10 +378,8 @@ function closeWindow() {
 
 /**
  * 获取下载文件blob(必须在浏览器环境下运行)
- *
  * @param {String} data 文件内容
  * @param {String} type 文件类型
- *
  * @returns {Blob}
  */
 function getDownloadUri(data, type) {
@@ -436,7 +411,6 @@ function getDownloadUri(data, type) {
 
 /**
  * 下载文件(依赖getBrowser,getDownloadUri方法)(必须在浏览器环境下运行)
- *
  * @param {String} data 文件内容
  * @param {String} fileName 文件名称
  */
@@ -472,7 +446,6 @@ function download(data, fileName) {
 
 /**
  * 通过元素下载文件(必须在浏览器环境下运行)
- *
  * @param {String} url 文件地址
  * @param {String} fileName 文件名称
  */
@@ -491,7 +464,6 @@ function downloadByAElement(url, fileName) {
 
 /**
  * 读取文件内容(必须在浏览器环境下运行)
- *
  * @param {Blob} blob 文件
  * @param {String} type mediatype
  */

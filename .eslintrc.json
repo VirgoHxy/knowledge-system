@@ -1,5 +1,5 @@
 {
-  // 使用注释 // eslint-disable-next-line 可以取消掉下一行检查
+  "注释可以取消掉下一行检查": "// eslint-disable-next-line",
   "env": {
     "browser": true,
     "es2020": true,

@@ -1,12 +1,10 @@
 /**
  * 数组随机排序
- *
- * @param {Array} arr 源数组
- *
- * @returns {Array} 返回数组
+ * @param {Array} array 源数组
+ * @returns {Array} 排序后的数组
  */
-function shuffle(arr) {
-  let array = [].concat.apply([], arr);
+function shuffle(array) {
+  array = [].concat.apply([], array);
   for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1)); // 从 0 到 i 的随机索引
     [array[i], array[j]] = [array[j], array[i]];
@@ -15,16 +13,17 @@ function shuffle(arr) {
 }
 
 /**
- * 数组去重(不会破坏已有排序 利用对象属性不重复)
+ * 数组去重
  *
- * @param {Array} arr 源数组
- *
- * @returns {Array} 返回去重数组(保留一个重复元素 取第一个位置)
+ * 不会破坏已有排序，利用对象属性不重复原理；
+ * 重复元素保留一个，取的是第一次出现的元素，这样保持排序不被破坏；
+ * @param {Array} array 源数组
+ * @returns {Array} 去重后的数组
  */
-function distinctOfObj(arr) {
+function removeRepeatByObj(array) {
   let result = [],
     obj = {};
-  for (let i of arr) {
+  for (let i of array) {
     if (!obj[i]) {
       result.push(i);
       obj[i] = 1;
@@ -34,42 +33,38 @@ function distinctOfObj(arr) {
 }
 
 /**
- * 数组去重(不会破坏已有排序 set数据结构 类似于数组但是成员的值都是唯一的)
+ * 数组去重
  *
- * @param {Array} arr 源数组
- *
- * @returns {Array} 返回去重数组(保留一个重复元素 重复取第一个位置)
+ * 不会破坏已有排序，利用set唯一值特性；
+ * 重复元素保留一个，取的是第一次出现的元素，这样保持排序不被破坏；
+ * @param {Array} array 源数组
+ * @returns {Array} 去重后的数组
  */
-function distinctOfSet(arr) {
-  return Array.from(new Set(arr));
+function removeRepeatBySet(array) {
+  return Array.from(new Set(array));
 }
 
 /**
  * 去除数组指定元素
- *
- * @param {Array} arr 源数组
- * @param {Array} removeArr 删除数组
- * @param {String} [key] 针对对象字段去除数组
- *
- * @returns {Array} 返回数组
+ * @param {Array} array 源数组
+ * @param {Array} removeArr 需要删除的元素数组
+ * @param {String} [key] 对象字段名称，针对数组元素为对象的数组
+ * @returns {Array} 去除后的数组
  */
-function removeItem(arr, removeArr, key) {
-  if (!key) {
-    return arr.filter((item) => removeArr.indexOf(item) == -1);
-  }
-  return arr.filter((item) => removeArr.indexOf(item[key]) == -1);
+function removeItem(array, removeArr, key) {
+  return array.filter((item) => !removeArr.includes(!key ? item : item[key]));
 }
 
 /**
- * 判断简单数组是否相等(元素类型必须完全相同)
+ * 判断简单数组是否相等
  *
+ * 元素类型必须完全相同，可选元素位置是否必须相同
  * @param {Array} x 数组1
  * @param {Array} y 数组2
- * @param {Array} [positionFlag = true] 数组元素所在位置是否必须相同 默认true false可不相同
- *
- * @returns {Boolean}
+ * @param {Array} [positionFlag = true] 数组元素所在位置是否必须相同；默认为 true，false 位置可不相同
+ * @returns {Boolean} true 表示相等
  */
-function compareArray(x, y, positionFlag = true) {
+function isEqual(x, y, positionFlag = true) {
   if (x.length !== y.length) {
     return false;
   } else {
@@ -87,43 +82,42 @@ function compareArray(x, y, positionFlag = true) {
 }
 
 /**
- * 按数组长度分割数组成二维数组(分割长度不足够则会增加)
+ * 按二维数组的长度分割数组成二维数组
  *
- * @param {Array} array 原数组
- * @param {Number} length 数组最大位数
- * @param {Number} number 数组元素最小长度
- *
- * @returns 返回二维数组
+ * 数组长度不足够存放元素会增加元素存放的个数
+ * 数组长度过长会让元素个数为1的来达到最大长度
+ * @param {Array} array 源数组
+ * @param {Number} length 数组长度
+ * @param {Number} [number = 0] 数组元素个数，0表示按平均分
+ * @returns {Array} 二维数组
  */
-function splitOfArrayLength(array, length, number) {
+function splitByArrayLength(array, length, number = 0) {
   if (array.length == 0) {
     return [[]];
   }
-  let num = Math.ceil(array.length / length);
-  let index = 0;
   let newArray = [];
-  num = num <= number ? number : num;
+  let index = 0;
+  let average = Math.ceil(array.length / length);
+  number = average <= number ? number : average;
   // 分割数组
   while (index < array.length) {
-    newArray.push(array.slice(index, (index += num)));
+    newArray.push(array.slice(index, (index += number)));
   }
   return newArray;
 }
 
 /**
- * 按元素长度分割数组成二维数组
- *
- * @param {Array} array 原数组
- * @param {Number} number 数组元素长度
- *
- * @returns 返回二维数组
+ * 按元素个数分割数组成二维数组
+ * @param {Array} array 源数组
+ * @param {Number} number 数组元素个数
+ * @returns {Array} 二维数组
  */
-function splitOfElementLength(array, number) {
+function splitByElementNum(array, number) {
   if (array.length == 0) {
     return [[]];
   }
-  let index = 0;
   let newArray = [];
+  let index = 0;
   while (index < array.length) {
     newArray.push(array.slice(index, (index += number)));
   }
@@ -132,10 +126,10 @@ function splitOfElementLength(array, number) {
 
 module.exports = {
   shuffle,
-  distinctOfObj,
-  distinctOfSet,
+  removeRepeatByObj,
+  removeRepeatBySet,
   removeItem,
-  compareArray,
-  splitOfArrayLength,
-  splitOfElementLength,
+  isEqual,
+  splitByArrayLength,
+  splitByElementNum,
 };
