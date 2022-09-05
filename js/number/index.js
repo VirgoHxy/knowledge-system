@@ -2,8 +2,8 @@
  * 加减乘除运算(解决精度问题)
  * @param {number} x 第一个数字
  * @param {number} y 第二个数字
- * @param {String} type 类型
- * @param {String} fixedLength fixed位数
+ * @param {string} type 类型
+ * @param {string} fixedLength fixed位数
  * @returns {number}
  */
 function fixed(x, y, type, fixedLength) {
@@ -54,18 +54,18 @@ function randomIntOfBetween(n, m) {
 /**
  * 返回n位随机整数
  * @param {number} n
- * @returns {String}
+ * @returns {string | undefined}
  */
 function randomInt(n) {
   if (n <= 0 || n > 16) {
-    return null;
+    return undefined;
   }
   return Math.random().toString().slice(-n);
 }
 
 /**
  * 生成4位随机16进制数字
- * @returns {String}
+ * @returns {string}
  */
 function random4OfHex() {
   return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
@@ -73,7 +73,7 @@ function random4OfHex() {
 
 /**
  * 生成唯一guid
- * @returns {String}
+ * @returns {string}
  */
 function guid() {
   return (
@@ -94,7 +94,7 @@ function guid() {
 
 /**
  * 生成唯一16长度id
- * @returns {String}
+ * @returns {string}
  */
 function id16() {
   return random4OfHex() + random4OfHex() + random4OfHex() + random4OfHex();
@@ -113,7 +113,7 @@ function isOdd(num) {
  * 数字左补零
  * @param {number} num 数字
  * @param {number} fill 补零后总长度
- * @returns {String}
+ * @returns {string}
  */
 function padNumber(num, fill) {
   let len = ('' + num).length;
@@ -122,7 +122,7 @@ function padNumber(num, fill) {
 
 /**
  * 带小数的二进制转十进制
- * @param {Number} val
+ * @param {number} val
  * @returns
  */
 function getDecimal2FloatValue(val) {

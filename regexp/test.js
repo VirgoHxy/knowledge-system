@@ -16,6 +16,7 @@ const {
   isImage,
   getFileName,
   getFolderAndFileName,
+  urlParse,
 } = require('.');
 
 console.log_ = console.log;
@@ -120,6 +121,10 @@ function getFolderAndFileNameTest() {
   console.log(getFolderAndFileName('D:\\test\\.vscode')); // [ 'D:\\test\\.vscode', '' ]
   console.log(getFolderAndFileName('D:\\test\\.vscode\\setting.json')); // [ 'D:\\test\\.vscode', 'setting.json' ]
 }
+function urlParseTest() {
+  console.log(urlParse('https://translate.google.cn/?sl=en&tl=zh-CN&text=netloc&op=translate')); //
+  console.log(urlParse('https://translate.google.cn:443/demo/test?sl=en&tl=zh-CN&text=netloc&op=translate#test')); //
+}
 
 isPhoneTest();
 isIDCardTest();
@@ -138,3 +143,4 @@ isIllegalTest();
 isImageTest();
 getFileNameTest();
 getFolderAndFileNameTest();
+urlParseTest();

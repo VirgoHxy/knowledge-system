@@ -1,7 +1,7 @@
-const log4js = require("log4js");
-const path = require("path");
+const log4js = require('log4js');
+const path = require('path');
 
-const { format } = require("./util");
+const { format } = require('./util');
 
 // log4js权重等级
 // {
@@ -20,79 +20,76 @@ module.exports = class Logger {
   /**
    * 实例化参数
    * @param {Object} param 参数
-   * @param {String} [param.logPath] 日志位置
-   * @param {String} [param.category] 类别
+   * @param {string} [param.logPath] 日志位置
+   * @param {string} [param.category] 类别
    */
   constructor({ logPath, category, maxLevel } = {}) {
-    logPath = logPath || path.resolve(__dirname, "../../logs");
-    category = category || "default";
-    maxLevel = maxLevel || "INFO";
+    logPath = logPath || path.resolve(__dirname, '../../logs');
+    category = category || 'default';
+    maxLevel = maxLevel || 'INFO';
     // log4 配置
     const templateConfig = {
       appenders: {
         layout: {
-          type: "pattern",
-          pattern: "************************ log ************************%m",
+          type: 'pattern',
+          pattern: '************************ log ************************%m',
         },
         dateFile: {
           filedir: `${logPath}/`,
           alwaysIncludePattern: true,
-          pattern: "yyyy-MM-dd.log",
-          maxLogSize: 209715200,
-          encoding: "utf-8",
+          pattern: 'yyyy-MM-dd.log',
+          encoding: 'utf-8',
         },
       },
     };
     const config = {
       appenders: {
         console: {
-          type: "console",
+          type: 'console',
           layout: {
-            type: "pattern",
-            pattern: "%[************************ log ************************%m%]",
+            type: 'pattern',
+            pattern: '%[************************ log ************************%m%]',
           },
         },
       },
       categories: {
         default: {
-          appenders: ["console", "all"],
+          appenders: ['console', 'all'],
           level: maxLevel,
         },
         console: {
-          appenders: ["console"],
+          appenders: ['console'],
           level: maxLevel,
         },
         dateFile: {
-          appenders: ["justDebug", "justInfo", "justWarn", "justError", "justFatal"],
+          appenders: ['justDebug', 'justInfo', 'justWarn', 'justError', 'justFatal'],
           level: maxLevel,
         },
       },
     };
-    for (let array = ["all", "debug", "info", "warn", "error", "fatal"], index = 0; index < array.length; index++) {
+    for (let array = ['all', 'debug', 'info', 'warn', 'error', 'fatal'], index = 0; index < array.length; index++) {
       const element = array[index];
-      if (element != "all") {
+      if (element != 'all') {
         config.appenders[`${element}DateFile`] = {
-          type: "dateFile",
+          type: 'dateFile',
           filename: `${templateConfig.appenders.dateFile.filedir}${element}`,
           alwaysIncludePattern: templateConfig.appenders.dateFile.alwaysIncludePattern,
           pattern: templateConfig.appenders.dateFile.pattern,
-          maxLogSize: templateConfig.appenders.dateFile.maxLogSize,
           encoding: templateConfig.appenders.dateFile.encoding,
           layout: templateConfig.appenders.layout,
         };
         config.appenders[`just${element.replace(element[0], element[0].toUpperCase())}`] = {
-          type: "logLevelFilter",
+          type: 'logLevelFilter',
           appender: `${element}DateFile`,
           level: element.toUpperCase(),
           maxLevel: element.toUpperCase(),
         };
       } else {
         config.appenders.all = {
-          type: "dateFile",
+          type: 'dateFile',
           filename: `${templateConfig.appenders.dateFile.filedir}${element}`,
           alwaysIncludePattern: templateConfig.appenders.dateFile.alwaysIncludePattern,
           pattern: templateConfig.appenders.dateFile.pattern,
-          maxLogSize: templateConfig.appenders.dateFile.maxLogSize,
           encoding: templateConfig.appenders.dateFile.encoding,
           layout: templateConfig.appenders.layout,
         };
@@ -107,40 +104,40 @@ module.exports = class Logger {
     }
     if (!config.categories.default) {
       config.categories.default = {
-        appenders: ["console"],
-        level: "DEBUG",
+        appenders: ['console'],
+        level: 'DEBUG',
       };
     }
     log4js.configure(config);
     this.log4js = log4js;
     this.log4jsLogger = log4js.getLogger(category);
-    this.logLevel = ["DEBUG", "INFO", "WARN", "ERROR", "FATAL"];
+    this.logLevel = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'];
     this.logPath = logPath;
   }
 
   /**
    * 日志输出方法
    * @param {Object} data
-   * @param {String} [data.location] 位置
-   * @param {String} data.level 等级
-   * @param {String} data.message 信息
+   * @param {string} [data.location] 位置
+   * @param {string} data.level 等级
+   * @param {string} data.message 信息
    * @param {Object} [data.data] 对象信息
    */
   log(data = {}) {
     const logObj = this.logFormat(data);
     const { text, level } = logObj;
-    this.log4jsLogger[this.logLevel.includes(level.toUpperCase()) ? level : "warn"](text);
+    this.log4jsLogger[this.logLevel.includes(level.toUpperCase()) ? level : 'warn'](text);
   }
 
   /**
    * debug日志
-   * @param {String} data.message 信息
+   * @param {string} data.message 信息
    * @param {Object} [data.args] 其他栏位
    */
   debug(message, args = {}) {
     this.log(
       Object.assign(args, {
-        level: "DEBUG",
+        level: 'DEBUG',
         message,
       })
     );
@@ -148,13 +145,13 @@ module.exports = class Logger {
 
   /**
    * info日志
-   * @param {String} data.message 信息
+   * @param {string} data.message 信息
    * @param {Object} [data.args] 其他栏位
    */
   info(message, args = {}) {
     this.log(
       Object.assign(args, {
-        level: "INFO",
+        level: 'INFO',
         message,
       })
     );
@@ -162,13 +159,13 @@ module.exports = class Logger {
 
   /**
    * warn日志
-   * @param {String} data.message 信息
+   * @param {string} data.message 信息
    * @param {Object} [data.args] 其他栏位
    */
   warn(message, args = {}) {
     this.log(
       Object.assign(args, {
-        level: "WARN",
+        level: 'WARN',
         message,
       })
     );
@@ -176,13 +173,13 @@ module.exports = class Logger {
 
   /**
    * error日志
-   * @param {String} data.message 信息
+   * @param {string} data.message 信息
    * @param {Object} [data.args] 其他栏位
    */
   error(message, args = {}) {
     this.log(
       Object.assign(args, {
-        level: "ERROR",
+        level: 'ERROR',
         message,
       })
     );
@@ -190,13 +187,13 @@ module.exports = class Logger {
 
   /**
    * fatal日志
-   * @param {String} data.message 信息
+   * @param {string} data.message 信息
    * @param {Object} [data.args] 其他栏位
    */
   fatal(message, args = {}) {
     this.log(
       Object.assign(args, {
-        level: "FATAL",
+        level: 'FATAL',
         message,
       })
     );
@@ -205,19 +202,19 @@ module.exports = class Logger {
   /**
    * 日志格式化方法
    * @param {Object} data
-   * @param {String} [data.location] 位置
-   * @param {String} [data.level] 等级
-   * @param {String} data.message 信息
+   * @param {string} [data.location] 位置
+   * @param {string} [data.level] 等级
+   * @param {string} data.message 信息
    * @param {Object} [data.data] 对象信息
-   * @returns {{text: String, level: String}} log字符串和等级的对象
+   * @returns {{text: string, level: string}} log字符串和等级的对象
    */
   logFormat({ location, level, message, data } = {}) {
-    let file = "";
+    let file = '';
     try {
       let stackArray = new Error().stack.toString().split(/\n.*at\s/);
       for (let index = 1; index < stackArray.length; index++) {
         const element = stackArray[index];
-        if (element.toLowerCase().indexOf("logger") == -1) {
+        if (element.toLowerCase().indexOf('logger') == -1) {
           let fileMatch = element.match(/\((.*)\)/);
           file = fileMatch ? fileMatch[1] : element;
           break;
@@ -225,11 +222,11 @@ module.exports = class Logger {
       }
       // eslint-disable-next-line
     } catch {}
-    level = level ? (this.logLevel.includes(level.toUpperCase()) ? level.toUpperCase() : "UNKNOWN") : "UNKNOWN";
+    level = level ? (this.logLevel.includes(level.toUpperCase()) ? level.toUpperCase() : 'UNKNOWN') : 'UNKNOWN';
     location = location || file;
     const obj = {
       text: `
-【Time】: ${format(new Date(), "YYYY-MM-DD hh:mm:ss")}
+【Time】: ${format(new Date(), 'YYYY-MM-DD hh:mm:ss')}
 【Location】: ${location}
 【Level】: ${level}
 【Message】: ${message}\n`,
@@ -237,7 +234,7 @@ module.exports = class Logger {
     };
     data != null &&
       (obj.text += `【Data】：${
-        typeof data === "object"
+        typeof data === 'object'
           ? !data.stack
             ? JSON.stringify(data)
             : JSON.stringify(data.stack.toString().split(/\n.*at\s/))

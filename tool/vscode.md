@@ -47,35 +47,35 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 
 ### 通用扩展
 
-|          扩展           | 作用             | 备注                                                                                  | 推荐程度 |
-| :---------------------: | ---------------- | ------------------------------------------------------------------------------------- | -------- |
-|      `Code Runner`      | 代码片段运行工具 | 支持 js、python、java 等代码片段运行                                                  | 强烈推荐 |
-|  `Material Icon Theme`  | vscode 图标      | 让文件以及文件夹图标更友好，更清晰，同比 vscode-icons，更推荐                         | 强烈推荐 |
-|     `vscode-icons`      | vscode 图标      | 让文件以及文件夹图标更友好，更清晰                                                    | 推荐     |
-|        `GitLens`        | git 工具         | git 视图工具，但是还是建议多使用 git 命令行完成一些操作                               | 推荐     |
-|       `Git Graph`       | git 工具         | git 视图工具，但是还是建议多使用 git 命令行完成一些操作                               | 推荐     |
-|   `git-commit-plugin`   | git 工具         | 可通过选择生成规范 commit message                                                     | 推荐     |
-| `Chinese Language Pack` | 中文简体翻译包   | 不会翻译所有的地方，比如不会包含某些第三方扩展的右键或功能                            | 推荐     |
-|  `Markdown All in One`  | md 工具          | md 工具                                                                               | 推荐     |
-|     `markdownlint`      | md 工具          | md 语法工具                                                                           | 推荐     |
-|      `IntelliCode`      | 代码提示工具     | 代码提示工具                                                                          | 推荐     |
-|      `vscode-json`      | 格式化 json      | 多种方式格式化 json                                                                   | 推荐     |
-|   `Clipboard History`   | 剪切板           | 记录在 vscode 内部复制记录                                                            | 推荐     |
-|       `transpose`       | 光标工具         | 两个光标选中内容进行交换                                                              | 推荐     |
-|        `Codelf`         | 命名工具         | 右键可以快速打开 CodeLF 网址，进行变量名查询                                          | 推荐     |
-|    `Copy File Name`     | vscode 右键工具  | 右键文件夹/文件可以复制名称                                                           | 推荐     |
-|    `fe-file-rename`     | 命名规范检查工具 | 可以检测并修复文件夹、文件命名                                                        | 推荐     |
-|  `Code Spell Checker`   | 拼写检测工具     | 检测单词是否拼写正确                                                                  | 30       |
-|  `Increment Selection`  | 生成数字         | 当需要打出 1，2，3，4，5...时，可通过该扩展 ctrl+alt+i 快捷 + 多光标选择生成          | 30       |
-|      `change-case`      | 命名工具         | 可以快速转换命名规则，驼峰，下划线等                                                  | 30       |
-|         `SFTP`          | sftp 工具        | 配置好远程桌面的 ftp 服务和远程账号密码，可直接通过 vscode 查看/上传/下载文件到服务器 | 30       |
-|    `Regex Previewer`    | 正则工具         | 预览正则效果                                                                          | 无       |
-|       `Bookmarks`       | 标记位置工具     | 无需滚动翻找某个属性                                                                  | 无       |
-|      `Tabnine AI`       | AI 写代码工具    | 智能预测代码书写                                                                      | 无       |
-|   `CJK Word Handler`    | 中文词语断言     | 在进行光标/选中操作时能够识别中文词语                                                 | 无       |
-|          `SVN`          | svn 版本同步     | 一般只有老项目才使用，建议老项目也转到 git                                            | 无       |
-|      `TortoiseSVN`      | svn 工具         | svn 工具                                                                              | 无       |
-|     `Settings Sync`     | vscode 同步      | 多设备同步扩展，快捷键等配置，同步在 github；可使用 vscode 内置同步功能               | 卸载推荐 |
+|            扩展            | 作用             | 备注                                                                                  | 推荐程度 |
+| :------------------------: | ---------------- | ------------------------------------------------------------------------------------- | -------- |
+|       `Code Runner`        | 代码片段运行工具 | 支持 js、python、java 等代码片段运行                                                  | 强烈推荐 |
+|   `Material Icon Theme`    | vscode 图标      | 让文件以及文件夹图标更友好，更清晰，同比 vscode-icons，更推荐                         | 强烈推荐 |
+|       `vscode-icons`       | vscode 图标      | 让文件以及文件夹图标更友好，更清晰                                                    | 推荐     |
+|         `GitLens`          | git 工具         | git 视图工具，但是还是建议多使用 git 命令行完成一些操作                               | 推荐     |
+|        `Git Graph`         | git 工具         | git 视图工具，但是还是建议多使用 git 命令行完成一些操作                               | 推荐     |
+|    `git-commit-plugin`     | git 工具         | 可通过选择生成规范 commit message                                                     | 推荐     |
+|  `Chinese Language Pack`   | 中文简体翻译包   | 不会翻译所有的地方，比如不会包含某些第三方扩展的右键或功能                            | 推荐     |
+|   `Markdown All in One`    | md 工具          | md 工具                                                                               | 推荐     |
+|       `markdownlint`       | md 工具          | md 语法工具                                                                           | 推荐     |
+|       `IntelliCode`        | 代码提示工具     | 代码提示工具                                                                          | 推荐     |
+| `EditorConfig for VS Code` | 代码样式规范工具 | 让不同的编辑器也能保持样式规范                                                        | 推荐     |
+|       `vscode-json`        | 格式化 json      | 多种方式格式化 json                                                                   | 推荐     |
+|    `Clipboard History`     | 剪切板           | 记录在 vscode 内部复制记录                                                            | 推荐     |
+|        `transpose`         | 光标工具         | 两个光标选中内容进行交换                                                              | 推荐     |
+|          `Codelf`          | 命名工具         | 右键可以快速打开 CodeLF 网址，进行变量名查询                                          | 推荐     |
+|      `Copy File Name`      | vscode 右键工具  | 右键文件夹/文件可以复制名称                                                           | 推荐     |
+|      `fe-file-rename`      | 命名规范检查工具 | 可以检测并修复文件夹、文件命名                                                        | 推荐     |
+|        `Bookmarks`         | 标记位置工具     | 无需滚动翻找某个属性                                                                  | 50       |
+|        `Tabnine AI`        | AI 写代码工具    | 智能预测代码书写                                                                      | 50       |
+|    `Code Spell Checker`    | 拼写检测工具     | 检测单词是否拼写正确                                                                  | 30       |
+|   `Increment Selection`    | 生成数字         | 当需要打出 1，2，3，4，5...时，可通过该扩展 ctrl+alt+i 快捷 + 多光标选择生成          | 30       |
+|       `change-case`        | 命名工具         | 可以快速转换命名规则，驼峰，下划线等                                                  | 30       |
+|           `SFTP`           | sftp 工具        | 配置好远程桌面的 ftp 服务和远程账号密码，可直接通过 vscode 查看/上传/下载文件到服务器 | 30       |
+|     `CJK Word Handler`     | 中文词语断言     | 在进行光标/选中操作时能够识别中文词语                                                 | 30       |
+|           `SVN`            | svn 版本同步     | 一般只有老项目才使用，建议老项目也转到 git                                            | 不推荐   |
+|       `TortoiseSVN`        | svn 工具         | svn 工具                                                                              | 不推荐   |
+|      `Settings Sync`       | vscode 同步      | 多设备同步扩展，快捷键等配置，同步在 github；vscode 内置同步功能                      | 卸载推荐 |
 
 ### 项目扩展
 
@@ -106,7 +106,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 |    `Manta's Stylus Supremacy`    | stylus 风格规范&格式化  | 主要用来规范格式化 stylus，使用其他 css 预处理器，则无需安装       | 30       |
 |      `Debugger for Chrome`       | 断点调试工具            | 映射 vscode 断点到 chrome 浏览器断点，快捷调试                     | 无       |
 |         `Image preview`          | css 图片预览            | 可在 css 中预览图片文件                                            | 无       |
-|          `Import Cost`           | 引用大小提示            | 可显示 import/requrie 引用包的大小                                 | 卸载推荐 |
+|          `Import Cost`           | 引用大小提示            | 可显示 import/requrie 引用包的大小；可能影响性能                   | 卸载推荐 |
 
 #### nodejs
 
@@ -140,7 +140,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 
 |     扩展      | 作用           | 备注           | 推荐程度 |
 | :-----------: | -------------- | -------------- | -------- |
-| `Azure Tools` | Azure 云工具包 | 包含 13 个扩展 | 无       |
+| `Azure Tools` | Azure 云工具包 | 包含 13 个扩展 | 推荐     |
 
 #### 其他
 
@@ -330,7 +330,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
     "mix.exs": ".credo.exs, .dialyzer_ignore.exs, .formatter.exs, mix.lock",
     "next.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.json, env.d.ts, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, next-env.d.ts, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
     "nuxt.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.json, env.d.ts, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "package.json": ".browserslist*, .circleci*, .codecov, .commitlint*, .cz-config.js, .czrc, .editorconfig, .eslint*, .firebase*, .flowconfig, .github*, .gitlab*, .gitpod*, .huskyrc*, .jslint*, .lintstagedrc*, .markdownlint*, .mocha*, .node-version, .nodemon*, .npm*, .nvmrc, .pm2*, .pnp.*, .pnpm*, .prettier*, .babel*, .releaserc*, .sentry*, .stackblitz*, .styleci*, .stylelint*, .tazerc*, .textlint*, .tool-versions, .travis*, .versionrc*, .vscode*, .watchman*, .xo-config*, .yamllint*, .yarnrc*, Procfile, api-extractor.json, apollo.config.*, appveyor*, ava.config.*, azure-pipelines*, bower.json, build.config.*, commitlint*, crowdin*, cypress.json, dangerfile*, dprint.json, firebase.json, grunt*, gulp*, jasmine.*, jenkins*, jest.config.*, jsconfig.*, karma*, lerna*, lint-staged*, nest-cli.*, netlify*, nodemon*, nx.*, package-lock.json, phpcs.xml, playwright.config.*, pm2.*, pnpm*, prettier*, pullapprove*, puppeteer.config.*, pyrightconfig.json, renovate*, rollup.config.*, stylelint*, tsconfig.*, tsdoc.*, tslint*, tsup.config.*, turbo*, typedoc*, vercel*, vetur.config.*, vitest.config.*, webpack.config.*, workspace.json, xo.config.*, yarn*, .gitignore",
+    "package.json": ".browserslist*, .circleci*, .codecov, .commitlint*, .cz-config.js, .czrc, .editorconfig, .eslint*, .firebase*, .flowconfig, .github*, .gitlab*, .gitpod*, .huskyrc*, .jslint*, .lintstagedrc*, .markdownlint*, .mocha*, .node-version, .nodemon*, .npm*, .nvmrc, .pm2*, .pnp.*, .pnpm*, .prettier*, .babel*, .releaserc*, .sentry*, .stackblitz*, .styleci*, .stylelint*, .tazerc*, .textlint*, .tool-versions, .travis*, .versionrc*, .vscode*, .watchman*, .xo-config*, .yamllint*, .yarnrc*, Procfile, api-extractor.json, apollo.config.*, appveyor*, ava.config.*, azure-pipelines*, bower.json, build.config.*, commitlint*, crowdin*, cypress.json, dangerfile*, dprint.json, firebase.json, grunt*, gulp*, jasmine.*, jenkins*, jest.config.*, jsconfig.*, karma*, lerna*, lint-staged*, nest-cli.*, netlify*, nodemon*, nx.*, package-lock.json, phpcs.xml, playwright.config.*, pm2.*, pnpm*, prettier*, pullapprove*, puppeteer.config.*, pyrightconfig.json, renovate*, rollup.config.*, stylelint*, tsconfig.*, tsdoc.*, tslint*, tsup.config.*, turbo*, typedoc*, vercel*, vetur.config.*, vitest.config.*, webpack.config.*, workspace.json, xo.config.*, yarn*, .gitignore, *.d.ts, .nyc*",
     "pubspec.yaml": ".metadata, .packages, all_lint_rules.yaml, analysis_options.yaml, build.yaml, pubspec.lock",
     "pyproject.toml": ".pdm.toml, pdm.lock, pyproject.toml",
     "quasar.conf.js": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.json, env.d.ts, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, playwright.config.*, postcss.config.*, puppeteer.config.*, quasar.extensions.json, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
@@ -354,11 +354,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   // 其他插件配置
   "liveServer.settings.donotShowInfoMsg": true,
   "GitCommitPlugin.ShowEmoji": false,
-  "turboConsoleLog.addSemicolonInTheEnd": true,
-  "turboConsoleLog.includeFileNameAndLineNum": false,
-  "turboConsoleLog.delimiterInsideMessage": "",
-  "turboConsoleLog.logMessagePrefix": "",
-  "turboConsoleLog.quote": "`",
+  "tabnine.experimentalAutoImports": true,
   "code-runner.executorMap": {
     "javascript": "node",
     "java": "cd $dir && java $fileName",
@@ -413,6 +409,11 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
     "fortran": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
   },
   "code-runner.respectShebang": false,
+  "turboConsoleLog.addSemicolonInTheEnd": true,
+  "turboConsoleLog.includeFileNameAndLineNum": false,
+  "turboConsoleLog.delimiterInsideMessage": "",
+  "turboConsoleLog.logMessagePrefix": "",
+  "turboConsoleLog.quote": "`",
   // 工作台
   "workbench.iconTheme": "material-icon-theme",
   "workbench.startupEditor": "newUntitledFile",
@@ -427,10 +428,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
       "icon": "terminal-powershell"
     },
     "Command Prompt": {
-      "path": [
-        "${env:windir}\\Sysnative\\cmd.exe",
-        "${env:windir}\\System32\\cmd.exe"
-      ],
+      "path": ["${env:windir}\\Sysnative\\cmd.exe", "${env:windir}\\System32\\cmd.exe"],
       "args": [],
       "icon": "terminal-cmd"
     },
@@ -460,11 +458,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   },
   "for decline": {
     "prefix": "for-",
-    "body": [
-      "for (let index = array.length - 1; index >= 0; index--) {",
-      "  const element = array[index];",
-      "}"
-    ],
+    "body": ["for (let index = array.length - 1; index >= 0; index--) {", "  const element = array[index];", "}"],
     "description": "for decline"
   },
   "array map": {

@@ -1,7 +1,7 @@
 /**
  * 获取合规日期时间
- * @param {Date | String | Number} value 日期时间值
- * @returns {Date | null} Date实例对象
+ * @param {Date | string | number} value 日期时间值
+ * @returns {Date | undefined} Date实例对象
  */
 function getRegularDate(value) {
   let type = Object.prototype.toString
@@ -20,13 +20,13 @@ function getRegularDate(value) {
         }
       }
       let date = new Date(value);
-      return !Number.isNaN(date.getTime()) ? date : null;
+      return !Number.isNaN(date.getTime()) ? date : undefined;
     }
     case 'date':
     case 'number':
       return new Date(value);
     default:
-      return null;
+      return undefined;
   }
 }
 
@@ -34,14 +34,14 @@ function getRegularDate(value) {
  * 格式化日期时间
  *
  * 依赖方法 getRegularDate
- * @param {Date | String | Number} value 日期时间值
- * @param {String} [formatStr = "YYYY-MM-DD hh:mm:ss"] 格式化规则
- * @returns {String | null} 日期时间字符串
+ * @param {Date | string | number} value 日期时间值
+ * @param {string} [formatStr = "YYYY-MM-DD hh:mm:ss"] 格式化规则
+ * @returns {string | undefined} 日期时间字符串
  */
 function format(value, formatStr = 'YYYY-MM-DD hh:mm:ss') {
   let myDate = getRegularDate(value);
   if (!myDate) {
-    return null;
+    return undefined;
   }
   let fullYear = myDate.getFullYear(),
     year = String(fullYear).substring(2),
@@ -96,8 +96,8 @@ function format(value, formatStr = 'YYYY-MM-DD hh:mm:ss') {
  * 格式化日期时间
  *
  * 挂载在Date原型上
- * @param {String} [formatStr = "YYYY-MM-DD hh:mm:ss"] 格式化规则
- * @returns {String} 日期时间字符串
+ * @param {string} [formatStr = "YYYY-MM-DD hh:mm:ss"] 格式化规则
+ * @returns {string} 日期时间字符串
  */
 Date.prototype.format = function (fmt = 'YYYY-MM-DD hh:mm:ss') {
   let o = {
@@ -137,8 +137,8 @@ Date.prototype.format = function (fmt = 'YYYY-MM-DD hh:mm:ss') {
 
 /**
  * 获取xlsx合规日期时间
- * @param {Number} value xlsx日期时间值
- * @returns {Date | null} Date实例对象
+ * @param {number} value xlsx日期时间值
+ * @returns {Date | undefined} Date实例对象
  */
 function getDateOfExcel(value) {
   let utc_days = Math.floor(value - 25569);
@@ -151,21 +151,21 @@ function getDateOfExcel(value) {
   let hours = Math.floor(total_seconds / (60 * 60));
   let minutes = Math.floor(total_seconds / 60) % 60;
   let date = new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
-  return !Number.isNaN(date.getTime()) ? date : null;
+  return !Number.isNaN(date.getTime()) ? date : undefined;
 }
 
 /**
  * 给定日期时间增加/减去时间
  *
  * 依赖getRegularDate方法
- * @param {Date | String | Number} value 日期时间值
- * @param {String} str 增加或减少的日期时间，如：'10h,20M,30s'
- * @returns {Date | null} Date实例对象
+ * @param {Date | string | number} value 日期时间值
+ * @param {string} str 增加或减少的日期时间，如：'10h,20M,30s'
+ * @returns {Date | undefined} Date实例对象
  */
 function calcDate(value, str) {
   let myDate = getRegularDate(value);
   if (!myDate) {
-    return null;
+    return undefined;
   }
   let o = {
     '(\\d+)(y)': myDate.getFullYear(), // 年
@@ -228,7 +228,7 @@ function calcDate(value, str) {
 
 /**
  * 判断是否为闰年
- * @param {Number} [val] 年份 默认今年
+ * @param {number} [val] 年份 默认今年
  * @returns {Boolean} true 是闰年
  */
 function isLeapYear(val) {
@@ -241,13 +241,13 @@ function isLeapYear(val) {
  * 获取月份天数
  *
  * 依赖isLeapYear，getRegularDate方法
- * @param {Date | String | Number} [value = new Date()] 日期时间值
- * @returns {Number | null} 当月天数
+ * @param {Date | string | number} [value = new Date()] 日期时间值
+ * @returns {number | undefined} 当月天数
  */
 function getDays(value = new Date()) {
   let myDate = getRegularDate(value);
   if (!myDate) {
-    return null;
+    return undefined;
   }
   let year = myDate.getFullYear(),
     mouth = myDate.getMonth() + 1,
@@ -267,8 +267,8 @@ function getDays(value = new Date()) {
 
 /**
  * 时间数值转换为字符串时间长度
- * @param {String} val 时间数值，如：ms毫秒 s秒 m分 h时，示例：1200ms，24h，61m
- * @returns {String} 字符串时间长度，为空返回空字符串
+ * @param {string} val 时间数值，如：ms毫秒 s秒 m分 h时，示例：1200ms，24h，61m
+ * @returns {string} 字符串时间长度，为空返回空字符串
  */
 function getLengthOfTime(val) {
   if (val == null || val === '') {
@@ -333,7 +333,7 @@ function sortDate(array, isAsc = false) {
  *
  * 依赖方法 getRegularDate
  * @param {Array} array 日期时间对象数组
- * @param {String} key 对象的key
+ * @param {string} key 对象的key
  * @param {Boolean} [isAsc = false] 是否升序，默认false；true升序，新日期在前；false降序，旧日期在前
  * @returns {Array} 排序后的数组
  */

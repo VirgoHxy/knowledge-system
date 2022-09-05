@@ -1,4 +1,4 @@
-const ftp = require("basic-ftp");
+const ftp = require('basic-ftp');
 
 class FTPClient {
   /**
@@ -21,7 +21,6 @@ class FTPClient {
     this.client = new ftp.Client();
     // 是否开启日志 false不开启
     this.client.ftp.verbose = false;
-    this.access();
   }
 
   /**
@@ -38,9 +37,9 @@ class FTPClient {
    * 上传文件
    * @async
    * @param {Object} param
-   * @param {String | Readable} param.localPath 本地地址
-   * @param {String} param.ftpPath ftp地址
-   * @param {String} param.fileName 文件名称
+   * @param {string | Readable} param.localPath 本地地址
+   * @param {string} param.ftpPath ftp地址
+   * @param {string} param.fileName 文件名称
    */
   async uploadToFTP({ localPath, ftpPath, fileName }) {
     await this.access();

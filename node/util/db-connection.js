@@ -1,5 +1,5 @@
-const mysql = require("mysql");
-const oracledb = require("oracledb");
+const mysql = require('mysql');
+const oracledb = require('oracledb');
 
 class DBConnection {
   /**
@@ -13,8 +13,6 @@ class DBConnection {
     this.opt = opt;
     /** @type {mysql.Pool | oracledb.Pool} 连接池 */
     this.pool;
-
-    this.createPool();
   }
 
   /**
@@ -23,15 +21,15 @@ class DBConnection {
    */
   async createPool() {
     switch (this.type) {
-      case "MARIADB":
+      case 'MARIADB':
         this.pool = mysql.createPool(this.opt);
         break;
-      case "ORACLE":
+      case 'ORACLE':
         this.pool = await oracledb.createPool(this.opt);
         break;
 
       default:
-        throw new Error("unknow db type");
+        throw new Error('unknow db type');
     }
   }
 
@@ -42,13 +40,13 @@ class DBConnection {
    */
   async getConnection() {
     switch (this.type) {
-      case "MARIADB":
+      case 'MARIADB':
         return await this.getConnectionOfMariaDB();
-      case "ORACLE":
+      case 'ORACLE':
         return this.pool.getConnection();
 
       default:
-        throw new Error("unknow db type");
+        throw new Error('unknow db type');
     }
   }
 
@@ -56,18 +54,18 @@ class DBConnection {
    * 执行语句
    * @async
    * @param {mysql.PoolConnection | oracledb.Connection} conn 连接
-   * @param {String} sql sql语句
+   * @param {string} sql sql语句
    * @returns {Promise<Object>} 结果
    */
   async query(conn, sql) {
     switch (this.type) {
-      case "MARIADB":
+      case 'MARIADB':
         return await this.queryOfMariaDB(conn, sql);
-      case "ORACLE":
+      case 'ORACLE':
         return await conn.execute(sql, [], { resultSet: true });
 
       default:
-        throw new Error("unknow db type");
+        throw new Error('unknow db type');
     }
   }
 
@@ -96,7 +94,7 @@ class DBConnection {
    * 执行MariaDB语句
    * @async
    * @param {mysql.PoolConnection} 连接
-   * @param {String} sql sql语句
+   * @param {string} sql sql语句
    * @returns {Promise<Object>} 结果
    */
   async queryOfMariaDB(conn, sql) {

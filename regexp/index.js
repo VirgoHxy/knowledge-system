@@ -1,6 +1,6 @@
 /**
  * 是否为正确的电话号码
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为正确
  */
 function isPhone(val) {
@@ -14,7 +14,7 @@ function isPhone(val) {
 
 /**
  * 是否为正确的身份证
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为正确
  */
 function isIDCard(val) {
@@ -28,7 +28,7 @@ function isIDCard(val) {
 
 /**
  * 是否为正确的车牌
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为正确
  */
 function isPlate(val) {
@@ -42,7 +42,7 @@ function isPlate(val) {
 
 /**
  * 是否有汉字
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为是
  */
 function hasChinese(val) {
@@ -54,7 +54,7 @@ function hasChinese(val) {
 
 /**
  * 是否为数字
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为是
  */
 function isNumber(val) {
@@ -66,7 +66,7 @@ function isNumber(val) {
 
 /**
  * 是否为整数
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为是
  */
 function isInt(val) {
@@ -78,7 +78,7 @@ function isInt(val) {
 
 /**
  * 是否为正数
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为是
  */
 function isPositiveNum(val) {
@@ -90,7 +90,7 @@ function isPositiveNum(val) {
 
 /**
  * 是否为正整数
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为是
  */
 function isPositiveInt(val) {
@@ -102,7 +102,7 @@ function isPositiveInt(val) {
 
 /**
  * 是否为正确的ip
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为正确
  */
 function isIP(val) {
@@ -116,7 +116,7 @@ function isIP(val) {
 
 /**
  * 是否为正确的日期时间格式
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为正确
  */
 function isDateTime(val) {
@@ -130,7 +130,7 @@ function isDateTime(val) {
 
 /**
  * 是否为正确的日期格式
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为正确
  */
 function isDate(val) {
@@ -142,7 +142,7 @@ function isDate(val) {
 
 /**
  * 是否为正确的时间格式
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为正确
  */
 function isTime(val) {
@@ -154,9 +154,9 @@ function isTime(val) {
 
 /**
  * 替换非法字符
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @param {Array} [filterArray] 在非法数组中去除的字符
- * @returns {String} 替换后的字符串
+ * @returns {string} 替换后的字符串
  */
 function replaceIllegalStr(val, filterArray) {
   if (val == null || val === '') {
@@ -178,7 +178,7 @@ function replaceIllegalStr(val, filterArray) {
 
 /**
  * 是否存在非法字符
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @param {Array} [filterArray] 在非法数组中去除的字符
  * @returns {Boolean} true 表示存在
  */
@@ -206,7 +206,7 @@ function isIllegal(val, filterArray) {
 
 /**
  * 判断后缀是否为图片
- * @param {String} val 字符串
+ * @param {string} val 字符串
  * @returns {Boolean} true 表示为图片
  */
 function isImage(val) {
@@ -218,28 +218,28 @@ function isImage(val) {
 
 /**
  * 取出一个路径的文件名
- * @param {String} val 字符串
- * @returns {String | null} 文件名
+ * @param {string} val 字符串
+ * @returns {string | undefined} 文件名
  */
 function getFileName(val) {
   if (val == null || val === '') {
-    return null;
+    return undefined;
   }
   return val.match(/[^\\/]*$/)[0];
 }
 
 /**
  * 取出一个路径的目录和文件名
- * @param {String} val 字符串
- * @returns {Array | null} 返回一个数组，数组第一位是目录，第二位是文件名
+ * @param {string} val 字符串
+ * @returns {Array | undefined} 返回一个数组，数组第一位是目录，第二位是文件名
  */
 function getFolderAndFileName(val) {
   if (val == null || val === '') {
-    return null;
+    return undefined;
   }
   let match = val.match(/^(.+[\\/])([^\\/]+)$/);
   if (!match) {
-    return null;
+    return undefined;
   }
   let dir = match[1],
     fileName = match[2];
@@ -248,6 +248,34 @@ function getFolderAndFileName(val) {
   }
   let slash = dir.indexOf('\\') != -1 ? '\\' : '/';
   return [`${dir}${fileName}${slash}`, ''];
+}
+
+/**
+ * 取出一个url的各个部分
+ * @param {string} val 字符串
+ * @returns {Object | undefined} 以对象形式返回
+ */
+function urlParse(val) {
+  if (val == null || val === '') {
+    return undefined;
+  }
+  let match = val.match(
+    /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/
+  );
+  if (!match) {
+    return undefined;
+  }
+  let [url, scheme, slash, host, port, path, query, hash] = match;
+  return {
+    url,
+    scheme,
+    slash,
+    host,
+    port,
+    path,
+    query,
+    hash,
+  };
 }
 
 module.exports = {
@@ -268,4 +296,5 @@ module.exports = {
   isImage,
   getFileName,
   getFolderAndFileName,
+  urlParse,
 };

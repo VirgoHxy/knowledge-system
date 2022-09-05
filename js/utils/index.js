@@ -9,8 +9,8 @@ function isNull(val) {
 
 /**
  * 获取url参数的值
- * @param {String} key 参数的名称
- * @param {String} [url] 链接地址 默认为当前浏览器地址
+ * @param {string} key 参数的名称
+ * @param {string} [url] 链接地址 默认为当前浏览器地址
  */
 function getUrlParam(key, url) {
   try {
@@ -35,9 +35,9 @@ function getUrlParam(key, url) {
 
 /**
  * 修改url参数的值
- * @param {String} key 参数的名称
+ * @param {string} key 参数的名称
  * @param {*} value 参数的值 非字符串转换为字符串
- * @param {String} [url] 链接地址 默认为当前浏览器地址
+ * @param {string} [url] 链接地址 默认为当前浏览器地址
  * @param {Boolean} [hrefFlag = false] 是否修改当前地址 true 修改当前地址
  * @returns 返回修改后的地址
  */
@@ -70,9 +70,9 @@ function changeURLArg(key, value, url, hrefFlag) {
 
 /**
  * 操作url的方法
- * @param {String} [data.url] 链接地址 默认为当前浏览器地址
- * @param {String} data.type 操作类型
- * @param {String} data.key 参数的名称
+ * @param {string} [data.url] 链接地址 默认为当前浏览器地址
+ * @param {string} data.type 操作类型
+ * @param {string} data.key 参数的名称
  * @param {*} data.value 参数的值 非字符串转换为字符串
  * @param {Boolean} [data.hrefFlag = true] 是否返回字符串地址 true 返回字符串地址
  * @returns {*} 返回值
@@ -114,7 +114,7 @@ function urlMethod(data = {}) {
 /**
  * 防抖装饰器
  * @param {Function} func 函数
- * @param {Number} ms 毫秒延时
+ * @param {number} ms 毫秒延时
  * @returns {Function}
  */
 function debounce(func, ms) {
@@ -128,7 +128,7 @@ function debounce(func, ms) {
 /**
  * 节流装饰器
  * @param {Function} func 函数
- * @param {Number} ms 毫秒延时
+ * @param {number} ms 毫秒延时
  * @returns {Function}
  */
 function throttle(func, ms) {
@@ -184,7 +184,7 @@ function isEquals() {
 /**
  * 设置期限Storage
  * @param {Object} storage 存储对象类型 localStorage或者sessionStorage
- * @param {String} key 存储对象名称
+ * @param {string} key 存储对象名称
  * @param {*} value 存储对象值
  * @param {number} expire 存储时间(毫秒)
  */
@@ -200,7 +200,7 @@ function setExpire(storage, key, value, expire) {
 /**
  * 获取Storage
  * @param {Obeject} storage 存储对象类型 localStorage或者sessionStorage
- * @param {String} key 存储对象名称
+ * @param {string} key 存储对象名称
  * @returns {*}
  */
 function getExpire(storage, key) {
@@ -212,7 +212,7 @@ function getExpire(storage, key) {
   if (val.expire) {
     if (Date.now() - val.time > val.expire) {
       storage.removeItem(key);
-      return null;
+      return;
     }
   }
   return val.data;
@@ -220,8 +220,8 @@ function getExpire(storage, key) {
 
 /**
  * 获取cookie(必须在浏览器环境下运行)
- * @param {String} name 存储对象名称
- * @returns {String | Undefined}
+ * @param {string} name 存储对象名称
+ * @returns {string | undefined}
  */
 function getCookie(name) {
   let matches = document.cookie.match(
@@ -232,8 +232,8 @@ function getCookie(name) {
 
 /**
  * 设置cookie(必须在浏览器环境下运行)
- * @param {String} name 存储对象名称
- * @param {String} value 存储对象
+ * @param {string} name 存储对象名称
+ * @param {string} value 存储对象
  * @param {Object} options 该cookie的配置值
  *
  */
@@ -260,7 +260,7 @@ function setCookie(name, value, options = {}) {
 
 /**
  * 删除cookie(依赖setCookie方法)(必须在浏览器环境下运行)
- * @param {String} name 存储对象名称
+ * @param {string} name 存储对象名称
  *
  */
 function deleteCookie(name) {
@@ -335,7 +335,7 @@ function getBrowser() {
 
 /**
  * 获取支付浏览器类型(必须在浏览器环境下运行)
- * @returns {String} weixin 或者 alipay
+ * @returns {string} weixin 或者 alipay
  */
 function getPayBrowser() {
   //判断什么浏览器
@@ -378,8 +378,8 @@ function closeWindow() {
 
 /**
  * 获取下载文件blob(必须在浏览器环境下运行)
- * @param {String} data 文件内容
- * @param {String} type 文件类型
+ * @param {string} data 文件内容
+ * @param {string} type 文件类型
  * @returns {Blob}
  */
 function getDownloadUri(data, type) {
@@ -411,8 +411,8 @@ function getDownloadUri(data, type) {
 
 /**
  * 下载文件(依赖getBrowser,getDownloadUri方法)(必须在浏览器环境下运行)
- * @param {String} data 文件内容
- * @param {String} fileName 文件名称
+ * @param {string} data 文件内容
+ * @param {string} fileName 文件名称
  */
 function download(data, fileName) {
   try {
@@ -446,8 +446,8 @@ function download(data, fileName) {
 
 /**
  * 通过元素下载文件(必须在浏览器环境下运行)
- * @param {String} url 文件地址
- * @param {String} fileName 文件名称
+ * @param {string} url 文件地址
+ * @param {string} fileName 文件名称
  */
 function downloadByAElement(url, fileName) {
   try {
@@ -465,7 +465,7 @@ function downloadByAElement(url, fileName) {
 /**
  * 读取文件内容(必须在浏览器环境下运行)
  * @param {Blob} blob 文件
- * @param {String} type mediatype
+ * @param {string} type mediatype
  */
 function readBlob(blob, type) {
   return new Promise((resolve) => {

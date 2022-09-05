@@ -53,7 +53,7 @@ function clone(target, map = new WeakMap()) {
 /**
  * 判断数据类型
  * @param {*} o 各种类型值
- * @returns {String} 详细类型
+ * @returns {string} 详细类型
  */
 function getType(o) {
   let s = Object.prototype.toString.call(o);

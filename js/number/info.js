@@ -392,7 +392,7 @@ function isEquals() {
 
 /**
  * 带小数的二进制转十进制
- * @param {Number} val
+ * @param {number} val
  * @returns
  */
 function getDecimal2FloatValue(val) {

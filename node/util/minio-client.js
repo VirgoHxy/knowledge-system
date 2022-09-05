@@ -1,12 +1,12 @@
-const minio = require("minio");
-const path = require("path");
+const minio = require('minio');
+const path = require('path');
 
 class MinIOClient {
   /**
    * 实例化参数
    * @param {Object} param 参数
    * @param {minio.ClientOptions} param.opt 连接配置
-   * @param {String} param.defaultBucket 桶名称
+   * @param {string} param.defaultBucket 桶名称
    */
   constructor({ opt, defaultBucket }) {
     this.opt = opt;
@@ -27,7 +27,7 @@ class MinIOClient {
   /**
    * 获取对象流
    * @async
-   * @param {String} name object名称
+   * @param {string} name object名称
    * @returns {Promise<ReadStream>}
    */
   async getObject(name) {
@@ -38,8 +38,8 @@ class MinIOClient {
   /**
    * 推送对象
    * @async
-   * @param {String} name object名称
-   * @param {String | Buffer} content 文件内容
+   * @param {string} name object名称
+   * @param {string | Buffer} content 文件内容
    * @param {import("minio").ItemBucketMetadata} metaData 文件内容
    * @returns {Promise<Boolean>}
    */
@@ -55,7 +55,7 @@ class MinIOClient {
   /**
    * 删除对象
    * @async
-   * @param {String} name object名称
+   * @param {string} name object名称
    * @returns {Promise<Boolean>}
    */
   async removeObject(name) {
@@ -67,8 +67,8 @@ class MinIOClient {
   /**
    * 删除过期对象
    * @async
-   * @param {String} prefix 前缀
-   * @param {Number} days 期限天数
+   * @param {string} prefix 前缀
+   * @param {number} days 期限天数
    * @returns {Promise<Boolean>}
    */
   async removeObjectByTime(prefix, days) {
@@ -78,16 +78,23 @@ class MinIOClient {
         this.getMinIOPath(prefix),
         true
       );
-      bucketStream.on("data", async (element) => {
+      bucketStream.on('data', async (element) => {
         const stat = await this.client.statObject(this.defaultBucket, element.name);
-        if (Number(stat.metaData.ctime) + Number(days) * 24 * 60 * 60 * 1000 < Date.now()) {
-          await this.client.removeObject(this.defaultBucket, element.name);
+        const daysNum = Number(days) * 24 * 60 * 60 * 1000;
+        let ctime = Number(stat.metaData.ctime);
+        let match = element.name.match(/[1-9]\d{3}[-/](0[1-9]|1[0-2])[-/](0[1-9]|[1-2][0-9]|3[0-1])/);
+        let executeFlag = false;
+        if (ctime && ctime + daysNum < Date.now()) {
+          executeFlag = true;
+        } else if (match && match[0] && new Date(match[0]).getTime() + daysNum < Date.now()) {
+          executeFlag = true;
         }
+        executeFlag && (await this.client.removeObject(this.defaultBucket, element.name));
       });
-      bucketStream.on("error", function (error) {
+      bucketStream.on('error', function (error) {
         reject(error);
       });
-      bucketStream.on("end", function () {
+      bucketStream.on('end', function () {
         resolve(true);
       });
     });
@@ -95,7 +102,7 @@ class MinIOClient {
 
   /**
    * 删除同一个前缀的所有对象
-   * @param {String} prefix 前缀
+   * @param {string} prefix 前缀
    * @returns {Promise<Boolean>}
    */
   removeObjectByPrefix(prefix) {
@@ -104,13 +111,13 @@ class MinIOClient {
         this.defaultBucket,
         this.getMinIOPath(prefix)
       );
-      bucketStream.on("data", async function (element) {
+      bucketStream.on('data', async function (element) {
         await this.client.removeObject(this.defaultBucket, element.name);
       });
-      bucketStream.on("error", function (error) {
+      bucketStream.on('error', function (error) {
         reject(error);
       });
-      bucketStream.on("end", function () {
+      bucketStream.on('end', function () {
         resolve(true);
       });
     });
@@ -119,8 +126,8 @@ class MinIOClient {
   /**
    * 拷贝对象
    * @async
-   * @param {String} sourceName 源对象路径
-   * @param {String} copyName object名称
+   * @param {string} sourceName 源对象路径
+   * @param {string} copyName object名称
    * @returns {Promise<Boolean>}
    */
   async copyObject(sourceName, copyName) {
@@ -135,15 +142,15 @@ class MinIOClient {
 
   /**
    * 将fs路径转换为minio object name
-   * @param {String} dirPath 文件路径/文件夹路径
-   * @returns {String} 路径
+   * @param {string} dirPath 文件路径/文件夹路径
+   * @returns {string} 路径
    */
   getMinIOPath(dirPath) {
     if (!/^[a-zA-Z]:[\\/]|^[\\/]/.test(dirPath)) {
       dirPath = path.resolve(__dirname, dirPath);
     }
     // 去掉盘符以及转换路径\\为/可让minio识别
-    return dirPath.replace(/[a-zA-Z]:[\\/]|^[\\/]/, "").replace(/\\/g, "/");
+    return dirPath.replace(/[a-zA-Z]:[\\/]|^[\\/]/, '').replace(/\\/g, '/');
   }
 }
 

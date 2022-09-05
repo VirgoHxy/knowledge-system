@@ -48,7 +48,7 @@ function removeRepeatBySet(array) {
  * 去除数组指定元素
  * @param {Array} array 源数组
  * @param {Array} removeArr 需要删除的元素数组
- * @param {String} [key] 对象字段名称，针对数组元素为对象的数组
+ * @param {string} [key] 对象字段名称，针对数组元素为对象的数组
  * @returns {Array} 去除后的数组
  */
 function removeItem(array, removeArr, key) {
@@ -87,8 +87,8 @@ function isEqual(x, y, positionFlag = true) {
  * 数组长度不足够存放元素会增加元素存放的个数
  * 数组长度过长会让元素个数为1的来达到最大长度
  * @param {Array} array 源数组
- * @param {Number} length 数组长度
- * @param {Number} [number = 0] 数组元素个数，0表示按平均分
+ * @param {number} length 数组长度
+ * @param {number} [number = 0] 数组元素个数，0表示按平均分
  * @returns {Array} 二维数组
  */
 function splitByArrayLength(array, length, number = 0) {
@@ -109,7 +109,7 @@ function splitByArrayLength(array, length, number = 0) {
 /**
  * 按元素个数分割数组成二维数组
  * @param {Array} array 源数组
- * @param {Number} number 数组元素个数
+ * @param {number} number 数组元素个数
  * @returns {Array} 二维数组
  */
 function splitByElementNum(array, number) {
