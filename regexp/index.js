@@ -223,7 +223,7 @@ function isImage(val) {
  */
 function getFileName(val) {
   if (val == null || val === '') {
-    return undefined;
+    return;
   }
   return val.match(/[^\\/]*$/)[0];
 }
@@ -235,11 +235,11 @@ function getFileName(val) {
  */
 function getFolderAndFileName(val) {
   if (val == null || val === '') {
-    return undefined;
+    return;
   }
   let match = val.match(/^(.+[\\/])([^\\/]+)$/);
   if (!match) {
-    return undefined;
+    return;
   }
   let dir = match[1],
     fileName = match[2];
@@ -257,13 +257,13 @@ function getFolderAndFileName(val) {
  */
 function urlParse(val) {
   if (val == null || val === '') {
-    return undefined;
+    return;
   }
   let match = val.match(
     /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/
   );
   if (!match) {
-    return undefined;
+    return;
   }
   let [url, scheme, slash, host, port, path, query, hash] = match;
   return {

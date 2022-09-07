@@ -58,7 +58,7 @@ function randomIntOfBetween(n, m) {
  */
 function randomInt(n) {
   if (n <= 0 || n > 16) {
-    return undefined;
+    return;
   }
   return Math.random().toString().slice(-n);
 }

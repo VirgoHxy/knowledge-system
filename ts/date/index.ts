@@ -25,7 +25,7 @@ export function getRegularDate(value: Date | string | number): Date | undefined 
     case 'number':
       return new Date(value);
     default:
-      return undefined;
+      return;
   }
 }
 
@@ -40,7 +40,7 @@ export function getRegularDate(value: Date | string | number): Date | undefined 
 export function format(value: Date | string | number, formatStr = 'YYYY-MM-DD hh:mm:ss'): string | undefined {
   const myDate = getRegularDate(value);
   if (!myDate) {
-    return undefined;
+    return;
   }
   const fullYear = myDate.getFullYear(),
     year = String(fullYear).substring(2),

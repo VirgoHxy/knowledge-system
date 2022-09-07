@@ -26,7 +26,7 @@ function getRegularDate(value) {
     case 'number':
       return new Date(value);
     default:
-      return undefined;
+      return;
   }
 }
 
@@ -41,7 +41,7 @@ function getRegularDate(value) {
 function format(value, formatStr = 'YYYY-MM-DD hh:mm:ss') {
   let myDate = getRegularDate(value);
   if (!myDate) {
-    return undefined;
+    return;
   }
   let fullYear = myDate.getFullYear(),
     year = String(fullYear).substring(2),
@@ -165,7 +165,7 @@ function getDateOfExcel(value) {
 function calcDate(value, str) {
   let myDate = getRegularDate(value);
   if (!myDate) {
-    return undefined;
+    return;
   }
   let o = {
     '(\\d+)(y)': myDate.getFullYear(), // 年
@@ -247,7 +247,7 @@ function isLeapYear(val) {
 function getDays(value = new Date()) {
   let myDate = getRegularDate(value);
   if (!myDate) {
-    return undefined;
+    return;
   }
   let year = myDate.getFullYear(),
     mouth = myDate.getMonth() + 1,
