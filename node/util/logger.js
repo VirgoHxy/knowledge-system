@@ -23,10 +23,10 @@ module.exports = class Logger {
    * @param {string} [param.logPath] 日志位置
    * @param {string} [param.category] 类别
    */
-  constructor({ logPath, category, maxLevel } = {}) {
+  constructor({ logPath, category, minLevel } = {}) {
     logPath = logPath || path.resolve(__dirname, '../../logs');
     category = category || 'default';
-    maxLevel = maxLevel || 'INFO';
+    minLevel = minLevel || 'INFO';
     // log4 配置
     const templateConfig = {
       appenders: {
@@ -53,17 +53,20 @@ module.exports = class Logger {
         },
       },
       categories: {
+        // 终端输出和日期文件，所有类型放在一个文件
         default: {
           appenders: ['console', 'all'],
-          level: maxLevel,
+          level: minLevel,
         },
+        // 仅包含终端输出
         console: {
           appenders: ['console'],
-          level: maxLevel,
+          level: minLevel,
         },
+        // 日期文件，五种类型会分别在五个文件夹
         dateFile: {
           appenders: ['justDebug', 'justInfo', 'justWarn', 'justError', 'justFatal'],
-          level: maxLevel,
+          level: minLevel,
         },
       },
     };
