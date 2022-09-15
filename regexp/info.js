@@ -76,6 +76,16 @@ let ext = 'js';
 console.log("@import 'demo.js';@import 'demo.css';".match(new RegExp(`@import\\s+'\\S+\\.${ext}'`, 'g'))[0]);
 ext = 'css';
 console.log("@import 'demo.js';@import 'demo.css';".match(new RegExp(`@import\\s+'\\S+\\.${ext}'`, 'g'))[0]);
+const testArr = ['temo', 'temp', 'temc'];
+console.log(new RegExp(`\\b${testArr.join('\\b|\\b')}\\b`, 'i').test('temc'));
+console.log(new RegExp(`^${testArr.join('$|^')}$`, 'i').test('temp'));
+const testVar = 'a_test_var'.replace(/(_)(.)/g, function (str, $1, $2) {
+  // console.log(str);
+  // console.log($1);
+  // console.log($2);
+  return $2.toUpperCase();
+});
+console.log(testVar);
 
 /* 字符正则方法 */
 console.log('1,2,3'.match(/\d/)); // 1, index: 0, input: '1,2,3'
