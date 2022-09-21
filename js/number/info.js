@@ -243,6 +243,9 @@ Math.sign(undefined); // NaN
 其他值，返回NaN。 
 */
 
+// 其他方法
+console.log(String(10).padStart(4, '0')); // 0010 数字左补零，4表示补零后的长度
+
 /* 进制运算 */
 // 十进制转二进制
 (13).toString(2); // 1011 十进制正整数转二进制

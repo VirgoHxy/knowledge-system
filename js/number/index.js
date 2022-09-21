@@ -111,6 +111,7 @@ function isOdd(num) {
 
 /**
  * 数字左补零
+ * 另一个思路使用转换为字符串使用padStart
  * @param {number} num 数字
  * @param {number} fill 补零后总长度
  * @returns {string}
