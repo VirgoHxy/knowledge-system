@@ -445,7 +445,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 
 #### javascript
 
-```json
+```
 {
   // Place your snippets for javascript here. Each snippet is defined under a snippet name and has a prefix, body and
   // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
@@ -453,18 +453,53 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   // same ids are connected.
   "anonymous function": {
     "prefix": "()=>{}",
-    "body": ["() => {", "  ${2:}", "}"],
+    "body": [
+      "() => {",
+      "  ${2:}",
+      "}",
+    ],
     "description": "Anonymous Function"
   },
   "for decline": {
     "prefix": "for-",
-    "body": ["for (let index = array.length - 1; index >= 0; index--) {", "  const element = array[index];", "}"],
+    "body": [
+      "for (let index = array.length - 1; index >= 0; index--) {",
+      "  const element = array[index];",
+      "}"
+    ],
     "description": "for decline"
   },
   "array map": {
     "prefix": "map",
-    "body": ["array.map(element => {", "  ${2}", "})"],
+    "body": [
+      "array.map(ele => {",
+      "  ${2}",
+      "})"
+    ],
     "description": "map"
+  },
+  "promise": {
+    "prefix": "promise",
+    "body": [
+      "new Promise((resolve, reject) => {",
+      "  ${2}",
+      "})"
+    ],
+    "description": "promise"
+  },
+  "requireVar": {
+    "prefix": "require",
+    "body": [
+      "const {} = require(\"${2}\")"
+    ],
+    "description": "require"
+  },
+  "requireModule": {
+    "prefix": "require",
+    "body": [
+      "const moduleName = require(\"${2}\")"
+    ],
+    "description": "require"
   }
 }
 ```
@@ -641,7 +676,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   - 工作区概念使用舒适
 - 习惯得以保留，减少学习成本
   - 同一套快捷键，ui，配置
-  - 工作习惯有时候比工作效率更重要
+  - 工作习惯有时候比工作软件更重要
 
 ### 坏处
 
