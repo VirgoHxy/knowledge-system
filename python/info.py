@@ -26,8 +26,8 @@ from enum import Enum, unique
 ------提示------
 
 python是动态类型，强类型语言
-动态类型是因为python不需要用指定类型去定义变量
-强类型是因为python更偏向于不在运算时有隐式的转换变量类型
+动态类型是因为python在编译时期不需要用指定类型去定义变量，只需要将key和value进行绑定
+强类型是因为python会为某种类型的对象携带对应信息以决定其类型
 
 python是区分大小写的，而且布尔值为True，False，它类型是Number类型
 
