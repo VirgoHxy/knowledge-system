@@ -68,6 +68,8 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 |      `fe-file-rename`      | 命名规范检查工具 | 可以检测并修复文件夹、文件命名                                                        | 推荐     |
 |        `Bookmarks`         | 标记位置工具     | 无需滚动翻找某个属性                                                                  | 50       |
 |        `Tabnine AI`        | AI 写代码工具    | 智能预测代码书写                                                                      | 50       |
+|          `PicGo`           | 图床工具         | 便捷上传图片到图床并生成 md 形式的图片链接                                            | 40       |
+|       `Paste Image`        | 图床工具         | 便捷从剪切板生成 md 形式的图片链接，如微信截图                                        | 40       |
 |    `Code Spell Checker`    | 拼写检测工具     | 检测单词是否拼写正确                                                                  | 30       |
 |   `Increment Selection`    | 生成数字         | 当需要打出 1，2，3，4，5...时，可通过该扩展 ctrl+alt+i 快捷 + 多光标选择生成          | 30       |
 |       `change-case`        | 命名工具         | 可以快速转换命名规则，驼峰，下划线等                                                  | 30       |
@@ -355,6 +357,11 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   "liveServer.settings.donotShowInfoMsg": true,
   "GitCommitPlugin.ShowEmoji": false,
   "tabnine.experimentalAutoImports": true,
+  "picgo.picBed.current": "github",
+  "picgo.picBed.github.branch": "main",
+  "picgo.picBed.github.repo": "xxx",
+  "picgo.picBed.github.path": "img/",
+  "picgo.picBed.github.token": "xxx",
   "code-runner.executorMap": {
     "javascript": "node",
     "java": "cd $dir && java $fileName",
@@ -564,9 +571,9 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 | `Ctrl+Shift+]`  | 展开/折叠操作 | 展开代码块                           |      |
 | `Ctrl+K Ctrl+L` | 展开/折叠操作 | 折叠代码块                           |      |
 | `Ctrl+K Ctrl+J` | 展开/折叠操作 | 展开所有代码块                       |      |
-| `Ctrl+K Ctrl+1` | 展开折叠操作  | 折叠代码块，保留一层代码块，最高级别 |      |
-| `Ctrl+K Ctrl+2` | 展开折叠操作  | 折叠代码块，保留两层代码块           |      |
-| `Ctrl+K Ctrl+3` | 展开折叠操作  | 折叠代码块，保留三层代码块，以此类推 |      |
+| `Ctrl+K Ctrl+1` | 展开/折叠操作 | 折叠代码块，保留一层代码块，最高级别 |      |
+| `Ctrl+K Ctrl+2` | 展开/折叠操作 | 折叠代码块，保留两层代码块           |      |
+| `Ctrl+K Ctrl+3` | 展开/折叠操作 | 折叠代码块，保留三层代码块，以此类推 |      |
 
 ##### 文档光标操作
 
@@ -611,7 +618,8 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 |          `` Ctrl+` ``           | 编辑器操作 | 打开/关闭终端视图              |                  |
 |       `` Ctrl+Shift+` ``        | 编辑器操作 | 新建终端                       |                  |
 |            `Ctrl+,`             | 编辑器操作 | 打开视图化设置                 |                  |
-|         `Ctrl+shift+,`          | 编辑器操作 | 打开 json 化设置               |                  |
+|         `Ctrl+Shift+,`          | 编辑器操作 | 打开 json 化设置               |                  |
+|          `Ctrl+Alt+,`           | 编辑器操作 | 打开快捷键设置                 |                  |
 |            `Ctrl+Q`             | 编辑器操作 | 选择打开侧边栏图标内容         |                  |
 |          `Shift+Alt+0`          | 编辑器操作 | 切换垂直/水平布局              | 需要有两个区域组 |
 |          `Ctrl+Pageup`          | 编辑器操作 | 打开上一个编辑器               |                  |
@@ -624,12 +632,14 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 
 #### 其他操作
 
-|   按键   | 类别     | 作用                              | 备注                  |
-| :------: | -------- | --------------------------------- | --------------------- |
-|   `F5`   | 服务操作 | 启动 launch 服务/重启 launch 服务 | 重启 F5 是自定义设置  |
-|  `F10`   | 服务操作 | debugger 下一步                   |                       |
-| `Ctrl+R` | 服务操作 | 运行当前文件                      | 由`Code Runner` 提供  |
-| `Ctrl+C` | 服务操作 | 停止运行                          | 需要在输出/终端中聚焦 |
+|               按键                | 类别     | 作用                                                 | 备注                  |
+| :-------------------------------: | -------- | ---------------------------------------------------- | --------------------- |
+|               `F5`                | 服务操作 | 启动 launch 服务/重启 launch 服务                    | 重启 F5 是自定义设置  |
+|               `F10`               | 服务操作 | debugger 下一步                                      |                       |
+|             `Ctrl+R`              | 服务操作 | 运行当前文件                                         | 由`Code Runner` 提供  |
+|             `Ctrl+C`              | 服务操作 | 停止运行                                             | 需要在输出/终端中聚焦 |
+| 默认: `Ctrl+Alt+U` / `Ctrl+Alt+C` | md 操作  | 从剪切板上传图片到已设定的图床并生成 md 形式图片链接 | 由 `PicGo` 提供       |
+|           `Ctrl+Alt+V`            | md 操作  | 从剪切板复制图片到本地项目并生成 md 形式图片链接     | 由 `Paste Image` 提供 |
 
 ### 其他配置
 
