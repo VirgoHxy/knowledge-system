@@ -662,8 +662,6 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 
 ## all in vscode
 
----
-
 在具体语言中，如 java，python，js 和 idea，pycharm 比较 vscode 是否适合开发；比如 webstorm，sublime 等，不比较软件好坏
 
 个人还是偏向 all in vscode，目前推荐 python，前端在 vscode 中开发；java 在 idea 中开发
