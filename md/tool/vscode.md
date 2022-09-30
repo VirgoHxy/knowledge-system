@@ -47,37 +47,39 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 
 ### 通用扩展
 
-|            扩展            | 作用             | 备注                                                                                  | 推荐程度 |
-| :------------------------: | ---------------- | ------------------------------------------------------------------------------------- | -------- |
-|       `Code Runner`        | 代码片段运行工具 | 支持 js、python、java 等代码片段运行                                                  | 强烈推荐 |
-|   `Material Icon Theme`    | vscode 图标      | 让文件以及文件夹图标更友好，更清晰，同比 vscode-icons，更推荐                         | 强烈推荐 |
-|       `vscode-icons`       | vscode 图标      | 让文件以及文件夹图标更友好，更清晰                                                    | 推荐     |
-|         `GitLens`          | git 工具         | git 视图工具，但是还是建议多使用 git 命令行完成一些操作                               | 推荐     |
-|        `Git Graph`         | git 工具         | git 视图工具，但是还是建议多使用 git 命令行完成一些操作                               | 推荐     |
-|    `git-commit-plugin`     | git 工具         | 可通过选择生成规范 commit message                                                     | 推荐     |
-|  `Chinese Language Pack`   | 中文简体翻译包   | 不会翻译所有的地方，比如不会包含某些第三方扩展的右键或功能                            | 推荐     |
-|   `Markdown All in One`    | md 工具          | md 工具                                                                               | 推荐     |
-|       `markdownlint`       | md 工具          | md 语法工具                                                                           | 推荐     |
-|       `IntelliCode`        | 代码提示工具     | 代码提示工具                                                                          | 推荐     |
-| `EditorConfig for VS Code` | 代码样式规范工具 | 让不同的编辑器也能保持样式规范                                                        | 推荐     |
-|       `vscode-json`        | 格式化 json      | 多种方式格式化 json                                                                   | 推荐     |
-|    `Clipboard History`     | 剪切板           | 记录在 vscode 内部复制记录                                                            | 推荐     |
-|        `transpose`         | 光标工具         | 两个光标选中内容进行交换                                                              | 推荐     |
-|          `Codelf`          | 命名工具         | 右键可以快速打开 CodeLF 网址，进行变量名查询                                          | 推荐     |
-|      `Copy File Name`      | vscode 右键工具  | 右键文件夹/文件可以复制名称                                                           | 推荐     |
-|      `fe-file-rename`      | 命名规范检查工具 | 可以检测并修复文件夹、文件命名                                                        | 推荐     |
-|        `Bookmarks`         | 标记位置工具     | 无需滚动翻找某个属性                                                                  | 50       |
-|        `Tabnine AI`        | AI 写代码工具    | 智能预测代码书写                                                                      | 50       |
-|          `PicGo`           | 图床工具         | 便捷上传图片到图床并生成 md 形式的图片链接                                            | 40       |
-|       `Paste Image`        | 图床工具         | 便捷从剪切板生成 md 形式的图片链接，如微信截图                                        | 40       |
-|    `Code Spell Checker`    | 拼写检测工具     | 检测单词是否拼写正确                                                                  | 30       |
-|   `Increment Selection`    | 生成数字         | 当需要打出 1，2，3，4，5...时，可通过该扩展 ctrl+alt+i 快捷 + 多光标选择生成          | 30       |
-|       `change-case`        | 命名工具         | 可以快速转换命名规则，驼峰，下划线等                                                  | 30       |
-|           `SFTP`           | sftp 工具        | 配置好远程桌面的 ftp 服务和远程账号密码，可直接通过 vscode 查看/上传/下载文件到服务器 | 30       |
-|     `CJK Word Handler`     | 中文词语断言     | 在进行光标/选中操作时能够识别中文词语                                                 | 30       |
-|           `SVN`            | svn 版本同步     | 一般只有老项目才使用，建议老项目也转到 git                                            | 不推荐   |
-|       `TortoiseSVN`        | svn 工具         | svn 工具                                                                              | 不推荐   |
-|      `Settings Sync`       | vscode 同步      | 多设备同步扩展，快捷键等配置，同步在 github；vscode 内置同步功能                      | 卸载推荐 |
+|            扩展            | 作用             | 备注                                                                                               | 推荐程度 |
+| :------------------------: | ---------------- | -------------------------------------------------------------------------------------------------- | -------- |
+|       `Code Runner`        | 代码片段运行工具 | 支持 js、python、java 等代码片段运行                                                               | 强烈推荐 |
+|   `Material Icon Theme`    | vscode 图标      | 让文件以及文件夹图标更友好，更清晰，同比 vscode-icons，更推荐                                      | 强烈推荐 |
+|       `vscode-icons`       | vscode 图标      | 让文件以及文件夹图标更友好，更清晰                                                                 | 推荐     |
+|         `GitLens`          | git 工具         | git 视图工具，但是还是建议多使用 git 命令行完成一些操作                                            | 推荐     |
+|        `Git Graph`         | git 工具         | git 视图工具，但是还是建议多使用 git 命令行完成一些操作                                            | 推荐     |
+|    `git-commit-plugin`     | git 工具         | 可通过选择生成规范 commit message                                                                  | 推荐     |
+|  `Chinese Language Pack`   | 中文简体翻译包   | 不会翻译所有的地方，比如不会包含某些第三方扩展的右键或功能                                         | 推荐     |
+|    `Comment Translate`     | 翻译工具         | 悬停翻译，注释快捷翻译，可配置多个翻译源，目前不需额外配置太多的有：有道云（需要手动添加源），必应 | 推荐     |
+|   `Markdown All in One`    | md 工具          | md 工具                                                                                            | 推荐     |
+|       `markdownlint`       | md 工具          | md 语法工具                                                                                        | 推荐     |
+|       `IntelliCode`        | 代码提示工具     | 代码提示工具                                                                                       | 推荐     |
+| `EditorConfig for VS Code` | 代码样式规范工具 | 让不同的编辑器也能保持样式规范                                                                     | 推荐     |
+|       `vscode-json`        | 格式化 json      | 多种方式格式化 json                                                                                | 推荐     |
+|    `Clipboard History`     | 剪切板           | 记录在 vscode 内部复制记录                                                                         | 推荐     |
+|          `Codelf`          | 命名工具         | 右键可以快速打开 CodeLF 网址，进行变量名查询                                                       | 推荐     |
+|        `transpose`         | 光标工具         | 两个光标选中内容进行交换                                                                           | 推荐     |
+|      `Copy File Name`      | vscode 右键工具  | 右键文件夹/文件可以复制名称                                                                        | 推荐     |
+|      `fe-file-rename`      | 命名规范检查工具 | 可以检测并修复文件夹、文件命名                                                                     | 推荐     |
+|        `Bookmarks`         | 标记位置工具     | 无需滚动翻找某个属性                                                                               | 50       |
+|        `Tabnine AI`        | AI 写代码工具    | 智能预测代码书写                                                                                   | 50       |
+|          `PicGo`           | 图床工具         | 便捷上传图片到图床并生成 md 形式的图片链接                                                         | 40       |
+|       `Paste Image`        | 图床工具         | 便捷从剪切板生成 md 形式的图片链接，如微信截图                                                     | 40       |
+|    `Code Spell Checker`    | 拼写检测工具     | 检测单词是否拼写正确                                                                               | 30       |
+|   `Increment Selection`    | 生成数字         | 当需要打出 1，2，3，4，5...时，可通过该扩展 ctrl+alt+i 快捷 + 多光标选择生成                       | 30       |
+|       `change-case`        | 命名工具         | 可以快速转换命名规则，驼峰，下划线等                                                               | 30       |
+|           `SFTP`           | sftp 工具        | 配置好远程桌面的 ftp 服务和远程账号密码，可直接通过 vscode 查看/上传/下载文件到服务器              | 30       |
+|     `CJK Word Handler`     | 中文词语断言     | 在进行光标/选中操作时能够识别中文词语                                                              | 30       |
+|      `Code Translate`      | 翻译工具         | 悬停翻译，使用内置 vscode 词库翻译，可离线使用，可惜只能翻译单词                                   | 30       |
+|           `SVN`            | svn 版本同步     | 一般只有老项目才使用，建议老项目也转到 git                                                         | 不推荐   |
+|       `TortoiseSVN`        | svn 工具         | svn 工具                                                                                           | 不推荐   |
+|      `Settings Sync`       | vscode 同步      | 多设备同步扩展，快捷键等配置，同步在 github；vscode 内置同步功能                                   | 卸载推荐 |
 
 ### 项目扩展
 
