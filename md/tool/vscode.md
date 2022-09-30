@@ -213,7 +213,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   },
   "[markdown]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
   },
   "[python]": {
     "editor.defaultFormatter": "ms-python.python",
@@ -359,9 +359,15 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   "tabnine.experimentalAutoImports": true,
   "picgo.picBed.current": "github",
   "picgo.picBed.github.branch": "main",
-  "picgo.picBed.github.repo": "xxx",
+  "picgo.picBed.github.repo": "VirgoHxy/image-hosting",
   "picgo.picBed.github.path": "img/",
-  "picgo.picBed.github.token": "xxx",
+  "picgo.picBed.github.token": "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",
+  "commentTranslate.source": "Bing",
+  "commentTranslate.targetLanguage": "zh-CN",
+  "commentTranslate.googleTranslate.tld": "cn",
+  "commentTranslate.hover.nearShow": false,
+  "commentTranslate.hover.content": false,
+  "commentTranslate.hover.variable": true,
   "code-runner.executorMap": {
     "javascript": "node",
     "java": "cd $dir && java $fileName",
@@ -435,7 +441,10 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
       "icon": "terminal-powershell"
     },
     "Command Prompt": {
-      "path": ["${env:windir}\\Sysnative\\cmd.exe", "${env:windir}\\System32\\cmd.exe"],
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
       "args": [],
       "icon": "terminal-cmd"
     },
@@ -632,14 +641,14 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 
 #### 其他操作
 
-|               按键                | 类别     | 作用                                                 | 备注                  |
-| :-------------------------------: | -------- | ---------------------------------------------------- | --------------------- |
-|               `F5`                | 服务操作 | 启动 launch 服务/重启 launch 服务                    | 重启 F5 是自定义设置  |
-|               `F10`               | 服务操作 | debugger 下一步                                      |                       |
-|             `Ctrl+R`              | 服务操作 | 运行当前文件                                         | 由`Code Runner` 提供  |
-|             `Ctrl+C`              | 服务操作 | 停止运行                                             | 需要在输出/终端中聚焦 |
-| 默认: `Ctrl+Alt+U` / `Ctrl+Alt+C` | md 操作  | 从剪切板上传图片到已设定的图床并生成 md 形式图片链接 | 由 `PicGo` 提供       |
-|           `Ctrl+Alt+V`            | md 操作  | 从剪切板复制图片到本地项目并生成 md 形式图片链接     | 由 `Paste Image` 提供 |
+|                   按键                    | 类别     | 作用                                                 | 备注                  |
+| :---------------------------------------: | -------- | ---------------------------------------------------- | --------------------- |
+|                   `F5`                    | 服务操作 | 启动 launch 服务/重启 launch 服务                    | 重启 F5 是自定义设置  |
+|                   `F10`                   | 服务操作 | debugger 下一步                                      |                       |
+|                 `Ctrl+R`                  | 服务操作 | 运行当前文件                                         | 由`Code Runner` 提供  |
+|                 `Ctrl+C`                  | 服务操作 | 停止运行                                             | 需要在输出/终端中聚焦 |
+| 默认: `Ctrl+Alt+U` / 自定义: `Ctrl+Alt+C` | md 操作  | 从剪切板上传图片到已设定的图床并生成 md 形式图片链接 | 由 `PicGo` 提供       |
+|               `Ctrl+Alt+V`                | md 操作  | 从剪切板复制图片到本地项目并生成 md 形式图片链接     | 由 `Paste Image` 提供 |
 
 ### 其他配置
 
