@@ -8,7 +8,6 @@
     - [java 目录概括](#java-目录概括)
     - [js 目录概括](#js-目录概括)
     - [md 目录概括](#md-目录概括)
-      - [tool 目录概括](#tool-目录概括)
     - [node 目录概括](#node-目录概括)
     - [python 目录概括](#python-目录概括)
     - [regexp 目录概括](#regexp-目录概括)
