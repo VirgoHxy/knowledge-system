@@ -359,9 +359,9 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   "tabnine.experimentalAutoImports": true,
   "picgo.picBed.current": "github",
   "picgo.picBed.github.branch": "main",
-  "picgo.picBed.github.repo": "VirgoHxy/image-hosting",
+  "picgo.picBed.github.repo": "xxx/image-hosting",
   "picgo.picBed.github.path": "img/",
-  "picgo.picBed.github.token": "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",
+  "picgo.picBed.github.token": "xxxxxx",
   "commentTranslate.source": "Bing",
   "commentTranslate.targetLanguage": "zh-CN",
   "commentTranslate.googleTranslate.tld": "cn",
@@ -648,6 +648,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 |                 `Ctrl+R`                  | 服务操作 | 运行当前文件                                         | 由`Code Runner` 提供  |
 |                 `Ctrl+C`                  | 服务操作 | 停止运行                                             | 需要在输出/终端中聚焦 |
 | 默认: `Ctrl+Alt+U` / 自定义: `Ctrl+Alt+C` | md 操作  | 从剪切板上传图片到已设定的图床并生成 md 形式图片链接 | 由 `PicGo` 提供       |
+|            默认: `Ctrl+Alt+E`             | md 操作  | 选中图片并上传到已设定的图床并生成 md 形式图片链接   | 由 `PicGo` 提供       |
 |               `Ctrl+Alt+V`                | md 操作  | 从剪切板复制图片到本地项目并生成 md 形式图片链接     | 由 `Paste Image` 提供 |
 
 ### 其他配置
