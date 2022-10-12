@@ -1,8 +1,6 @@
 const log4js = require('log4js');
 const path = require('path');
 
-const { format } = require('./util');
-
 // log4js权重等级
 // {
 //   ALL: new Level(Number.MIN_VALUE, "ALL"),
@@ -217,7 +215,8 @@ module.exports = class Logger {
       let stackArray = new Error().stack.toString().split(/\n.*at\s/);
       for (let index = 1; index < stackArray.length; index++) {
         const element = stackArray[index];
-        if (element.toLowerCase().indexOf('logger') == -1) {
+        // console.log(element);
+        if (element.toLowerCase().indexOf('log4') == -1) {
           let fileMatch = element.match(/\((.*)\)/);
           file = fileMatch ? fileMatch[1] : element;
           break;
@@ -227,9 +226,13 @@ module.exports = class Logger {
     } catch {}
     level = level ? (this.logLevel.includes(level.toUpperCase()) ? level.toUpperCase() : 'UNKNOWN') : 'UNKNOWN';
     location = location || file;
+    const nowDate = new Date();
+    const now = `${nowDate.getFullYear()}-${
+      nowDate.getMonth() + 1
+    }-${nowDate.getDate()} ${nowDate.getHours()}:${nowDate.getMinutes()}:${nowDate.getSeconds()}`;
     const obj = {
       text: `
-【Time】: ${format(new Date(), 'YYYY-MM-DD hh:mm:ss')}
+【Time】: ${now}
 【Location】: ${location}
 【Level】: ${level}
 【Message】: ${message}\n`,
