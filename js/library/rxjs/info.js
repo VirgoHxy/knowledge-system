@@ -1,7 +1,7 @@
 const { Observable, Subject, interval, map, of, filter, take, from } = require('rxjs');
 
 // 流
-const myObservable = new Observable((observer) => {
+const myObservable = new Observable(observer => {
   observer.next(Math.random());
   // 1s后产生数据，模拟不断产生数据
   setTimeout(() => {
@@ -11,7 +11,7 @@ const myObservable = new Observable((observer) => {
 });
 const observer = {
   complete: () => console.log('done'),
-  next: (data) => console.log('mySubscription', data),
+  next: data => console.log('mySubscription', data),
   error: () => console.log('error'),
 };
 // 订阅后的流
@@ -20,7 +20,7 @@ const mySubscription = myObservable.subscribe(observer);
 setTimeout(() => {
   myObservable.subscribe({
     complete: () => console.log('done'),
-    next: (data) => console.log('mySubscription1', data),
+    next: data => console.log('mySubscription1', data),
     error: () => console.log('error'),
   });
 }, 2000);
@@ -57,15 +57,15 @@ mySubject1.next(Math.random());
 // 静态操作符一般创造流实例，实例操作符一般操作流实例
 // 每3秒发送自增数字，0 1 2 3 4 ... ，map相当于 js 的数组map，将流数据做一个平方处理
 interval(3000)
-  .pipe(map((ele) => ele ** 2))
-  .subscribe((data) => console.log('interval + map', data));
+  .pipe(map(ele => ele ** 2))
+  .subscribe(data => console.log('interval + map', data));
 
 // 接收任意多个参数，1 '2' 3 作为流数据，filter相当于 js 的数组filter，过滤流数据只允许字符串通过
 of(1, '2', 3)
-  .pipe(filter((ele) => typeof ele === 'string'))
-  .subscribe((data) => console.log('of + filter', data));
+  .pipe(filter(ele => typeof ele === 'string'))
+  .subscribe(data => console.log('of + filter', data));
 
 // 接收数组、类数组对象、promise、迭代器对象或者类Observable对象参数，1 2 3，take表示取指定数量的值，只取前两个流数据
 from([1, 2, 3])
   .pipe(take(2))
-  .subscribe((data) => console.log('from + take', data));
+  .subscribe(data => console.log('from + take', data));

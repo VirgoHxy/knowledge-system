@@ -96,7 +96,7 @@ Object.defineProperties(defineObj.globalConfig, {
   b: {
     configurable: false,
     enumerable: false,
-    set: (value) => {
+    set: value => {
       console.log(value);
       // eslint-disable-next-line no-undef
       b = value;
@@ -133,7 +133,7 @@ Object.getOwnPropertyNames([1, 2]); // [ '0', '1', 'length' ] 返回自身属性
 Object.getOwnPropertySymbols({ a: 1, b: 2, [Symbol('c')]: 3 }); // [ Symbol(c) ] 返回自身属性(只包括Symbol)数组
 Object.getPrototypeOf({}) === Object.prototype; // true 返回指定对象的原型对象
 Object.getPrototypeOf(Object) === Function.prototype; // true Object是构造函数 所以为true
-Object.setPrototypeOf({ 0: 1, 1: 2, length: 2 }, Array.prototype).map((ele) => ele * 2); // [2, 4] 设置一个对象的原型为指定的原型
+Object.setPrototypeOf({ 0: 1, 1: 2, length: 2 }, Array.prototype).map(ele => ele * 2); // [2, 4] 设置一个对象的原型为指定的原型
 
 let freezeObj = { a: 1, b: {}, c: 2 };
 Object.freeze(freezeObj); // {a: 1, b: {}, c: 2} 冻结对象 其他代码不能删除、更改、添加任何属性 冻结 == 只能读取

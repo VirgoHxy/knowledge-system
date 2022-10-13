@@ -170,7 +170,7 @@ function replaceIllegalStr(val, filterArray) {
     // 中文
     '·','！','￥','…','（','）','—','【','】','、','；','：','‘','’','“','”','，','《','。','》','？',
   ];
-  filterArray && (array = array.filter((item) => filterArray.indexOf(item) == -1));
+  filterArray && (array = array.filter(item => filterArray.indexOf(item) == -1));
   val = val.trim();
   val = val.replace(new RegExp(`[${array.join('\\')}]`, 'gim'), '');
   return val;
@@ -194,7 +194,7 @@ function isIllegal(val, filterArray) {
     // 中文
     '·','！','￥','…','（','）','—','【','】','、','；','：','‘','’','“','”','，','《','。','》','？',
   ];
-  filterArray && (array = array.filter((item) => filterArray.indexOf(item) == -1));
+  filterArray && (array = array.filter(item => filterArray.indexOf(item) == -1));
   if (/\s+/g.test(val)) {
     return true;
   } else if (new RegExp(`[${array.join('\\')}]`, 'gim').test(val)) {

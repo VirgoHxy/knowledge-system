@@ -513,11 +513,11 @@ class Subject {
     this.#observerList.push(observer);
   }
   removeObserver(observer) {
-    const index = this.#observerList.findIndex((o) => o.name === observer.name);
+    const index = this.#observerList.findIndex(o => o.name === observer.name);
     this.#observerList.splice(index, 1);
   }
   notifyObservers(message) {
-    this.#observerList.forEach((observer) => observer.notify(message));
+    this.#observerList.forEach(observer => observer.notify(message));
   }
 }
 
@@ -601,7 +601,7 @@ class PubSub {
   #doCallBack(type) {
     const arg = this.arg[type];
     const subscribers = this.listeners[type] || [];
-    subscribers.forEach((cb) => cb(arg));
+    subscribers.forEach(cb => cb(arg));
   }
 }
 

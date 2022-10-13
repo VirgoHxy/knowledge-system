@@ -52,7 +52,7 @@ function removeRepeatBySet(array) {
  * @returns {Array} 去除后的数组
  */
 function removeItem(array, removeArr, key) {
-  return array.filter((item) => !removeArr.includes(!key ? item : item[key]));
+  return array.filter(item => !removeArr.includes(!key ? item : item[key]));
 }
 
 /**

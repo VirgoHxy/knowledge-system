@@ -78,7 +78,7 @@ class MinIOClient {
         this.getMinIOPath(prefix),
         true
       );
-      bucketStream.on('data', async (element) => {
+      bucketStream.on('data', async element => {
         const stat = await this.client.statObject(this.defaultBucket, element.name);
         const daysNum = Number(days) * 24 * 60 * 60 * 1000;
         let ctime = Number(stat.metaData.ctime);

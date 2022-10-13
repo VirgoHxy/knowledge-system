@@ -38,7 +38,7 @@ function delSync(dirPath) {
       fs.unlinkSync(dirPath);
     } else {
       let dirs = fs.readdirSync(dirPath);
-      dirs.forEach((dirName) => {
+      dirs.forEach(dirName => {
         let curPath = path.resolve(dirPath, dirName);
         // 递归删除文件夹
         delSync(curPath);
@@ -133,7 +133,7 @@ function copySync(sourcePath, copyPath) {
       fs.copyFileSync(sourcePath, copyPath);
     } else {
       let dirs = fs.readdirSync(sourcePath);
-      dirs.forEach((dirName) => {
+      dirs.forEach(dirName => {
         let sPath = path.resolve(sourcePath, dirName);
         let cPath = path.resolve(copyPath, dirName);
         // 递归复制
@@ -166,7 +166,7 @@ function moveSync(sourcePath, movePath) {
       fs.renameSync(sourcePath, movePath);
     } else {
       let dirs = fs.readdirSync(sourcePath);
-      dirs.forEach((dirName) => {
+      dirs.forEach(dirName => {
         let sPath = path.resolve(sourcePath, dirName);
         let mPath = path.resolve(movePath, dirName);
         // 递归复制
@@ -201,7 +201,7 @@ function copyByStreamSync(sourcePath, copyPath) {
       readStream.pipe(writeStream);
     } else {
       let dirs = fs.readdirSync(sourcePath);
-      dirs.forEach((dirName) => {
+      dirs.forEach(dirName => {
         let sPath = path.resolve(sourcePath, dirName);
         let cPath = path.resolve(copyPath, dirName);
         // 递归复制
@@ -245,7 +245,7 @@ function streamToBuffer(stream) {
   return new Promise((resolve, reject) => {
     let buffers = [];
     stream.on('error', reject);
-    stream.on('data', (data) => buffers.push(data));
+    stream.on('data', data => buffers.push(data));
     stream.on('end', () => resolve(Buffer.concat(buffers)));
   });
 }

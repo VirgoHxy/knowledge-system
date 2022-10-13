@@ -119,21 +119,21 @@ Array.from(regExpStringIterator); // [["<demo>", "demo"],["<demo1>", "demo1"]]
 
 'abcabc'.replace('abcabc'[0], 'abcabc'[0].toUpperCase()); // Abcabc 用新的字符串(第二个参数)替换当前字符串的某段字符串(第一个参数) 返回新字符串
 'abcabc'.replace(/a/, 'A'); // Abcabc 用新的字符串(第二个参数)替换当前字符串的正则(第一个参数)匹配到的第一个字符串 返回新字符串
-'borderTop'.replace(/[A-Z]/, (match) => '-' + match.toLowerCase()); // "border-top" 第二个参数也可以使用函数 返回新字符串
+'borderTop'.replace(/[A-Z]/, match => '-' + match.toLowerCase()); // "border-top" 第二个参数也可以使用函数 返回新字符串
 '  s  t  r  '.replace(/^\s+|\s+$/g, ''); // s__t__r 类似于trim()
 '  s  t  r  '.replace(/\s+/g, ''); // str
 '  s  t  r  '.replace(/^(\s*)/g, ''); // s__t__r__ 类似于trimStart()
 '  s  t  r  '.replace(/(\s*)$/g, ''); // __s__t__r 类似于trimEnd()
 '  s  t  r  '.replace(/\b(\s*)\b/g, ''); // __str__
 // 正则中特殊字符转义
-const escapeReg = (str) => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d');
+const escapeReg = str => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d');
 // 如果不转义hello.中这个点,会把.识别为一个字符的意思
 'hello. helloX hello3'.replace(new RegExp(escapeReg('hello.'), 'g'), 'A');
 
 try {
   'abcabc'.replaceAll('a', 'A'); // "AbcAbc"  用新的字符串(第二个参数)替换当前字符串的所有某段字符串(第一个参数) 返回新字符串
   'abcabc'.replaceAll(/a/g, 'A'); // "AbcAbc" 用新的字符串(第二个参数)替换当前字符串的正则(第一个参数)匹配到的所有字符串 返回新字符串(必须使用g)
-  'borderTopColor'.replaceAll(/[A-Z]/g, (match) => '-' + match.toLowerCase()); // "border-top-color" 第二个参数也可以使用函数 返回新字符串
+  'borderTopColor'.replaceAll(/[A-Z]/g, match => '-' + match.toLowerCase()); // "border-top-color" 第二个参数也可以使用函数 返回新字符串
 } catch (error) {
   // 报错原因：replaceAll 在 node15+ 可正常运行，低于版本会提示 xxx.replaceAll is not a function
 }

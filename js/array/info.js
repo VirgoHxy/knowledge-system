@@ -120,23 +120,23 @@ Array.prototype.slice.call({ 0: 'a', 1: 'b', 2: 'c', length: 3 }); // ['a','b','
 [1, 2, 3].every((ele, index, arr) => {
   return ele > 1;
 }); // false 检测数组中的所有元素是否都符合条件
-Array(3).every((ele) => false); // true 数组中的empty元素不执行function内容 所以返回true 类似于商品购物没人买就是100%好评
+Array(3).every(ele => false); // true 数组中的empty元素不执行function内容 所以返回true 类似于商品购物没人买就是100%好评
 // eslint-disable-next-line no-sparse-arrays
-[, , 3].every((ele) => false); // false 有一个非empty元素 所以会执行一次function 返回false
+[, , 3].every(ele => false); // false 有一个非empty元素 所以会执行一次function 返回false
 
 [1, 2, 3].some((ele, index, arr) => {
   return ele > 1;
 }); // true 检测数组中是否有一个或多个元素符合条件
-Array(3).some((ele) => true); // false 数组中的empty元素不执行function内容 但some要求必须一次返回true 所以返回false
+Array(3).some(ele => true); // false 数组中的empty元素不执行function内容 但some要求必须一次返回true 所以返回false
 // eslint-disable-next-line no-sparse-arrays
-[, , 3].some((ele) => true); // true 有一个非empty元素 所以会执行一次function 返回true
+[, , 3].some(ele => true); // true 有一个非empty元素 所以会执行一次function 返回true
 
 [1, 2, 3, 1, 2].filter((ele, index, arr) => {
   return ele > 1;
 }); // [2,3] 不改变原数组 返回一个符合条件的数组 重复元素只返回一次
 Array(3).filter(() => true); // [] 数组中的empty元素不执行function内容 所以返回空数组 数组的empty元素被过滤掉 数组长度也从3变成0
 // eslint-disable-next-line no-sparse-arrays
-[, , 3].filter((ele) => true); // true 有一个非empty元素 所以会执行一次function 返回[3]
+[, , 3].filter(ele => true); // true 有一个非empty元素 所以会执行一次function 返回[3]
 
 [1, 11, 3, 12].sort((a, b) => {
   return a - b;
@@ -193,7 +193,7 @@ for (let index = 0; index < person2.length; index++) {
   }
 }
 
-let person3 = person.filter((ele) => ele.age <= 18);
+let person3 = person.filter(ele => ele.age <= 18);
 /* person1, person2, person3 三个结果都是一样的
 [
   { name: 'hanmeimei', age: '16' },
@@ -254,7 +254,7 @@ Array.of(1); // [1]
 Array.of(1, 2); // [1,2]
 Array.of(undefined); // [undefined]
 
-Array.from('hxy', (ele) => {
+Array.from('hxy', ele => {
   return ele + 1;
 }); // ["h1","x1","y1"] 将类数组转换为真数组 对拥有length属性的对象或可迭代的对象来返回一个数组 如果对应索引key没有值value 会默认赋值undefined不是empty 数组元素为简单类型元素 则为深克隆 复杂类型元素则为浅克隆
 Array.from({ length: 2 }, () => '98', this); // ["98","98"]; 第二个参数是map函数 第三个参数是map函数的this指向
@@ -302,12 +302,12 @@ new Array(5).fill(0); // [0,0,0,0,0] 将数组元素都填充0 改变原数组 s
 [1, 2, 3].fill(0); // [0,0,0] 将数组元素都覆盖为0 改变原数组
 ['a', 'b', 'c'].fill(7, 1, 2); // ['a', 7, 'c'] 填充元素 从index为1位置到index为2位置[start,end) 填充元素7 改变原数组
 // es6填充数组
-Array.from(Array(5), (x) => 0); // [0,0,0,0,0]
-Array.from({ length: 5 }, (x) => 0); // [0,0,0,0,0]
+Array.from(Array(5), x => 0); // [0,0,0,0,0]
+Array.from({ length: 5 }, x => 0); // [0,0,0,0,0]
 Array.from(new Array(100).keys()); // [0,1,2,3,...98,99]
 [...Array(100).keys()]; // [0,1,2,3,...98,99]
 // es5填充数组 循环方法需要注意将empty数组转换为undefined数组
-Array.apply(null, Array(5)).map((x) => 0); // [0,0,0,0,0] 注意不能直接使用 new Array(5).map((x) => 0) 因为值为empty不会执行callback
+Array.apply(null, Array(5)).map(x => 0); // [0,0,0,0,0] 注意不能直接使用 new Array(5).map((x) => 0) 因为值为empty不会执行callback
 Object.keys(Array.apply(null, { length: 100 })) // [0,1,2,3,...98,99]
   .map(function (item) {
     return +item;
@@ -325,7 +325,7 @@ Array.prototype.reverse.call({ length: 2, 0: 1, 1: 2 }); // { '0': 2, '1': 1, le
 [1, 2, [3, [4, 5]]].flat(2); // [1,2,3,4,5] "拉平"2层
 [1, 2, [3, [4, 5]]].flat(Infinity); // [1,2,3,4,5] "拉平"所有
 Array.prototype.concat.apply([], [1, 2, [3, 4]]); // "拉平"1层
-let myFlat = (array) => {
+let myFlat = array => {
   return array.reduce((start, ele) => (Array.isArray(ele) ? start.concat(myFlat(ele)) : start.concat(ele)), []);
 };
 myFlat([1, 2, [3, [4, [5, [6, 7]]]]]); // [1,2,3,4,5,6,7] 递归"拉平"所有层
@@ -353,7 +353,7 @@ Object.fromEntries(
     { id: '1998090901', text: '一' },
     { id: '1998090902', text: '二' },
     { id: '1998090903', text: '三' },
-  ].map((item) => [item.id, item])
+  ].map(item => [item.id, item])
 );
 /* 先使用map返回key/value二维数组 再将数组转为对象
 { '1998090901': { id: '1998090901', text: '一' }, '1998090902': { id: '1998090902', text: '二' }, '1998090903': { id: '1998090903', text: '三' } }

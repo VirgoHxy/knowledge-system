@@ -41,7 +41,7 @@ function getMinMaxRepeatNum(str, minFlag) {
   arr.sort((a, b) => {
     return b.length - a.length;
   });
-  let lengthArr = arr.map((val) => {
+  let lengthArr = arr.map(val => {
     return val.length;
   });
   if (!minFlag) {
@@ -54,7 +54,7 @@ function getMinMaxRepeatNum(str, minFlag) {
       };
     }
     return {
-      str: arr.slice(firstIndex, arrLen).map((val) => {
+      str: arr.slice(firstIndex, arrLen).map(val => {
         return val[0];
       }),
       num: lastLen,
@@ -69,7 +69,7 @@ function getMinMaxRepeatNum(str, minFlag) {
     };
   }
   return {
-    str: arr.slice(0, lastIndex + 1).map((val) => {
+    str: arr.slice(0, lastIndex + 1).map(val => {
       return val[0];
     }),
     num: firstLen,

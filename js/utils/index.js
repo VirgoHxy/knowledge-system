@@ -468,7 +468,7 @@ function downloadByAElement(url, fileName) {
  * @param {string} type mediatype
  */
 function readBlob(blob, type) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const reader = new FileReader();
     reader.onload = function (e) {
       resolve(e.target.result);

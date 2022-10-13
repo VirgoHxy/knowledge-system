@@ -490,11 +490,11 @@ Subject.prototype.addObserver = function (observer) {
   this.observerList.push(observer);
 };
 Subject.prototype.removeObserver = function (observer) {
-  const index = this.observerList.findIndex((o) => o.name === observer.name);
+  const index = this.observerList.findIndex(o => o.name === observer.name);
   this.observerList.splice(index, 1);
 };
 Subject.prototype.notifyObservers = function (message) {
-  this.observerList.forEach((observer) => observer.notify(message));
+  this.observerList.forEach(observer => observer.notify(message));
 };
 
 // 观察者
@@ -577,7 +577,7 @@ PubSub.prototype.notify = function (type) {
 PubSub.prototype.doCallBack = function (type) {
   const arg = this.arg[type];
   const subscribers = this.listeners[type] || [];
-  subscribers.forEach((cb) => cb(arg));
+  subscribers.forEach(cb => cb(arg));
 };
 
 function Publisher(name, pubsub) {

@@ -1,14 +1,14 @@
-const clsCanvas = require("canvas");
-const pdfjsLib = require("pdfjs-dist/legacy/build/pdf.js");
+const clsCanvas = require('canvas');
+const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
 
-const assert = require("assert").strict;
+const assert = require('assert').strict;
 
 function NodeCanvasFactory() {}
 NodeCanvasFactory.prototype = {
   create: function NodeCanvasFactory_create(width, height) {
-    assert(width > 0 && height > 0, "Invalid canvas size");
+    assert(width > 0 && height > 0, 'Invalid canvas size');
     const canvas = clsCanvas.createCanvas(width, height);
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext('2d');
     return {
       canvas,
       context,
@@ -16,14 +16,14 @@ NodeCanvasFactory.prototype = {
   },
 
   reset: function NodeCanvasFactory_reset(canvasAndContext, width, height) {
-    assert(canvasAndContext.canvas, "clsCanvas is not specified");
-    assert(width > 0 && height > 0, "Invalid canvas size");
+    assert(canvasAndContext.canvas, 'clsCanvas is not specified');
+    assert(width > 0 && height > 0, 'Invalid canvas size');
     canvasAndContext.canvas.width = width;
     canvasAndContext.canvas.height = height;
   },
 
   destroy: function NodeCanvasFactory_destroy(canvasAndContext) {
-    assert(canvasAndContext.canvas, "clsCanvas is not specified");
+    assert(canvasAndContext.canvas, 'clsCanvas is not specified');
 
     // Zeroing the width and height cause Firefox to release graphics
     // resources immediately, which can greatly reduce memory consumption.
@@ -41,10 +41,10 @@ NodeCanvasFactory.prototype = {
  */
 async function pdfToImage(data) {
   // Some PDFs need external cmaps.
-  const CMAP_URL = "../node_modules/pdfjs-dist/cmaps/";
+  const CMAP_URL = '../node_modules/pdfjs-dist/cmaps/';
   const CMAP_PACKED = true;
   // Where the standard fonts are located.
-  const STANDARD_FONT_DATA_URL = "../node_modules/pdfjs-dist/standard_fonts/";
+  const STANDARD_FONT_DATA_URL = '../node_modules/pdfjs-dist/standard_fonts/';
   // Load the PDF file.
   const loadingTask = pdfjsLib.getDocument({
     data,
