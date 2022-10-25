@@ -1,74 +1,114 @@
-# 项目初始化 cicd
+# 项目引入 cicd
 
-## nodejs
+## 前提
 
-1. 首先完成可正常运行的项目，这里以 test-api 为项目示例，TMS 为系统示例，项目启动 url 为 127.0.0.1:3000
-2. 需要将配置项提到一个 json 文件中，这里以 setting.json 为例
-3. 在项目添加 .gitlab-ci.yml 和 Dockerfile
-4. 修改项目中的 .gitlab-ci.yml 的变量
-5. 需要在项目推到 gitlab 前，需要使用账密登录 rancher，依次把 NameSpace，Workload，Service Discovery，Load Balancing 建立完成
-6. 建立 **NameSpace**
+- 需要在项目推到 gitlab 前，需要使用账密登录 rancher，依次把 NameSpace，Workload，Service Discovery，Load Balancing 建立完成
+- 建立 **NameSpace**
 
-   - 点击 Add Namespace 按钮
-   - `Name` - TMS（系统名）
-   - 其他默认跳过
-   - 如果 cpu 和 memory 不够，则需要调整后再添加
+  - 点击 Add Namespace 按钮
+  - `Name` - TMS（系统名）
+  - 其他默认跳过
+  - 如果 cpu 和 memory 不够，则需要调整后再添加
 
-7. 建立 **Workload**
+- 建立 **Workload**
 
-   - 点击 Deploy 按钮
-   - `Name` - test-api（项目名）
-   - `Workload Type` - 1 pod（默认）
-   - `Docker Image` - 暂时跳过
-   - `Namespace` - 输入 TMS
-   - `Port Mapping` - 跳过
-   - `Environment Variables`
-     - TZ = Asia/Taipei - docker 镜像的时区环境变量
-   - `Node Scheduling` - 跳过
-   - `Health Check` - 跳过
-   - `Volumes` - 暂时跳过
-   - `Scaling/Upgrade Policy`
-     - `Progress Deadline` - 600
-     - 其他跳过
-   - 点击 Show advanced options 按钮
-   - `Command` - 跳过
-   - `Networking` - 跳过
-   - `Labels & Annotations`
-     - 点击 Add Label 按钮
-     - app = test-api - 这个很重要，这样才可以让 Service 和 Workload 绑定
-   - `Security & Host Config` - 跳过
+  - 点击 Deploy 按钮
+  - `Name` - test-api（项目名）
+  - `Workload Type` - 1 pod（默认）
+  - `Docker Image` - 暂时跳过
+  - `Namespace` - 输入 TMS
+  - `Port Mapping` - 跳过
+  - `Environment Variables`
+    - TZ = Asia/Taipei - docker 镜像的时区环境变量
+  - `Node Scheduling` - 跳过
+  - `Health Check` - 跳过
+  - `Volumes` - 暂时跳过
+  - `Scaling/Upgrade Policy`
+    - `Progress Deadline` - 600
+    - 其他跳过
+  - 点击 Show advanced options 按钮
+  - `Command` - 跳过
+  - `Networking` - 跳过
+  - `Labels & Annotations`
+    - 点击 Add Label 按钮
+    - app = test-api - 这个很重要，这样才可以让 Service 和 Workload 绑定
+  - `Security & Host Config` - 跳过
 
-8. 建立 **Service Discovery**
+- 建立 **Service Discovery**
 
-   - 点击 Add Record 按钮
-   - `Name` - test-api-svc（-svc / -service）
-   - `Namespace` - 选择 TMS
-   - `Resolves To` - 选择 The set of pods which match a selector
-   - 点击 Add Selector 按钮
-     - APP = test-api
-   - 点击 Show advanced options 按钮
-   - `As a` - 选择 Cluster IP (Internal Only)
-   - `Published IP Addresses` - 跳过
-   - 点击 Add Port 按钮
-     - `Port Name` - 跳过
-     - `Publish the service port` - 3000
-     - `Protocol` - 跳过
-     - `Target Port` - 3000
+  - 点击 Add Record 按钮
+  - `Name` - test-api-svc（-svc / -service）
+  - `Namespace` - 选择 TMS
+  - `Resolves To` - 选择 The set of pods which match a selector
+  - 点击 Add Selector 按钮
+    - APP = test-api
+  - 点击 Show advanced options 按钮
+  - `As a` - 选择 Cluster IP (Internal Only)
+  - `Published IP Addresses` - 跳过
+  - 点击 Add Port 按钮
+    - `Port Name` - 跳过
+    - `Publish the service port` - 3000
+    - `Protocol` - 跳过
+    - `Target Port` - 3000
 
-9. 建立 **Load Balancing**
+- 建立 **Load Balancing**
 
-   - 点击 Add Ingress 按钮
-   - `Name` - test-api
-   - `Namespace` - 选择 TMS
-   - `Rules` - Automatically generate（默认）
-   - remove 掉默认的 workdload
-   - 点击 + Service 按钮
-     - `Path` - 跳过
-     - `Target` - 选择上述创建的 Service
-     - `Port` - 选择 3000
+  - 点击 Add Ingress 按钮
+  - `Name` - test-api
+  - `Namespace` - 选择 TMS
+  - `Rules` - Automatically generate（默认）
+  - remove 掉默认的 workdload
+  - 点击 + Service 按钮
+    - `Path` - 跳过
+    - `Target` - 选择上述创建的 Service
+    - `Port` - 选择 3000
 
-10. 将代码推送到 gitlab，将会开始执行 cicd
-11. cicd 产生模板中的变量后，需要修改以下变量
+## 步骤
+
+1. 首先完成可正常运行的项目
+   - api 这里以 test-api 为项目示例，TMS 为系统示例，项目启动 url 为 127.0.0.1:3000
+   - ui 这里以 test-ui 为项目示例，TMS 为系统示例，项目启动 url 为 127.0.0.1:4200
+2. 需要将配置项提到一个 json 文件中，这里以 setting.json 为例，方便 rancher 设置 config map
+3. 项目需要能成功执行`npm run test`
+4. 在项目添加对应[模板](https://gitlab.xxx.com/project/cicdtemplate.git)的文件
+
+   - nodejs / ts-node / loopback3
+     - .gitlab-ci.yml 和 Dockerfile
+   - loopback4
+     - .gitlab-ci.yml 和 Dockerfile
+     - UTScriptsSetting.json
+   - angular
+     - .gitlab-ci.yml 和 Dockerfile
+     - karma.config.js
+     - nginx-custom.conf
+
+5. 修改项目中的 .gitlab-ci.yml 的变量
+
+   - nodejs / ts-node
+     - BUILD_IMAGE_NAME 为 test-api
+   - loopback3 / loopback4
+     - BUILD_IMAGE_NAME 为 test-api
+     - SERVICE_NAME 为 test-api
+     - EXPOSE_PORT 默认为 3000
+   - angular
+     - BUILD_IMAGE_NAME 为 test-ui
+     - SERVICE_NAME 为 test-ui
+     - EXPOSE_PORT 默认为 4200
+
+6. 添加 gitlab 中的 cicd 变量
+
+   - GITLAB_KEY = 由 PM 告知
+   - BUILD_IMAGE_NAME = test-api
+
+7. 配置 [sca](https://sca.xxx.com/assets/index.html#/reports/violations) 依赖检查
+
+   - 使用账密登录
+   - 点击 Orgs and Policies 再点击 Add New App 按钮
+   - `Application Name` - test-api
+   - `Application Id` - gitlab的设置 - 通用 - 项目名称
+
+8. 将代码推送到 gitlab，将会开始执行 cicd
+9.  cicd 产生模板中的变量后，需要修改以下变量
 
     - K8S_DEV_API = 选择 dev 环境对应的 Workload，点击 View in Api，复制新打开页面的地址
     - K8S_DEV_KEY = 由 PM 告知
@@ -77,16 +117,16 @@
     - K8S_PRD_API = 选择 prd 环境对应的 Workload，点击 View in Api，复制新打开页面的地址
     - K8S_PRD_KEY = 由 PM 告知
 
-12. 查看 cicd 结果，没有失败则进入下一步，出现失败则需要通过 log 排查问题
-13. 使用账密登录 harbor 查看 image，修改 Workload 的 `Docker Image` 为 harbor.com/folder/test-api:1.0.1
-14. 点击 Resource 中的 Config，点击 Add Config Map 按钮
+10. 查看 cicd 结果，没有失败则进入下一步，出现失败则需要通过 log 排查问题
+11. 使用账密登录 [harbor](https://harbor.xxx.com/harbor/sign-in?redirect_url=%2Fharbor%2Fprojects) 查看 image，修改 Workload 的 `Docker Image` 为 harbor.xxx.com/project/test-api:1.0.1
+12. 点击 Resource 中的 Config，点击 Add Config Map 按钮
 
     - `Name` - test-api-config
     - `Namespace` - 选择 TMS
     - `Config Map Values`
       - setting.json = {}
 
-15. 修改 Workload 的 `Volumes`
+13. 修改 Workload 的 `Volumes`
 
     - 点击 Add Volumes 按钮，选择 Use a config map
     - `Volume Name` - 跳过
@@ -100,7 +140,7 @@
     - `Sub Path in Volume` - setting.json
     - `Read-Only` - 跳过
 
-16. 增加日志缓存
+14. 增加日志缓存
 
     - 切换到`Volumes`
     - 点击 Add Volume 按钮，输入完成后保存
@@ -117,7 +157,7 @@
     - `Read-Only` - 跳过
     - 查看时候使用 pod 的 shell 面板查看
 
-17. 增加日志缓存到 minio
+15. 增加日志缓存到 minio
 
     - 前提条件已经有创建好的 minio 服务，没有可以在 Apps 创建 minio 服务
     - 点击 Add Volumes 按钮，选择 Use an existing persistent volume (claim)
