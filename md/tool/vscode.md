@@ -4,34 +4,34 @@
 
 ## 目录导航
 
-  - [vscode 扩展](#vscode-扩展)
-    - [通用扩展](#通用扩展)
-    - [项目扩展](#项目扩展)
-      - [前端](#前端)
-      - [nodejs](#nodejs)
-      - [python](#python)
-      - [java](#java)
-      - [azure](#azure)
-      - [其他](#其他)
-  - [vscode 配置](#vscode-配置)
-    - [setting.json](#settingjson)
-    - [代码片段](#代码片段)
-      - [javascript](#javascript)
-    - [快捷键](#快捷键)
-      - [文档操作](#文档操作)
-        - [通用文档操作](#通用文档操作)
-        - [文档行操作](#文档行操作)
-        - [文档折叠操作](#文档折叠操作)
-        - [文档光标操作](#文档光标操作)
-        - [前端文档操作](#前端文档操作)
-      - [编辑器操作](#编辑器操作)
-      - [其他操作](#其他操作)
-    - [其他配置](#其他配置)
-  - [all in vscode](#all-in-vscode)
-    - [比较](#比较)
-    - [好处](#好处)
-    - [坏处](#坏处)
-    - [vscode 未来功能](#vscode-未来功能)
+- [vscode 扩展](#vscode-扩展)
+  - [通用扩展](#通用扩展)
+  - [项目扩展](#项目扩展)
+    - [前端](#前端)
+    - [nodejs](#nodejs)
+    - [python](#python)
+    - [java](#java)
+    - [azure](#azure)
+    - [其他](#其他)
+- [vscode 配置](#vscode-配置)
+  - [setting.json](#settingjson)
+  - [代码片段](#代码片段)
+    - [javascript](#javascript)
+  - [快捷键](#快捷键)
+    - [文档操作](#文档操作)
+      - [通用文档操作](#通用文档操作)
+      - [文档行操作](#文档行操作)
+      - [文档折叠操作](#文档折叠操作)
+      - [文档光标操作](#文档光标操作)
+      - [前端文档操作](#前端文档操作)
+    - [编辑器操作](#编辑器操作)
+    - [其他操作](#其他操作)
+  - [其他配置](#其他配置)
+- [all in vscode](#all-in-vscode)
+  - [比较](#比较)
+  - [好处](#好处)
+  - [坏处](#坏处)
+  - [vscode 未来功能](#vscode-未来功能)
 
 ## vscode 扩展
 
@@ -112,11 +112,14 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 
 #### nodejs
 
-|        扩展        | 作用     | 备注                                  | 推荐程度 |
-| :----------------: | -------- | ------------------------------------- | -------- |
-|   `Open in NPM`    | npm 工具 | 可以在 vscode 快速打开 npm 官网包地址 | 推荐     |
-|       `npm`        | npm 工具 | 验证依赖，运行 npm 脚本               | 无       |
-| `npm Intellisense` | npm 工具 | 自动完成 import，以及跳转定义         | 无       |
+|                扩展                 | 作用          | 备注                                  | 推荐程度 |
+| :---------------------------------: | ------------- | ------------------------------------- | -------- |
+|            `Open in NPM`            | npm 工具      | 可以在 vscode 快速打开 npm 官网包地址 | 推荐     |
+|                `npm`                | npm 工具      | 验证依赖，运行 npm 脚本               | 无       |
+|         `npm Intellisense`          | npm 工具      | 自动完成 import，以及跳转定义         | 无       |
+| `GraphQL: Language Feature Support` | node api 工具 | graphQL 支持                          | 无       |
+|              `Prisma`               | db 工具       | Prisma 支持                           | 无       |
+|            `vscode-dbml`            | db 工具       | dbml 支持                             | 无       |
 
 #### python
 
@@ -213,8 +216,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[markdown]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    "editor.formatOnSave": true
   },
   "[python]": {
     "editor.defaultFormatter": "ms-python.python",
@@ -226,6 +228,8 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   "[java]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  // 不自动更新目录
+  "markdown.extension.toc.updateOnSave": false,
   "editor.linkedEditing": true,
   "editor.tabSize": 2,
   "editor.wordWrap": "on",
@@ -289,7 +293,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   // updated 2022-04-01 14:10
   // https://github.com/antfu/vscode-file-nesting-config
   "explorer.fileNesting.enabled": true,
-  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.expand": true,
   "explorer.fileNesting.patterns": {
     "*.asax": "$(capture).*.cs, $(capture).*.vb",
     "*.ascx": "$(capture).*.cs, $(capture).*.vb",
@@ -358,11 +362,14 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   "liveServer.settings.donotShowInfoMsg": true,
   "GitCommitPlugin.ShowEmoji": false,
   "tabnine.experimentalAutoImports": true,
+  "svn.path": "D:\\work\\TortoiseSVN\\bin",
   "picgo.picBed.current": "github",
   "picgo.picBed.github.branch": "main",
-  "picgo.picBed.github.repo": "xxx/image-hosting",
+  // 不要暴露
+  "picgo.picBed.github.repo": "xxx/xxx",
   "picgo.picBed.github.path": "img/",
-  "picgo.picBed.github.token": "xxxxxx",
+  // 不要暴露
+  "picgo.picBed.github.token": "xxx",
   "commentTranslate.source": "Bing",
   "commentTranslate.targetLanguage": "zh-CN",
   "commentTranslate.googleTranslate.tld": "cn",
