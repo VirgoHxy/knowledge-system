@@ -19,8 +19,8 @@ export interface LoggerArg {
 
 export class Logger {
   static instance = new Logger({ transportType: TransportEnum.all });
-  winstonLogger: winston.Logger;
-  loggerOptions: winston.LoggerOptions;
+  private winstonLogger: winston.Logger;
+  private loggerOptions: winston.LoggerOptions;
 
   private options = {
     console: {
@@ -174,11 +174,7 @@ export class Logger {
       category: [...transportTypeObj.console, ...transportTypeObj.category],
     };
     this.loggerOptions = {
-      format: winston.format.combine(
-        winston.format.label({ label: transportType }),
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-        this.customFormat()
-      ),
+      format: winston.format.combine(winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), this.customFormat()),
       transports: transports[transportType],
       exceptionHandlers: transportType !== 'onlyConsole' ? exceptionHandlers[transportType] : [],
       rejectionHandlers: transportType !== 'onlyConsole' ? rejectionHandlers[transportType] : [],
@@ -197,28 +193,11 @@ export class Logger {
 
   private customFormat() {
     return winston.format.printf(info => {
-      const { timestamp, level, message, label = '', ...meta } = info;
-      let file = '';
-      try {
-        const error = new Error();
-        const stackArray = error.stack?.toString().split(/\n.*at\s/) ?? [];
-        for (let index = 1; index < stackArray.length; index++) {
-          const element = stackArray[index];
-          if (element.toLowerCase().indexOf('create-logger') !== -1) {
-            const fileMatch = stackArray[index + 1].match(/\((.*)\)/);
-            file = fileMatch ? fileMatch[1] : stackArray[index + 1];
-            break;
-          }
-        }
-        // eslint-disable-next-line
-      } catch {}
+      const { timestamp, level, message, ...meta } = info;
       const metaData = this.formatMeta(meta);
-      let str = `timestamp: ${timestamp},${file ? `\r\n  location: '${file}',` : ''}
+      let str = `timestamp: ${timestamp},
   level: ${level.toUpperCase()},
   message: ${message}`;
-      if (label) {
-        str += `,\r\n  label: ${label}`;
-      }
       if (metaData) {
         const data = metaData;
         str += `,\r\n  data: ${
@@ -229,36 +208,30 @@ export class Logger {
             : data
         }`;
       }
-      return `{
-  ${str}
-}`;
+      return `{ ${str} }`;
     });
   }
 
-  setLabelWithFile(label: string) {
-    let file = '';
-    try {
-      const error = new Error();
-      const stackArray = error.stack?.toString().split(/\n.*at\s/) ?? [];
-      for (let index = 1; index < stackArray.length; index++) {
-        const element = stackArray[index];
-        if (element.indexOf('setLabel') !== -1) {
-          const fileMatch = stackArray[index + 1].match(/\((.*)\)/);
-          file = fileMatch ? fileMatch[1] : stackArray[index + 1];
-          break;
-        }
-      }
-      // eslint-disable-next-line
-    } catch {}
-    const match = file.match(/^(.+\.ts|js)/);
-    this.setLabel(label, match ? match[1] : '');
-  }
-
-  setLabel(label: string, file?: string) {
-    this.winstonLogger.format = winston.format.combine(
-      winston.format.label({ label: file ? `${label} - ${file}` : label }),
-      winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-      this.customFormat()
-    );
+  getLogger(label?: string) {
+    return {
+      winstonLogger: this.winstonLogger,
+      error: (message: unknown, ...meta: unknown[]) => {
+        console.error(message);
+        message += `,\r\n  label: ${label}`;
+        this.winstonLogger.error(message as string, ...meta);
+      },
+      warn: (message: unknown, ...meta: unknown[]) => {
+        message += `,\r\n  label: ${label}`;
+        this.winstonLogger.warn(message as string, ...meta);
+      },
+      info: (message: unknown, ...meta: unknown[]) => {
+        message += `,\r\n  label: ${label}`;
+        this.winstonLogger.info(message as string, ...meta);
+      },
+      debug: (message: unknown, ...meta: unknown[]) => {
+        message += `,\r\n  label: ${label}`;
+        this.winstonLogger.debug(message as string, ...meta);
+      },
+    };
   }
 }
