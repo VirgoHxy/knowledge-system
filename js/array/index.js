@@ -124,6 +124,25 @@ function splitByElementNum(array, number) {
   return newArray;
 }
 
+/**
+ * 按条件分割数组成仅有两项的二维数组
+ * @param {Array} array 源数组
+ * @param {(ele: any) => boolean} flagFn 条件方法，返回真假
+ * @returns {Array} 二维数组 第一项为flag真数组 第二项为flag假数组
+ */
+function splitTwoArrays(array, flagFn) {
+  const results = [[], []];
+  for (let index = 0; index < array.length; index++) {
+    const element = array[index];
+    if (flagFn(element)) {
+      results[0].push(element);
+    } else {
+      results[1].push(element);
+    }
+  }
+  return results;
+}
+
 module.exports = {
   shuffle,
   removeRepeatByObj,
@@ -132,4 +151,5 @@ module.exports = {
   isEqual,
   splitByArrayLength,
   splitByElementNum,
+  splitTwoArrays,
 };

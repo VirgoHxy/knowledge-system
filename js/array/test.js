@@ -6,6 +6,7 @@ const {
   isEqual,
   splitByArrayLength,
   splitByElementNum,
+  splitTwoArrays,
 } = require('.');
 
 let array = [...Array(100).keys()]; // [0,1,2,3,...99]
@@ -90,6 +91,11 @@ function splitByElementNumTest() {
   console.log(splitByElementNum(array, 16));
 }
 
+function splitTwoArraysTest() {
+  // 第一项为偶数数组 第二项为奇数数组
+  console.log(splitTwoArrays([1, 12, 1, 2, 3, 4, 77, 5, 24, 33], ele => ele % 2 === 0));
+}
+
 shuffleTest();
 removeRepeatByObjTest();
 removeRepeatBySetTest();
@@ -97,3 +103,4 @@ removeItemTest();
 isEqualTest();
 splitByArrayLengthTest();
 splitByElementNumTest();
+splitTwoArraysTest();
