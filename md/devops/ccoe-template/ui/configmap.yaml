@@ -1,0 +1,20 @@
+apiVersion: v1
+data:
+  # json
+  YourConfigFileName: |-
+    {
+      "key":"value"
+    }
+kind: ConfigMap
+metadata:
+  annotations:
+    owner: YourEmail
+  labels:
+    app: YourProjectName
+    bg: YourBg
+    env: YourEnv
+    fin_ibg: YourBg
+    fin_ibu: YourIbu
+    project: YourNamespace
+    team: YourTeam/YourNamespace
+  name: YourProjectName-config

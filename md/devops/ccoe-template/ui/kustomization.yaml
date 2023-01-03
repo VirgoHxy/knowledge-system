@@ -1,0 +1,16 @@
+commonLabels:
+  app: YourProjectName
+  bg: YourBg
+  env: YourEnv
+  fin_ibg: YourBg
+  fin_ibu: YourIbu
+  project: YourNamespace
+  team: YourTeam/YourNamespace
+commonAnnotations:
+  owner: YourEmail
+resources:
+  - configmap.yaml
+  - deployment.yaml
+  - ingress.yaml
+  - secret.yaml
+  - service.yaml

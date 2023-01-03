@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    owner: YourEmail
+  labels:
+    app: YourProjectName
+    bg: YourBg
+    env: YourEnv
+    fin_ibg: YourBg
+    fin_ibu: YourIbu
+    project: YourNamespace
+    team: YourTeam/YourNamespace
+  name: YourProjectName-ingress
+spec:
+  rules:
+    - host: YourProjectName-ccoe.YourEnvHost
+      http:
+        paths:
+          - backend:
+              service:
+                name: YourProjectName-svc
+                port:
+                  number: 4200
+            pathType: ImplementationSpecific
