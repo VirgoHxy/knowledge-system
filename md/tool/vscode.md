@@ -65,6 +65,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 |        `transpose`         | 光标工具         | 两个光标选中内容进行交换                                                                           | 推荐     |
 |      `Copy File Name`      | vscode 右键工具  | 右键文件夹/文件可以复制名称                                                                        | 推荐     |
 |      `fe-file-rename`      | 命名规范检查工具 | 可以检测并修复文件夹、文件命名                                                                     | 推荐     |
+|  `Select Line Status Bar`  | vscode 工具      | 可以显示选中了多少行                                                                               | 推荐     |
 |        `Bookmarks`         | 标记位置工具     | 无需滚动翻找某个属性                                                                               | 50       |
 |        `Tabnine AI`        | AI 写代码工具    | 智能预测代码书写                                                                                   | 50       |
 |          `PicGo`           | 图床工具         | 便捷上传图片到图床并生成 md 形式的图片链接                                                         | 40       |
@@ -99,6 +100,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 |    `JavaScript Snippet Pack`     | js 代码片段             | js 代码片段                                                        | 推荐     |
 |       `Turbo Console Log`        | js 快速生成 console.log | js 快速生成 console.log                                            | 推荐     |
 |        `Wrap Console Log`        | js 快速生成 console.log | js 快速生成 console.log                                            | 推荐     |
+|              `ENV`               | 高亮`.env`文件          | 高亮`.env`文件                                                     | 推荐     |
 |         `json2interface`         | ts 快速生成 interface   | 根据复制过的 json 内容，生成 ts interface                          | 推荐     |
 |       `Path Intellisense`        | 引用路径提示            | 提示文件夹层级过长的文件路径                                       | 50       |
 |             `Minify`             | 文件压缩工具            | 可压缩 html，css，js 成一个*.min.js/*.min.css                      | 50       |
@@ -176,12 +178,14 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   "prettier.endOfLine": "auto", // 结尾是 \n \r \n\r auto
   "prettier.htmlWhitespaceSensitivity": "ignore",
   "prettier.ignorePath": ".prettierignore", // 不使用prettier格式化的文件填写在项目的.prettierignore文件中
-  "prettier.jsxBracketSameLine": false, // 在jsx中把'>' 是否单独放一行
+  "prettier.bracketSameLine": false, // 在jsx中把'>' 是否单独放一行
   "prettier.jsxSingleQuote": false, // 在jsx中使用单引号代替双引号
   "prettier.requireConfig": false, // Require a 'prettierconfig' to format prettier
   "prettier.trailingComma": "es5", // 在对象或数组最后一个元素后面是否加逗号（在ES5中加尾逗号）
   // 编辑器设定
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // 括号连线
+  "editor.guides.bracketPairs": "active",
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -264,7 +268,12 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
     "*.wxs": "javascript",
     "*.wxss": "css",
     "*.cshtml": "html",
-    "*.env": "yaml"
+    "*.env": "env",
+    "*.env.development": "env",
+    "*.env.local": "env",
+    "*.env.*.local": "env",
+    "*.env.production": "env",
+    "*.env.staging": "env"
   },
   "emmet.triggerExpansionOnTab": true,
   "emmet.showAbbreviationSuggestions": true,
@@ -337,7 +346,8 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
     "mix.exs": ".credo.exs, .dialyzer_ignore.exs, .formatter.exs, mix.lock",
     "next.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.json, env.d.ts, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, next-env.d.ts, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
     "nuxt.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.json, env.d.ts, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "package.json": ".browserslist*, .circleci*, .codecov, .commitlint*, .cz-config.js, .czrc, .editorconfig, .eslint*, .firebase*, .flowconfig, .github*, .gitlab*, .gitpod*, .huskyrc*, .jslint*, .lintstagedrc*, .markdownlint*, .mocha*, .node-version, .nodemon*, .npm*, .nvmrc, .pm2*, .pnp.*, .pnpm*, .prettier*, .babel*, .releaserc*, .sentry*, .stackblitz*, .styleci*, .stylelint*, .tazerc*, .textlint*, .tool-versions, .travis*, .versionrc*, .vscode*, .watchman*, .xo-config*, .yamllint*, .yarnrc*, Procfile, api-extractor.json, apollo.config.*, appveyor*, ava.config.*, azure-pipelines*, bower.json, build.config.*, commitlint*, crowdin*, cypress.json, dangerfile*, dprint.json, firebase.json, grunt*, gulp*, jasmine.*, jenkins*, jest.config.*, jsconfig.*, karma*, lerna*, lint-staged*, nest-cli.*, netlify*, nodemon*, nx.*, package-lock.json, phpcs.xml, playwright.config.*, pm2.*, pnpm*, prettier*, pullapprove*, puppeteer.config.*, pyrightconfig.json, renovate*, rollup.config.*, stylelint*, tsconfig.*, tsdoc.*, tslint*, tsup.config.*, turbo*, typedoc*, vercel*, vetur.config.*, vitest.config.*, webpack.config.*, workspace.json, xo.config.*, yarn*, .gitignore, *.d.ts, .nyc*",
+    "package.json": ".browserslist*, .circleci*, .codecov, .commitlint*, .cz-config.js, .czrc, .editorconfig, .eslint*, .firebase*, .flowconfig, .github*, .gitlab*, .gitpod*, .huskyrc*, .jslint*, .lintstagedrc*, .markdownlint*, .mocha*, .node-version, .nodemon*, .npm*, .nvmrc, .pm2*, .pnp.*, .pnpm*, .prettier*, .babel*, .releaserc*, .sentry*, .stackblitz*, .styleci*, .stylelint*, .tazerc*, .textlint*, .tool-versions, .travis*, .versionrc*, .vscode*, .watchman*, .xo-config*, .yamllint*, .yarnrc*, Procfile, api-extractor.json, apollo.config.*, appveyor*, ava.config.*, azure-pipelines*, bower.json, build.config.*, commitlint*, crowdin*, cypress.json, dangerfile*, dprint.json, firebase.json, grunt*, gulp*, jasmine.*, jenkins*, jest.config.*, jsconfig.*, karma*, lerna*, lint-staged*, nest-cli.*, netlify*, nodemon*, nx.*, package-lock.json, phpcs.xml, playwright.config.*, pm2.*, pnpm*, prettier*, pullapprove*, puppeteer.config.*, pyrightconfig.json, renovate*, rollup.config.*, stylelint*, tsdoc.*, tslint*, tsup.config.*, turbo*, typedoc*, vercel*, vetur.config.*, vitest.config.*, webpack.config.*, workspace.json, xo.config.*, yarn*, .gitignore, *.d.ts, .nyc*, postcss.config.*, tailwind.config.*",
+    "tsconfig.json": "tsconfig.*",
     "pubspec.yaml": ".metadata, .packages, all_lint_rules.yaml, analysis_options.yaml, build.yaml, pubspec.lock",
     "pyproject.toml": ".pdm.toml, pdm.lock, pyproject.toml",
     "quasar.conf.js": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.json, env.d.ts, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, playwright.config.*, postcss.config.*, puppeteer.config.*, quasar.extensions.json, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
@@ -349,8 +359,8 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
     "rush.json": ".browserslist*, .circleci*, .codecov, .commitlint*, .cz-config.js, .czrc, .editorconfig, .eslint*, .firebase*, .flowconfig, .github*, .gitlab*, .gitpod*, .huskyrc*, .jslint*, .lintstagedrc*, .markdownlint*, .mocha*, .node-version, .nodemon*, .npm*, .nvmrc, .pm2*, .pnp.*, .pnpm*, .prettier*, .releaserc*, .sentry*, .stackblitz*, .styleci*, .stylelint*, .tazerc*, .textlint*, .tool-versions, .travis*, .versionrc*, .vscode*, .watchman*, .xo-config*, .yamllint*, .yarnrc*, Procfile, api-extractor.json, apollo.config.*, appveyor*, ava.config.*, azure-pipelines*, bower.json, build.config.*, commitlint*, crowdin*, cypress.json, dangerfile*, dprint.json, firebase.json, grunt*, gulp*, jasmine.*, jenkins*, jest.config.*, jsconfig.*, karma*, lerna*, lint-staged*, nest-cli.*, netlify*, nodemon*, nx.*, package-lock.json, phpcs.xml, playwright.config.*, pm2.*, pnpm*, prettier*, pullapprove*, puppeteer.config.*, pyrightconfig.json, renovate*, rollup.config.*, stylelint*, tsconfig.*, tsdoc.*, tslint*, tsup.config.*, turbo*, typedoc*, vercel*, vetur.config.*, vitest.config.*, webpack.config.*, workspace.json, xo.config.*, yarn*",
     "shims.d.ts": "*.d.ts",
     "svelte.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.json, env.d.ts, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, mdsvex.config.js, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "vite.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.json, env.d.ts, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "vue.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.json, env.d.ts, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*"
+    "vite.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.json, env.d.ts, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, playwright.config.*, puppeteer.config.*, svgo.config.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
+    "vue.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.json, env.d.ts, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, playwright.config.*, puppeteer.config.*, svgo.config.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*"
   },
   /* 其他配置 */
   // vscode其他配置
@@ -366,10 +376,10 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
   "picgo.picBed.current": "github",
   "picgo.picBed.github.branch": "main",
   // 不要暴露
-  "picgo.picBed.github.repo": "xxx/xxx",
+  "picgo.picBed.github.repo": "YourRepo",
   "picgo.picBed.github.path": "img/",
   // 不要暴露
-  "picgo.picBed.github.token": "xxx",
+  "picgo.picBed.github.token": "YourToken",
   "commentTranslate.source": "Bing",
   "commentTranslate.targetLanguage": "zh-CN",
   "commentTranslate.googleTranslate.tld": "cn",
@@ -458,7 +468,8 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
       "args": []
     }
   },
-  "terminal.integrated.defaultProfile.windows": "PowerShell"
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "git.confirmSync": false
 }
 ```
 
@@ -548,6 +559,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 |       默认: `Ctrl+I` / 自定义: `Alt+/`       | 文档操作          | 显示文档建议，代码提示        |                                             |
 |                `Shift+Alt+O`                 | 文档操作          | 整理 import 语句              |                                             |
 |                   `Ctrl+S`                   | 文档操作          | 保存                          |                                             |
+|   默认: `Ctrl+K S` / 自定义: `Ctrl+Alt+S`    | 文档操作          | 全部保存                      |                                             |
 |                `Ctrl+Shift+S`                | 文档操作          | 另存为                        |                                             |
 |                   `Ctrl+W`                   | 文档操作          | 关闭文档                      |                                             |
 |                `Ctrl+Shift+T`                | 文档操作          | 打开已关闭的文档              |                                             |

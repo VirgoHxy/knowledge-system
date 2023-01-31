@@ -1,14 +1,15 @@
-const fs = require('fs');
-const path = require('path');
+import * as fs from 'fs';
+import * as path from 'path';
+import { Duplex, Stream } from 'stream';
 
 /**
  * 同步写入文件
  * @param {string} filePath 文件路径
- * @param {string | ArrayBufferView} content 文件内容
+ * @param {string} [content = ''] 文件内容
  * @param {('a'|'u')} [options] 选项
- * @returns {Boolean} result
+ * @returns {boolean} result
  */
-function writeSync(filePath, content = '', options) {
+function writeSync(filePath: string, content = '', options?: 'a' | 'u'): boolean {
   if (!path.isAbsolute(filePath)) {
     filePath = path.resolve(__dirname, filePath);
   }
@@ -26,9 +27,9 @@ function writeSync(filePath, content = '', options) {
 /**
  * 同步删除文件夹或文件
  * @param {string} dirPath 文件路径/文件夹路径
- * @returns {Boolean}
+ * @returns {boolean}
  */
-function delSync(dirPath) {
+function delSync(dirPath: string): boolean {
   if (!path.isAbsolute(dirPath)) {
     dirPath = path.resolve(__dirname, dirPath);
   }
@@ -37,13 +38,13 @@ function delSync(dirPath) {
       // 删除文件
       fs.unlinkSync(dirPath);
     } else {
-      let dirs = fs.readdirSync(dirPath);
+      const dirs = fs.readdirSync(dirPath);
       dirs.forEach(dirName => {
-        let curPath = path.resolve(dirPath, dirName);
+        const curPath = path.resolve(dirPath, dirName);
         // 递归删除文件夹
         delSync(curPath);
       });
-      /* 
+      /*
         这里遇见过同步删除文件却存在延迟
         导致删除文件夹出现not empty报错
         如果出现加上1-2秒的定时器即可
@@ -58,9 +59,9 @@ function delSync(dirPath) {
  * 同步修改文件
  * @param {string} filePath 文件路径
  * @param {string | ArrayBufferView} content 文件内容
- * @returns {Boolean}
+ * @returns {boolean}
  */
-function updateSync(filePath, content) {
+function updateSync(filePath: string, content: string): boolean {
   if (!path.isAbsolute(filePath)) {
     filePath = path.resolve(__dirname, filePath);
   }
@@ -77,9 +78,9 @@ function updateSync(filePath, content) {
  * 同步追加文件
  * @param {string} filePath 文件路径
  * @param {string | Uint8Array} content 文件内容
- * @returns {Boolean}
+ * @returns {boolean}
  */
-function appendSync(filePath, content) {
+function appendSync(filePath: string, content: string): boolean {
   if (!path.isAbsolute(filePath)) {
     filePath = path.resolve(__dirname, filePath);
   }
@@ -97,14 +98,14 @@ function appendSync(filePath, content) {
  * @param {string} [fileEncoding] 文件编码
  * @returns {string | Array}
  */
-function readSync(dirPath, fileEncoding) {
+function readSync(dirPath: string, fileEncoding?: { encoding?: null; flag?: string }): string | Array<string> {
   if (!path.isAbsolute(dirPath)) {
     dirPath = path.resolve(__dirname, dirPath);
   }
   if (fs.existsSync(dirPath)) {
     if (!fs.statSync(dirPath).isDirectory()) {
       // 返回文件内容
-      return fs.readFileSync(dirPath, fileEncoding);
+      return fs.readFileSync(dirPath, fileEncoding).toString();
     }
     // 返回目录列表
     return fs.readdirSync(dirPath);
@@ -118,9 +119,9 @@ function readSync(dirPath, fileEncoding) {
  * @description 源路径和复制路径需要保持一致性，都是文件或是都是文件夹
  * @param {string} sourcePath 源路径
  * @param {string} copyPath 复制路径
- * @returns {Boolean}
+ * @returns {boolean}
  */
-function copySync(sourcePath, copyPath) {
+function copySync(sourcePath: string, copyPath: string): boolean {
   if (!path.isAbsolute(sourcePath)) {
     sourcePath = path.resolve(__dirname, sourcePath);
   }
@@ -132,10 +133,10 @@ function copySync(sourcePath, copyPath) {
     if (!fs.statSync(sourcePath).isDirectory()) {
       fs.copyFileSync(sourcePath, copyPath);
     } else {
-      let dirs = fs.readdirSync(sourcePath);
+      const dirs = fs.readdirSync(sourcePath);
       dirs.forEach(dirName => {
-        let sPath = path.resolve(sourcePath, dirName);
-        let cPath = path.resolve(copyPath, dirName);
+        const sPath = path.resolve(sourcePath, dirName);
+        const cPath = path.resolve(copyPath, dirName);
         // 递归复制
         copySync(sPath, cPath);
       });
@@ -151,9 +152,9 @@ function copySync(sourcePath, copyPath) {
  * @description 源路径和移动路径需要保持一致性，都是文件或是都是文件夹
  * @param {string} sourcePath 源路径
  * @param {string} movePath 移动路径
- * @returns {Boolean}
+ * @returns {boolean}
  */
-function moveSync(sourcePath, movePath) {
+function moveSync(sourcePath: string, movePath: string): boolean {
   if (!path.isAbsolute(sourcePath)) {
     sourcePath = path.resolve(__dirname, sourcePath);
   }
@@ -165,10 +166,10 @@ function moveSync(sourcePath, movePath) {
     if (!fs.statSync(sourcePath).isDirectory()) {
       fs.renameSync(sourcePath, movePath);
     } else {
-      let dirs = fs.readdirSync(sourcePath);
+      const dirs = fs.readdirSync(sourcePath);
       dirs.forEach(dirName => {
-        let sPath = path.resolve(sourcePath, dirName);
-        let mPath = path.resolve(movePath, dirName);
+        const sPath = path.resolve(sourcePath, dirName);
+        const mPath = path.resolve(movePath, dirName);
         // 递归复制
         moveSync(sPath, mPath);
       });
@@ -184,9 +185,9 @@ function moveSync(sourcePath, movePath) {
  * @description 源路径和复制路径需要保持一致性，都是文件或是都是文件夹
  * @param {string} sourcePath 源路径
  * @param {string} copyPath 复制路径
- * @returns {Boolean}
+ * @returns {boolean}
  */
-function copyByStreamSync(sourcePath, copyPath) {
+function copyByStreamSync(sourcePath: string, copyPath: string): boolean {
   if (!path.isAbsolute(sourcePath)) {
     sourcePath = path.resolve(__dirname, sourcePath);
   }
@@ -200,10 +201,10 @@ function copyByStreamSync(sourcePath, copyPath) {
       const writeStream = fs.createWriteStream(copyPath);
       readStream.pipe(writeStream);
     } else {
-      let dirs = fs.readdirSync(sourcePath);
+      const dirs = fs.readdirSync(sourcePath);
       dirs.forEach(dirName => {
-        let sPath = path.resolve(sourcePath, dirName);
-        let cPath = path.resolve(copyPath, dirName);
+        const sPath = path.resolve(sourcePath, dirName);
+        const cPath = path.resolve(copyPath, dirName);
         // 递归复制
         copyByStreamSync(sPath, cPath);
       });
@@ -217,13 +218,13 @@ function copyByStreamSync(sourcePath, copyPath) {
 /**
  * 递归创建文件夹
  * @param {string} dirPath 文件路径/文件夹路径
- * @returns {Boolean}
+ * @returns {boolean}
  */
-function mkdirSync(dirPath) {
+function mkdirSync(dirPath: string): boolean {
   if (!path.isAbsolute(dirPath)) {
     dirPath = path.resolve(__dirname, dirPath);
   }
-  let match = dirPath.match(/^.+[\\/]([^\\/]+)$/);
+  const match = dirPath.match(/^.+[\\/]([^\\/]+)$/);
   // 清除文件名
   match && match[1].includes('.') && match[1].includes('.', 1) && (dirPath = dirPath.replace(match[1], ''));
   if (fs.existsSync(dirPath)) {
@@ -241,11 +242,11 @@ function mkdirSync(dirPath) {
  * @param {Stream} stream 流
  * @returns {Promise<Buffer>}
  */
-function streamToBuffer(stream) {
+function streamToBuffer(stream: Stream): Promise<Buffer> {
   return new Promise((resolve, reject) => {
-    let buffers = [];
+    const buffers = [];
     stream.on('error', reject);
-    stream.on('data', data => buffers.push(data));
+    stream.on('data', (data: never) => buffers.push(data));
     stream.on('end', () => resolve(Buffer.concat(buffers)));
   });
 }
@@ -255,15 +256,14 @@ function streamToBuffer(stream) {
  * @param {Buffer} buffer buffer
  * @returns {Duplex}
  */
-function bufferToStream(buffer) {
-  let Duplex = require('stream').Duplex;
-  let stream = new Duplex();
+function bufferToStream(buffer: Buffer): Duplex {
+  const stream = new Duplex();
   stream.push(buffer);
   stream.push(null);
   return stream;
 }
 
-module.exports = {
+export {
   writeSync,
   delSync,
   readSync,

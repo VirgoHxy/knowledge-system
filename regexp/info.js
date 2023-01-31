@@ -221,7 +221,7 @@ console.log('<body><h1>Hi!</h1></body>'.match(/<[a-z][a-z0-9]*>/gi)); // <body>,
 console.log(
   'color:#121212; background-color:#AA00ef bad-colors:f#fddee #fd2 #12345678'.match(/(#((\p{Hex_Digit}){3}){1,2}\b)/gu)
 ); // #121212,#AA00ef,#fd2
-// 懒惰量词
+// 懒惰量词 只匹配一次
 console.log('a "witch" and her "broom" is one'.match(/".+?"/g)); // "witch","broom"
 // 贪婪量词(默认)
 console.log('a "witch" and her "broom" is one'.match(/".+"/g)); // "witch" and her "broom"
