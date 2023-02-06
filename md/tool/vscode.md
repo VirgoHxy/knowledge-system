@@ -110,6 +110,7 @@ Google 搜索: 那些你应该考虑卸载的 VSCode 扩展
 |    `Manta's Stylus Supremacy`    | stylus 风格规范&格式化  | 主要用来规范格式化 stylus，使用其他 css 预处理器，则无需安装       | 30       |
 |      `Debugger for Chrome`       | 断点调试工具            | 映射 vscode 断点到 chrome 浏览器断点，快捷调试                     | 无       |
 |         `Image preview`          | css 图片预览            | 可在 css 中预览图片文件                                            | 无       |
+|   `Tailwind CSS IntelliSense`    | tailwind css            | 原子 css                                                           | 无       |
 |          `Import Cost`           | 引用大小提示            | 可显示 import/requrie 引用包的大小；可能影响性能                   | 卸载推荐 |
 
 #### nodejs
