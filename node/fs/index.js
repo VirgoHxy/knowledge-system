@@ -24,8 +24,8 @@ function writeSync(filePath, content = '', options) {
 }
 
 /**
- * 同步删除文件夹或文件
- * @param {string} dirPath 文件路径/文件夹路径
+ * 同步删除文件
+ * @param {string} dirPath 文件路径
  * @returns {Boolean}
  */
 function delSync(dirPath) {
@@ -36,19 +36,6 @@ function delSync(dirPath) {
     if (!fs.statSync(dirPath).isDirectory()) {
       // 删除文件
       fs.unlinkSync(dirPath);
-    } else {
-      let dirs = fs.readdirSync(dirPath);
-      dirs.forEach(dirName => {
-        let curPath = path.resolve(dirPath, dirName);
-        // 递归删除文件夹
-        delSync(curPath);
-      });
-      /* 
-        这里遇见过同步删除文件却存在延迟
-        导致删除文件夹出现not empty报错
-        如果出现加上1-2秒的定时器即可
-      */
-      fs.rmdirSync(dirPath);
     }
   }
   return true;
